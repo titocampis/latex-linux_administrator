@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1715181612 "/home/acampos/personal/latex/latex-linux_administrator/linux_administrator.tex" "linux_administrator.pdf" "linux_administrator" 1715181617
+["pdflatex"] 1715184756 "/home/acampos/personal/latex/latex-linux_administrator/linux_administrator.tex" "linux_administrator.pdf" "linux_administrator" 1715184762
   "/etc/texmf/web2c/texmf.cnf" 1715176516 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/home/acampos/.texlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbi1000.600pk" 1715177981 34088 a8d8b421d71e8a3dd3a45f07b01dff22 ""
   "/home/acampos/.texlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1000.600pk" 1715177987 25396 48068d9932c24e62aa7393f876985be0 ""
@@ -12,7 +12,7 @@
   "/home/acampos/.texlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1000.600pk" 1715177989 20008 c76d3a400f85877091d6e34e17f7558d ""
   "/home/acampos/.texlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1000.600pk" 1715177985 11524 7f3811f3ce9e859c4146a47c4a21fada ""
   "/home/acampos/.texlive2021/texmf-var/web2c/pdftex/pdflatex.fmt" 1715177970 1405644 5ce2ec070a754fe4022ef622d92b2063 ""
-  "/home/acampos/personal/latex/latex-linux_administrator/linux_administrator.tex" 1715181612 105648 d9f86248b0452c102166f5dd580e0025 ""
+  "/home/acampos/personal/latex/latex-linux_administrator/linux_administrator.tex" 1715184751 105126 70abb7dbee280245d1a9f6da0e61a492 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecbi1000.tfm" 1136768653 3072 e6fe53b666f9cbd66cb135c6fdea66d3 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecbx1000.tfm" 1136768653 3584 2d666ecf6d466d8b007246bc2f94d9da ""
@@ -194,10 +194,10 @@
   "/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty" 1635798903 56029 3f7889dab51d620aa43177c391b7b190 ""
   "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1644012257 39432 7155514e09a3d69036fac785183a21c2 ""
   "/usr/share/texmf/web2c/texmf.cnf" 1644012257 39432 7155514e09a3d69036fac785183a21c2 ""
-  "linux_administrator.aux" 1715181616 21091 2c2713178e821243fd2eb912f6a0b16c "pdflatex"
-  "linux_administrator.out" 1715181616 21313 941c33e6deef6c31b51203b9758b70a0 "pdflatex"
-  "linux_administrator.tex" 1715181612 105648 d9f86248b0452c102166f5dd580e0025 ""
-  "linux_administrator.toc" 1715181616 11922 98f1f2bef2519cf85503bda3183bfe9e "pdflatex"
+  "linux_administrator.aux" 1715184761 22300 58429a4f46b8039a808f37bc420e0279 "pdflatex"
+  "linux_administrator.out" 1715184761 21163 8192c794eaa22ea902699a53be0a719c "pdflatex"
+  "linux_administrator.tex" 1715184751 105126 70abb7dbee280245d1a9f6da0e61a492 ""
+  "linux_administrator.toc" 1715184761 12783 ab3ac7d36ab3d0f657c180aafe29c14b "pdflatex"
   "pictures/base64.png" 1715175813 16499 0a5d22f3625a9aaf22e89672b026a928 ""
   "pictures/chmod.PNG" 1715175813 26495 23bf6a6b9d1ca9266108d81fb13842a7 ""
   "pictures/defsbig.png" 1715175814 65434 d52a26462b7fa93abf262c6548b3490d ""

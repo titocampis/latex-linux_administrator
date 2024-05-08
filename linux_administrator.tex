@@ -163,6 +163,7 @@ The \verb|/usr| directory contains applications and files used by users, as oppo
 The \verb|/var| directory is the writable counterpart to the \verb|/usr| directory, which must be read-only in normal operation. Log files and everything else that would normally be written to \verb|/usr| during normal operation are written to the \verb|/var| directory. For example, you'll find log files in \verb|/var/log|.
 
 \newpage
+%-------------------------------------------------------------------------------------------------
 \section{Managing Linux Users and Groups}
 
 \subsection{Introduction}
@@ -772,6 +773,7 @@ $ sudo passwd -dl root
 \end{figure}
 
 \newpage
+%-------------------------------------------------------------------------------------------------
 \section{Basic Linux Commands}
 
 \subsection{Linux System Information}
@@ -1021,7 +1023,7 @@ Be carefull using Ctrl+R, because for example if you click on tab, you will cras
 \end{itemize}
 
 \subsection{Mv / Cp}
-\textbf{Para copiar / mover todo el contenido de una carpeta en otra:}
+\textbf{To move / copy all the content from one folder to another:}
 \begin{codetemplate}{}
 \begin{verbatim}
 $ cp -R path/to/source/* /path/dest/folder/
@@ -1033,7 +1035,7 @@ $ mv -R path/to/source/* /path/dest/folder/
 \end{verbatim}
 \end{codetemplate}
 
-\textbf{Para copiar / mover una carpeta en otra:}
+\textbf{To move / copy one folder to another:}
 \begin{codetemplate}{}
 \begin{verbatim}
 $ cp -R path/to/source/ /path/dest/folder/
@@ -1058,19 +1060,19 @@ $ mv -R path/to/source1/ /path/dest/folder2/ ... path/to/sourcen/ /path/dest/fol
 \end{codetemplate}
 
 \begin{blocktemplate}{NOTE}
-Ambos directorios deben existir
+Both directories should exist
 \end{blocktemplate}
 
 \subsection{Simbolik Links}
-Para crearlo debemos encontrarnos en la carpeta donde queremos crearlo y hacer referencia a la carpeta que queremos apuntar desde esta con \verb|../| o desde el \verb|/|.
+To create it we should be on the folder where we want to create it and make reference to the folder where we want to point, the reference can start from this folder (\verb|../| ) or from \verb|/|.
 \begin{codetemplate}{}
 \begin{verbatim}
 $ ln -s /Users/titocampis/Desktop/TFG/Proyecto TFG
 \end{verbatim}
 \end{codetemplate}
 
-\subsection{Alias}
-Para conocer los alias que tenemos en nuestro Linux:
+\subsection{Aliases}
+To know all the aliases we have in our system
 \begin{codetemplate}
 \begin{verbatim}
 $ alias
@@ -1080,11 +1082,11 @@ $ alias
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.6]{pictures/image45.PNG}
-    \caption{Los alias por defecto y configurados por mi en mi Ubuntu}
+    \caption{Default aliases}
 \end{figure}
 
-\subsubsection{Alias Temporal}
-Para generar un alias temporal:
+\subsubsection{Ephimeral Aliases}
+To generate an ephimeral alias:
 \begin{codetemplate}
 \begin{verbatim}
 $ alias nombreAlias="tu comando personalizado aquí"
@@ -1103,16 +1105,14 @@ $ alias kcc="kubectl config"
 \end{verbatim}
 \end{codetemplate}
 
-\subsubsection{Alias Permanente}
-Para mantener los alias entre sesiones, vas a tener que guardarlos en el archivo de perfil para la  configuración de shell de tu usuario. Estos podrían ser:
+\subsubsection{Permanent Aliases}
+To mantain alias in our system and do not lose them when we change of terminal we need to configure them on the shell config file we use:
 
 \begin{itemize}
     \item Bash → \verb|~/.bashrc|
     \item ZSH → \verb|~/.zshrc|
     \item Fish → \verb|~/.config/fish/config.fish|
 \end{itemize}
-
-La sintaxis que hay que utilizar en este caso, es la misma que cuando creamos uno temporal. La única diferencia viene del hecho de que esta vez lo guardaremos en un archivo.
 
 \begin{figure}[H]
     \centering
@@ -1121,16 +1121,85 @@ La sintaxis que hay que utilizar en este caso, es la misma que cuando creamos un
     \label{export}
 \end{figure}
 
+\subsection{Source}
+\begin{codetemplate}
+\begin{verbatim}
+$ source filename [arguments]
+\end{verbatim}
+\end{codetemplate}
+
+Cuando se ejecuta desde una shell un comando o un script, se crea un subproceso (proceso hijo) de la shell que ejecuta el comando o el script (proceso padre).
+
+Si el script que ejecuta el proceso hijo crea o modifica alguna variable de entorno, esos cambios o variables desaparecen cuando finaliza el comando o script.
+
+Si deseamos que dichos cambios permanezcan, podemos utilizar el comando de Bash source. Este comando hace que el proceso o comando se ejecute sin crear ningún proceso hijo, de forma que los cambios efectuados en las variables de entorno y demás, se mantengan al finalizar el archivo.
+
+More information: \url{Source in Bash}
+
+\textbf{Example:}
+\newline
+\begin{codetemplate}{script.sh}
+\begin{verbatim}
+#!/bin/bash
+
+export RHT_OCP4_DEV_USER="nwmwsv"
+export RHT_OCP4_DEV_PASSWORD="1ecc25feca97466e81c5"
+export RHT_OCP4_MASTER_API="https://api.eu410.prod.nextcle.com:6443"
+export Console_Web_Application=\
+"https://console-openshift-console.apps.eu410.prod.nextcle.com"
+export Cluster_Id="5650752a-edc7-4546-a1ff-8900d7e8e35b"
+\end{verbatim}
+\end{codetemplate}
+
+\begin{enumerate}
+    \item Si lo ejecutamos con \verb|./|
+    \begin{itemize}
+        \item En primer lugar hay que darle permisos
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.45]{pictures/image13.PNG}
+        \label{./bash}
+    \end{figure}
+        \item En segundo lugar, como bien prevehiamos, no se guardan los cambios en la terminal, pues se ejecuta un subproceso por detrás el cual nunca mergea cambios a nivel de sistema en el proceso padre.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{pictures/image12.PNG}
+        \label{./bash 2}
+    \end{figure}
+    \end{itemize}
+    \item Si lo ejecutamos con \verb|bash/sh|
+        \begin{itemize}
+            \item En este caso, no son necesarios permisos, pues se pasa como argumento del ejecutable bash.
+            \item En segundo lugar, como bien prevehiamos, sucede lo mismo que con ./, no se guardan los cambios en el terminal (proceso padre).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.45]{pictures/image14.PNG}
+        \label{bash scrip.sh}
+    \end{figure}
+    \end{itemize}
+    \item \textbf{Si lo ejecutamos con source}
+        \begin{itemize}
+            \item En este caso, no son necesarios permisos, pues se pasa como argumento del ejecutable source.
+            \item En segundo lugar, como bien prevehiamos, los cambios se transmiten al proceso padre! Y por tanto se guardan en nuestro terminal.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.45]{pictures/image15.PNG}
+        \label{source scrip.sh}
+    \end{figure}
+    \end{itemize}
+\end{enumerate}
+
+
 \subsection{Shutdown machines or terminals}
 \begin{itemize}
-    \item Apagar la maquina que este corriendo en el momento.
+    \item Shutdown the linux machine now
 \begin{codetemplate}{}
 \begin{verbatim}
 $ sudo shutdown -r now
 \end{verbatim}
 \end{codetemplate}
 
-    \item Apagar la ventana de terminal.
+    \item Just shutdown the terminal
 \begin{codetemplate}{}
 \begin{verbatim}
 $ exec "$SHELL"
@@ -1185,13 +1254,14 @@ $ echo "Hello" | tee output.txt
 \href{https://www.hostinger.com/tutorials/linux-commands}{https://www.hostinger.com/tutorials/linux-commands}
 
 \newpage
+%-------------------------------------------------------------------------------------------------
 \section{.bashrc, .bash\_profile, /etc/bashrc \& path}
 
 \subsection{.bashrc vs .bash\_profile}
 
 \begin{itemize}
-    \item \verb|.bashrc| \textbf{[non interactive login]:} para que se apliquen los cambios debemos abrir otro terminal interactivo (no se aplican en el actual pues este fichero se ejecuta la iniciare un nuevo terminal it).
-    \item \verb|.bash_profile| \textbf{[interactive login]:} solamente se ejecuta cuando hay un proceso de login, al iniciar de nuevo la maquina, al utilizar ssh, sudo... Pero no al abrir un nuevo terminal.
+    \item \verb|.bashrc| \textbf{[non interactive login]:} for changes to take effect, we need to open another interactive terminal (changes don't apply to the current one because this file is executed upon starting a new terminal session).
+    \item \verb|.bash_profile| \textbf{[interactive login]:} it only executes when there's a login process, upon restarting the machine, when using ssh, sudo... But not when opening a new terminal.
 \end{itemize}
 
 \subsection{PATH}
@@ -1234,9 +1304,804 @@ $ export PATH=\$PATH:/place/with/the/file
 Be very careful editing these files, so one error in the configuration of these files can make somo binaries crash (example: mkdir, ls, etc.)
 \end{blocktemplateIII}
 
+\section{Useful Tools}
+
+\subsection{Cat}
+Cat nos va a permitir ver el contenido de ficheros sin abrirlos, crear ficheros si no existen o redireccionar salidas del terminal.
+
+\begin{itemize}
+    \item Basic usage: mostrar el contenido de un fichero
+\begin{codetemplate}{}
+\begin{verbatim}
+$ cat test
+\end{verbatim}
+\end{codetemplate}
+
+    \item Mostrar contenido de test y test2
+\begin{codetemplate}{}
+\begin{verbatim}
+$ cat test1 test2
+\end{verbatim}
+\end{codetemplate}
+
+    \item Nos añade el contenido de test2 en el fichero test1, si habia contenido sobreescribe, si no había nada, crea el nuevo fichero
+\begin{codetemplate}{}
+\begin{verbatim}
+$ cat test1 > test2
+\end{verbatim}
+\end{codetemplate}
+
+    \item Para que nos añada el contenido de test2 en el final del fichero test1, sin sobreescribir lo que había
+\begin{codetemplate}{}
+\begin{verbatim}
+$ cat test1 >> test2
+\end{verbatim}
+\end{codetemplate}
+
+    \item Show line number
+\begin{codetemplate}{}
+\begin{verbatim}
+$ cat -n file
+\end{verbatim}
+\end{codetemplate}
+
+    \item Para \textbf{escribir en un fichero el conenido que queramos} (ACABAR CON CTRL+D)
+\begin{codetemplate}{}
+\begin{verbatim}
+$ cat > filename
+\end{verbatim}
+\end{codetemplate}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.7]{pictures/image1.png}
+    \caption{amazing cat}
+\end{figure}
+
+
+\subsection{Grep (Global search for Regular Expressions and Print out)}
+
+\begin{blocktemplate}{Nota}
+grep, egrep, fgrep, rgrep - print lines that match patterns.
+In addition, the variant programs egrep, fgrep and rgrep are the same as grep -E, grep -F, and grep -r, respectively.  These variants are deprecated, but are provided for backward compatibility.
+\end{blocktemplate}
+
+\subsubsection{Two variants of grep usage}
+\begin{enumerate}
+    \item \textbf{Use grep to search text in a file / files}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ grep "texto-buscado" <archivo/archivos>
+\end{verbatim}
+\end{codetemplate}
+
+    \item \textbf{Use grep to search text in the Terminal STDOUT}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ COMMAND [args...] | grep "texto-buscado"
+\end{verbatim}
+\end{codetemplate}
+\end{enumerate}
+El resultado de esto son las ocurrencias del patrón (por la línea en la que se encuentra) en los archivos / stdout. Si no existe una coincidencia, no se imprimirá ninguna salida en la terminal.
+
+
+\begin{blocktemplateII}{Nota}
+Las son necesarias para convertir a String. Si lo que le introducimos ya lo es no harian falta. Ejemplo:
+\begin{itemize}
+    \item \verb|grep alias file.txt|: No necesitamos comillas
+    \item \verb|grep "alias pepito" file.txt|: Si necesitamos comillas
+\end{itemize}
+\end{blocktemplateII}
+
+\subsubsection{Useful Flags}
+
+\textbf{liNe Number}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ grep -n ...
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Count, el numero de línes de coincidencia}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ grep -c ...
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{IgnoreCase, indiferencia mayusculas-minusculas}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ grep -i ...
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Before Context or Aftercontext}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ grep "text" file -A NUMBER_A -B NUMBER_B
+\end{verbatim}
+\end{codetemplate}
+Con este comando imprimimos las \verb|NUMBER_B| lineas antes (before-context) y las \verb|NUMBER_A| lineas después de la coincidencia (after-context).
+
+\textbf{Recursive Search}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ grep -R
+\end{verbatim}
+\end{codetemplate}
+Por defecto, grep no puede buscar directorios. Si tú intentas hacerlo, obtendrás un error ("Es un directorio"). Con la opción  -R, la búsqueda de archivos entre directorios y subdirectorios se vuelve posible.
+
+\textbf{Introduce "-"}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ grep -e "-loquesea" file
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ grep -- "-loquesea" file
+\end{verbatim}
+\end{codetemplate}
+
+\subsection{Find}
+
+\begin{itemize}
+    \item  Buscar ficheros desde la raiz con el nombre "linux"
+\begin{codetemplate}{}
+\begin{verbatim}
+$ find  / -name "linux"
+\end{verbatim}
+\end{codetemplate}
+    \item  Buscar ficheros desde la raiz con el nombre "linux" y listarlos
+\begin{codetemplate}{}
+\begin{verbatim}
+$ find  / -name "linux" -ls
+\end{verbatim}
+\end{codetemplate}
+ 
+    \item Buscar dentro del directorio /etc/config/ del sistema de todos los ficheros y directorios con el nombre "linux" sin importar mayúsculas y minúsculas
+\begin{codetemplate}{}
+\begin{verbatim}
+$ find  /etc/config/ -type d -name "linux"
+\end{verbatim}
+\end{codetemplate}
+    \item Buscar desde el directorio donde nos encontramos los ficheros cuyo nombre contienen la cadena "Thr"
+\begin{codetemplate}{}
+\begin{verbatim}
+$ find . -name "*Thr*" 
+\end{verbatim}
+\end{codetemplate}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.7]{pictures/image3.png}
+    \caption{use of find}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.7]{pictures/image4.png}
+    \caption{another use of find}
+\end{figure}
+
+\begin{blocktemplateII}{NOTE}
+Las comillas en estos casos son opcionales, pues como siempre, tan solo sirven para marcar string
+\end{blocktemplateII}
+
+
+\subsection{Sed (Stream Editor)}
+
+ It is a very essential tool for text processing, specifically it is common used for text replacement. Con Sed podemos editar archivos, incluso sin abrirlos, de manera individual o masiva. Dicho sea, que esta forma, es mucho más rápida para encontrar y reemplazar algo en un archivo de manera manual.
+
+ Print the content of "fichero.txt" replacing the first occurrence of the string "Microsoft Windows" by "GNU Linux" in the file "fichero.txt"
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sed 's/Microsoft Windows/GNU Linux/' fichero.txt
+\end{verbatim}
+\end{codetemplate}
+
+Save the changes in the file:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sed -i 's/Microsoft Windows/GNU Linux/' fichero.txt
+\end{verbatim}
+\end{codetemplate}
+
+ Replace all the occurrences of the string "Microsoft Windows" by "GNU Linux" in the file "fichero.txt" and save.
+ \begin{codetemplate}{}
+\begin{verbatim}
+$ sed -i 's/Microsoft Windows/GNU Linux/g' fichero.txt
+\end{verbatim}
+\end{codetemplate}
+
+ Replace just the 3rd occurrence of "Microsoft Windows" by "GNU Linux" in the text and save
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sed 's/Microsoft Windows/GNU Linux/3g' fichero.txt
+\end{verbatim}
+\end{codetemplate}
+
+Replace the string "Microsoft Windows" just in line 1:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sed '1 s/Microsoft Windows/GNU Linux/' fichero.txt
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplate}{NOTE}
+By default sed is \textbf{case SENSITIVE} but to change it by case insensitive, you can add \verb|I| at the end of the REGEX:
+ \begin{codetemplate}{}
+\begin{verbatim}
+$ sed -i 's/Microsoft Windows/GNU Linux/gI' fichero.txt
+\end{verbatim}
+\end{codetemplate}
+\end{blocktemplate}
+
+\begin{blocktemplateIII}{WARNING}
+Sed will replace all the string matches, without differentiating if it is completed or partial, for example:
+\begin{figure}[H]
+    \includegraphics[width=\textwidth]{pictures/sed.png}
+    \centering
+\end{figure}
+
+To replace the exact match you should use spaces, \textbf{in REGEX} \verb|space=\s|:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sed 's/Alex\s/Claudia /g'
+\end{verbatim}
+\end{codetemplate}
+\end{blocktemplateIII}
+
+For more information:
+\href{https://www.ochobitshacenunbyte.com/2019/05/28/uso-del-comando-sed-en-linux-y-unix-con-ejemplos/}{Uso del Comando Sed} 
+
+
+\subsection{Tar Command}
+The tar command on Linux is often used to create .tar.gz or .tgz archive files, or extract them into local directories.
+\subsubsection{Compress}
+\textbf{Basics}
+\newline
+Use the following command to compress an entire directory or a single file on Linux. It’ll also compress every other directory inside a directory you specify–in other words, it works recursively.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ tar -czvf name-of-archive.tar.gz /path/to/directory-or-file
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Compress multiple files/directories in a unique archive}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ tar -czf FILENAME.tar.gz path/to/dir1 path/to/file1 path/to/dir2 ...
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Exclude files or directories}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ tar -czf FILENAME.tar.gz path/to/dir1 \
+--exclude=/path/to/dir1/excludeddir \
+path/to/dir2 --exclude=/path/to/dir1/*.mp4
+\end{verbatim}
+\end{codetemplate}
+
+\subsubsection{Extract}
+\textbf{Basics}
+\newline
+Once you have an archive, you can extract it with the tar command. The following command will extract the contents of archive.tar.gz to the current directory.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ tar -xzvf archive.tar.gz
+\end{verbatim}
+\end{codetemplate}
+\textbf{Choose the extract directory}
+\newline
+You may want to extract the contents of the archive to a specific directory. You can do so by appending the -C switch to the end of the command:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ tar -xzvf archive.tar.gz -C /path/to/directory/to/extract
+\end{verbatim}
+\end{codetemplate}
+
+More information in: \href{https://www.howtogeek.com/248780/how-to-compress-and-extract-files-using-the-tar-command-on-linux/}{How-To Geek tar}
+
+Here’s what those switches actually mean:
+
+\begin{itemize}
+    \item \textbf{-c:} \textbf{c}reate an archive
+    \item \textbf{-z:} compress into g\textbf{z}ip
+    \item \textbf{-v:} \textbf{v}erbose [removable]
+    \item \textbf{-f:} allows you to specify the FILENAME \textbf{filename} of archive
+\end{itemize}
+
+\begin{blocktemplateIII}{Nota}
+-f switch must be the last one, because is the flag which specifies the name of the file indicated after.
+\end{blocktemplateIII}
+
+\subsubsection{More flags}
+\begin{itemize}
+    \item \textbf{-x:} Extract the archive 
+    \item \textbf{-t:} displays or lists files in archived file 
+    \item \textbf{-u:} archives and adds to an existing archive file 
+    \item \textbf{-A:} concatenates the archive files 
+    \item \textbf{-j:} filter archive tar file using tbzip
+    \item \textbf{-W:} verify a archive file
+    \item \textbf{-r:} update or add file or directory in already existed .tar file
+\end{itemize}
+
+
+\subsection{JQ}
+To parse into a beatufiul json format:
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$ cat file.json | jq '.'
+\end{verbatim}
+\end{codetemplate}
+
 \newpage
-\section{Curl}
-curl  is  a tool for transferring data from or to a server. It supports these protocols: DICT, FILE, FTP, FTPS, GOPHER, GOPHERS, HTTP, HTTPS, IMAP, IMAPS, LDAP, LDAPS, MQTT, POP3, POP3S, RTMP, RTMPS, RTSP, ... TELNET or TFTP. The command is designed to work without user interaction.
+%-------------------------------------------------------------------------------------------------
+\section{Linux Default Text Editors}
+\subsection{Vi}
+
+\subsection{Vim}
+
+\subsubsection{Vim Config}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo vim ~/.vimrc
+\end{verbatim}
+\end{codetemplate}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+" Disable compatibility with vi which can cause unexpected issues.
+set nocompatible
+
+" Enable type file detection. Vim will be able to try to detect the type of file in use.
+filetype on
+
+" Enable plugins and load plugin for the detected file type.
+filetype plugin on
+
+" Load an indent file for the detected file type.
+filetype indent on
+
+" Set authomatic indentation
+" set autoindent
+
+" Turn syntax highlightin
+syntax on
+
+" Add numbers to each line on the left-hand side.
+set number
+
+" Highlight cursor line underneath the cursor horizontally.
+set cursorline
+
+" Highlight cursor line underneath the cursor vertically.
+set cursorcolumn
+
+" Set shift width to 4 spaces.
+set shiftwidth=4
+
+" Set tab width to 4 columns.
+set tabstop=4
+
+" Use space characters instead of tabs.
+set expandtab
+
+" Colorful (),[],{}
+set showmatch
+
+" While searching though a file incrementally highlight matching characters as you type.
+set incsearch
+
+" Ignore capital letters during search.
+set ignorecase
+
+" Use highlighting when doing a search.
+set hlsearch
+
+" Enable auto completion menu after pressing TAB.
+set wildmenu
+
+" Make wildmenu behave like similar to Bash completion.
+set wildmode=list:longest
+
+" Enable black theme
+" set background=dark
+
+" Tab helper
+" set smarttab
+\end{verbatim}
+\end{codetemplate}
+
+If you want to persistthis configuration when using \verb|sudo vim| you will need to do something a little bit tricky:
+
+\begin{itemize}
+    \item Create an alias in your \verb|~/.bashrc| file:
+\begin{codetemplate}{}
+\begin{verbatim}
+alias svim='sudo -E vim'
+\end{verbatim}
+\end{codetemplate}
+
+    \item Use always
+\begin{codetemplate}{}
+\begin{verbatim}
+$ svim <file>
+\end{verbatim}
+\end{codetemplate}
+\end{itemize}
+
+\subsubsection{Hacer y deshacer}
+\textbf{undo:} para deshacer acciones
+\begin{codetemplate}{vim editor - Command Mode}
+\begin{verbatim}
+:u
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{redo:} para volver a hacer acciones
+\begin{codetemplate}{vim editor - Normal Mode}
+\begin{verbatim}
+Ctrl + r
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}{vim editor - Normal Mode}
+\begin{verbatim}
+:r
+\end{verbatim}
+\end{codetemplate}
+
+\subsubsection{Borrar lineas enteras}
+\begin{codetemplate}
+\begin{verbatim}{vim editor - Normal Mode}
+dd + intro
+\end{verbatim}
+\end{codetemplate}
+
+
+\subsubsection{Buscar Ocurrencias}
+\textbf{Para buscar}
+\begin{codetemplate}
+\begin{verbatim}{vim editor - Normal Mode}
+/<palabra>
+\end{verbatim}
+\end{codetemplate}
+\textbf{Para ir a cualquier ocurrencia:} Intro
+\\\\
+\textbf{Para pasar entre ocurrencias:} n
+\\\\
+\textbf{Si queremos hacerlo insensible a minusculas y mayusculas:} antes de buscar, ejecutar lo siguiente.
+\begin{codetemplate}
+\begin{verbatim}{vim editor - Normal Mode}
+:set ignorecase
+\end{verbatim}
+\end{codetemplate}
+
+\subsection{Nano}
+
+\newpage
+%-------------------------------------------------------------------------------------------------
+\section{Network}
+\subsection{FQDN} \label{FQDN}
+El término Fully Qualified Domain Name (FQDN) se refiere a la dirección completa y única necesaria para tener presencia en Internet. Está compuesta por el nombre de host y el de dominio y se utiliza para localizar hosts específicos en Internet y acceder a ellos mediante la resolución de nombres. Este nombre de dominio único que contiene toda la información necesaria para poder acceder a una máquina a través de una red pública, como puede ser internet. A través de un FQDN un equipo es capaz de conectarse con cualquier otro.
+
+La estructura del FQDN viene determinada por el sistema de nombres de dominio (DNS) y está conformada por etiquetas. Cada etiqueta se corresponde con el nombre de un nivel en el espacio de nombres de dominio y está separada de la siguiente por un punto. Ha de constar de entre 1 y 63 caracteres, que pueden ser números, letras y guiones (aunque realmente los guiones no se pueden usar al comenzar una etiqueta) y el total de caracteres del FQDN no debe exceder los 255. 
+
+El Fully Qualified Domain Name consta como mínimo de tres etiquetas: el dominio de nivel superior, el nombre de dominio y el nombre de host. Se lee al revés.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{pictures/image11.PNG}
+    \label{FQDN Image}
+    \caption{Representación esquemática de la estructura del Fully Qualified Domain Name}
+\end{figure}
+
+\textbf{Ejemplo de un FQDN}
+\begin{verbatim}
+[Nombre de host].[Dominio].[TLD].[Raíz]
+\end{verbatim}
+\begin{verbatim}
+hosting.ionos.es
+\end{verbatim}
+\begin{enumerate}
+    \item La etiqueta del dominio raíz tras el punto permanece vacía
+    \item El \textbf{dominio de primer nivel:} en nuestro ejemplo es "\textit{.es}", dominio de nivel superior geográfico, también conocido por las siglas ccTLD (country code-top level domain). Frente a ellos se encuentran losTLD genéricos como .com o .org, también designados gTLD (generic top-level domain).
+    \item El \textbf{dominio de segundo nivel}, también conocido como nombre de dominio.  En el ejemplo se corresponde con "\textit{ionos}".
+    \item El \textbf{domino de tercer nivel}, en el extremo izquierdo, tenemos el nombre del host, en nuestro ejemplo "\textit{hosting}".
+    
+\end{enumerate}
+
+Los FQDN se suelen utilizar en cualquier interacción en Internet, ya que son más fáciles de recordar que las direcciones IP. Otro ejemplo www.wordpress.com
+
+
+Para más información consultad: \href{https://www.ionos.es/digitalguide/dominios/gestion-de-dominios/fully-qualified-domain-name/}{FQDN}
+/ \href{https://www.hostinger.es/tutoriales/fqdn}{FQDN 2}
+
+\subsection{SSH}
+
+\subsubsection{What is SSH?}
+
+SSH, also known as Secure Shell or Secure Socket Shell, is a network protocol that gives users, particularly system administrators, a secure way to access a computer over an unsecured network.  Secure Shell provides strong password authentication and public key authentication, as well as encrypted data communications between two computers connecting over an open network, such as the internet.
+
+In addition to providing strong encryption, SSH is widely used by network administrators to manage systems and applications remotely, enabling them to log in to another computer over a network, execute commands and move files from one computer to another.
+
+
+The most basic use of SSH is to connect to a remote host for a terminal session. The form of that command is the following:
+\begin{itemize}
+    \item IP:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ssh user_name@host_IP
+\end{verbatim}
+\end{codetemplate}
+    \item Hostname:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ssh user_name@SSHserve.example.com
+\end{verbatim}
+\end{codetemplate}   
+\end{itemize}
+
+
+The SSH key command instructs your system that you want to open an encrypted Secure Shell Connection. \verb|user_name| represents the account you want to access. For example, you may want to access the \verb|root| user or \verb|acampos| user.
+
+\begin{blocktemplate}{NOTE}
+To connect via ssh using a user, it is needed to have this user created in the host machine.
+
+\begin{itemize}
+    \item \textbf{host machine:} refers to the remote server you are trying to access.
+    \item \textbf{client machine:} refers to the server you are using to access the host.
+\end{itemize}
+\end{blocktemplate}
+
+For the first time negotiating a connection between the local host and the server, the user will be prompted with the remote host's public key fingerprint and prompted to connect.
+
+\begin{codetemplate}{}
+\begin{verbatim}
+The authenticity of host 'sample.ssh.com' cannot be established.
+ DSA key fingerprint is 01:23:45:67:89:ab:cd:ef:ff:fe:dc:ba:98:76:54:32:10.
+ Are you sure you want to continue connecting (yes/no)?
+\end{verbatim}
+\end{codetemplate}
+
+Answering yes to the prompt will cause the session to continue, and the host key is stored in the local system's \verb|known_hosts| file. This is a hidden file, stored by default in a hidden directory, called \verb|/.ssh/known_hosts|, in the user's home directory. Once the host key has been stored in the \verb|known_hosts| file, the client system can connect directly to that server again without need for any approvals; the host key authenticates the connection.
+
+\begin{figure}[H]
+    \includegraphics[width=\textwidth]{pictures/ssh1.png}
+    \centering
+\end{figure}
+
+Present in all data centers, SSH ships by default with every Unix, Linux and Mac server. SSH connections have been used to secure many different types of communications between a local machine and a remote host, including secure remote access to resources, remote execution of commands, delivery of software patches, and updates and other administrative or management tasks, manage routers, server hardware, virtualization platforms, operating systems (OSes), and inside systems management and file transfer applications.
+
+Secure Shell is used to connect to servers, make changes, perform uploads and exit, either using tools or directly through the terminal. SSH keys can be employed to automate access to servers and often are used in scripts, backup systems and configuration management tools.
+
+\begin{blocktemplateI}{NOTE}
+
+SSH operates on \textbf{TCP port 22} by default (though SSH port can be changed if needed). The host (server) listens on port 22 (or any other SSH assigned port) for incoming connections. It organizes the secure connection by authenticating the client and opening the correct shell environment if the verification is successful.
+\\\\
+It is hardly recommended to change the port in which the host machine listen, because to let port 22 is more easily to enter the machine without authorization.
+\end{blocktemplateI}
+
+\subsubsection{How to authenticate via SSH?}
+
+\paragraph{Default user-password authentication method}
+
+By default SSH protocol doesn't use public key cryptography for authenticating hosts and users. It still uses the \textbf{Linux user-password authentication method}, so you only have to pass the \verb|username| of the Linux user via the ssh command and introduce the \verb|password| of this user:
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ssh -P=custom_port linux_username@hostname_or_ip
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplate}{NOTE}
+ If you run the command without specifying user, ssh will take your Linux current \verb|username|.
+\end{blocktemplate}
+
+\paragraph{Public Key authentication method}
+
+Generally, the SSH service is configured to use public key cryptography for authenticating hosts and users. SSH introduced public key authentication as a more secure alternative to the older \verb|.rhosts| authentication. It improved security by avoiding the need to have password stored in files, and eliminated the possibility of a compromised server stealing the user's password.
+
+However, SSH keys are authentication credentials just like passwords. Thus, they must be managed somewhat analogously to user names and passwords. They should have a proper termination process so that keys are removed when no longer needed.
+
+\paragraph{Generating public and private keys in our host}
+For that reason, we should generate SSH public and private key on our client and authorize them into the host.
+
+Depending on the technology of the host you want to connect, you need to create the keys:
+
+\begin{itemize}
+    \item \textbf{rsa:} an old algorithm based on the difficulty of factoring large numbers. A key size of at least 2048 bits is recommended for RSA; 4096 bits is better. All SSH clients support this algorithm.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ssh-keygen -t rsa -b 4096 -C "your_email@example.com" 
+\end{verbatim}
+\end{codetemplate}
+    \item \textbf{ed25519:} this is a new algorithm added in OpenSSH. Support for it in clients is not yet universal.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ssh-keygen -t ed25519 -C "your_email@example.com"
+\end{verbatim}
+\end{codetemplate}
+\end{itemize}
+
+\begin{blocktemplateIII}{WARNING}
+For SSH to recognize the SSH keys they should be stored in:
+\begin{codetemplate}{}
+\begin{verbatim}
+~/.ssh/
+\end{verbatim}
+\end{codetemplate}
+\begin{figure}[H]
+    \includegraphics[width=\textwidth]{pictures/ssh2.png}
+    \centering
+\end{figure}
+Also, \textbf{rsa keys} should have the \textbf{permissions} you see in the image above, if not, it will not be valid to authenticate in any server. If you have generated the keys, they are generated with the correct permissions, but if you have copied, it can be wrong.
+\end{blocktemplateIII}
+
+\begin{blocktemplateII}{NOTE}
+By default, when you stablish ssh connection, it uses the following private keys names:
+\begin{itemize}
+    \item \verb|~/.ssh/id_ecdsa|
+    \item \verb|~/.ssh/id_ecdsa_sk|
+    \item \verb|~/.ssh/id_ed25519|
+    \item \verb|~/.ssh/id_ed25519_sk|
+    \item \verb|~/.ssh/id_xmss|
+    \item \verb|~/.ssh/id_xmss_sk|
+    \item \verb|~/.ssh/id_dsa|
+    \item \verb|~/.ssh/id_rsa|
+\end{itemize}
+\end{blocktemplateII}
+
+For more information, check the documentation of \href{https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent}{how to do if for github servers}.
+
+
+\paragraph{Appending the Public Key into the authorized\_keys of the Server}
+To use public key authentication, the public key must be \textbf{installed in the} \verb|authorized_keys| file of the server. This can be conveniently done using the \verb|ssh-copy-id tool|. Like this:
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ssh-copy-id -i ~/.ssh/my_ssh_key.pub user_name@hostname
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplateIII}{WARNING}
+With the command above, we will append the host \textbf{pubkey} in the \verb|authorized_keys| file of the server.
+\end{blocktemplateIII}
+
+Once the public key has been configured on the server, the server will allow any connecting user that has the private key to log in. During the login process, the client proves possession of the private key by digitally signing the key exchange.
+
+\begin{blocktemplateII}{NOTE}
+For git you should do it different, just adding your public ssh key in the GUI, accessing to your profile settings. You can follow the \href{https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account}{Official Documentation}
+\end{blocktemplateII}
+
+\subsubsection{SFTP}
+
+FTP, or “File Transfer Protocol” was a popular unencrypted method of trans-
+ferring files between two remote systems.
+
+SFTP, which stands for SSH File Transfer Protocol, or Secure File Transfer
+Protocol, is a separate protocol packaged with SSH that works in a similar way
+but over a secure connection. The advantage is the ability to leverage a secure
+connection to transfer files and traverse the filesystem on both the local and
+remote system.
+
+In almost all cases, SFTP is preferable to FTP because of its underlying security
+features and ability to piggy-back on an SSH connection. FTP is an insecure
+protocol that should only be used in limited cases or on networks you trust.
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sftp -oPort=custom_port user_name@host_ip_or_hostname
+\end{verbatim}
+\end{codetemplate}
+
+\section{Localhost Networking}
+\subsection{Ports Exposed}
+
+Para saber que puertos tiene escuchando nuestro localhost:
+
+\begin{enumerate}
+    \item Using \verb|lsoft|
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo lsof -i -P -n
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo lsof -i -P -n | grep -i listen
+\end{verbatim}
+\end{codetemplate}
+
+    \item Using \verb|netstat|
+\begin{codetemplate}{}
+\begin{verbatim}
+$ netstat -putona | grep numero-de-puerto
+\end{verbatim}
+\end{codetemplate}
+
+\begin{itemize}
+    \item \textbf{p:} muestra las conexiones para el protocolo especificado que puede ser TCP o UDP
+    \item \textbf{u:} lista todos los puertos UDP
+    \item \textbf{t:} lista todos los puertos TCP
+    \item \textbf{o:} muestra los timers
+    \item \textbf{n:} muestra el numero de puerto
+    \item \textbf{a:} visualiza todas las conexiones activas del sistema
+\end{itemize}
+\end{enumerate}
+
+\begin{blocktemplate}{NOTE}
+\verb|netstat| command shows the system’s network information, like routing and sockets.
+\end{blocktemplate}
+
+\subsection{Localhost Adresses}
+
+\textbf{De puertas para adentro}
+\begin{enumerate}
+    \item \textbf{Ipv4:}
+    \begin{itemize}
+        \item localhost
+        \item 127.0.0.1
+    \end{itemize}
+    \item \textbf{Ipv6}
+    \begin{itemize}
+        \item 0:0:0:0:0:0:0:1
+        \item ::1
+    \end{itemize}
+\end{enumerate}
+
+\textbf{De puertas para fuera}
+\begin{itemize}
+    \item \verb|ifconfig|: displays the system’s network interfaces and their configurations. In this case our localhost direction to outside is 172.21.220.125/20 (172.21.220.125 with mask 255.255.240.0)
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ifconfig
+\end{verbatim}
+\end{codetemplate}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.45]{pictures/image35.PNG}
+    \caption{ifconfig}
+\end{figure}
+    
+    \item \verb|ip -br addr list eth0|
+    \begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.45]{pictures/image36.PNG}
+    \caption{ip -br}
+\end{figure}
+\end{itemize}
+
+\begin{blocktemplateIII}{Nota}
+\begin{codetemplate}{Netmask}
+\begin{verbatim}
+24 (number of 1's):
+255.255.255.0
+11111111 11111111 11111111 00000000
+
+20 (number of 1's):
+255.255.240.0
+11111111 11111111 11110000
+\end{verbatim}
+\end{codetemplate}
+\end{blocktemplateIII}
+
+\subsection{Certificates}
+
+
+\newpage
+%-------------------------------------------------------------------------------------------------
+\section{Network Tools}
+\subsection{Ping}
+\subsection{Curl}
+curl is a tool for transferring data from or to a server. It supports these protocols: DICT, FILE, FTP, FTPS, GOPHER, GOPHERS, HTTP, HTTPS, IMAP, IMAPS, LDAP, LDAPS, MQTT, POP3, POP3S, RTMP, RTMPS, RTSP, ... TELNET or TFTP. The command is designed to work without user interaction.
 
 \textbf{Without using proxy}
 \begin{codetemplate}{}
@@ -1351,12 +2216,30 @@ $ curl -XDELETE hostname
 \end{verbatim}
 \end{codetemplate}
 
-\newpage
-\section{Proxy definition for binaries}
-Configurando el proxy en las variables de entorno de sistema con una nomenclatura concreta, hará que muchos binarios del sistema los utilicen para establecer sus conexiones. Como por ejemplo: docker, curl, nslookup...
+\subsection{Nmap}
 
-Incluir las siguientes variables en el fichero \verb|/etc/bash.bashrc|:
-\begin{codetemplate}{}
+\subsection{Netcat}
+
+\subsection{Telnet}
+\textbf{Netcat}
+\begin{codetemplate}
+\begin{verbatim}
+$ nc -zv hostname port
+\end{verbatim}
+\end{codetemplate}
+
+
+\textbf{Telnet}
+\begin{codetemplate}
+\begin{verbatim}
+$ telnet hostname port
+\end{verbatim}
+\end{codetemplate}
+
+\subsection{Proxy variables definition for binaries}
+Configuring the proxy in the system environment variables with a specific naming convention will cause many system binaries to use them to establish their connections. For example: docker, curl, nslookup...
+
+Include the following variables in the file \verb|/etc/bash.bashrc|:\begin{codetemplate}{}
 \begin{verbatim}
 # Configure Default Proxy
 export http_proxy=http://yourproxyserver.com
@@ -1369,151 +2252,7 @@ export no_proxy=localhost
 \end{codetemplate}
 
 \newpage
-\section{Update System CAs (Certificates Authority)}
-Las CA's de sistema nos ayudaran a autenticar nuestro host en conexiones seguras por https. Para descargar CA's en Linux:
-
-\begin{codetemplate}{}
-\begin{verbatim}
-# Download CA certificates & store them in local directory /tmp/ca-sources.tar.gz
-$ curl -k https://url_to_CAs.tar.gz -o /tmp/ca-sources.tar.gz
-# Untar them into /usr/local/share/ca-certificates
-$ sudo tar xzvf /tmp/ca-sources.tar.gz -C /usr/local/share/ca-certificates
-# Update System Certificates
-$ sudo update-ca-certificates
-\end{verbatim}
-\end{codetemplate}
-
-\begin{blocktemplateII}{Nota}
-Cuando lanzamos el comando sudo update-ca-certificates, este nos actualiza e instala las CA's a nivel de sistema. Si bien es cierto que busca en /usr/local/share/ca-certificates, por mucho que de ahi los borremos no los borrará del sistema, pues el sistema los coge de otro directorio.
-\end{blocktemplateII}
-
-\begin{blocktemplateIII}{Nota}
-WSL utiliza tanto recursos de Linux como de Windows, dependiendo que programa se ejecute, tomará las configuraciones de Windows, Linux o ambas. Por tanto, es imprescindible tener también los certificados bien instalados, configurados y actualizados en nuestro sistema Windows.
-\end{blocktemplateIII}
-
-\newpage
-\section{FQDN} \label{FQDN}
-El término Fully Qualified Domain Name (FQDN) se refiere a la dirección completa y única necesaria para tener presencia en Internet. Está compuesta por el nombre de host y el de dominio y se utiliza para localizar hosts específicos en Internet y acceder a ellos mediante la resolución de nombres. Este nombre de dominio único que contiene toda la información necesaria para poder acceder a una máquina a través de una red pública, como puede ser internet. A través de un FQDN un equipo es capaz de conectarse con cualquier otro.
-
-La estructura del FQDN viene determinada por el sistema de nombres de dominio (DNS) y está conformada por etiquetas. Cada etiqueta se corresponde con el nombre de un nivel en el espacio de nombres de dominio y está separada de la siguiente por un punto. Ha de constar de entre 1 y 63 caracteres, que pueden ser números, letras y guiones (aunque realmente los guiones no se pueden usar al comenzar una etiqueta) y el total de caracteres del FQDN no debe exceder los 255. 
-
-El Fully Qualified Domain Name consta como mínimo de tres etiquetas: el dominio de nivel superior, el nombre de dominio y el nombre de host. Se lee al revés.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.4]{pictures/image11.PNG}
-    \label{FQDN Image}
-    \caption{Representación esquemática de la estructura del Fully Qualified Domain Name}
-\end{figure}
-
-\textbf{Ejemplo de un FQDN}
-\begin{verbatim}
-[Nombre de host].[Dominio].[TLD].[Raíz]
-\end{verbatim}
-\begin{verbatim}
-hosting.ionos.es
-\end{verbatim}
-\begin{enumerate}
-    \item La etiqueta del dominio raíz tras el punto permanece vacía
-    \item El \textbf{dominio de primer nivel:} en nuestro ejemplo es "\textit{.es}", dominio de nivel superior geográfico, también conocido por las siglas ccTLD (country code-top level domain). Frente a ellos se encuentran losTLD genéricos como .com o .org, también designados gTLD (generic top-level domain).
-    \item El \textbf{dominio de segundo nivel}, también conocido como nombre de dominio.  En el ejemplo se corresponde con "\textit{ionos}".
-    \item El \textbf{domino de tercer nivel}, en el extremo izquierdo, tenemos el nombre del host, en nuestro ejemplo "\textit{hosting}".
-    
-\end{enumerate}
-
-Los FQDN se suelen utilizar en cualquier interacción en Internet, ya que son más fáciles de recordar que las direcciones IP. Otro ejemplo www.wordpress.com
-
-
-Para más información consultad: \href{https://www.ionos.es/digitalguide/dominios/gestion-de-dominios/fully-qualified-domain-name/}{FQDN}
-/ \href{https://www.hostinger.es/tutoriales/fqdn}{FQDN 2}
-
-\newpage
-\section{Grep (Global search for Regular Expressions and Print out)}
-
-\begin{blocktemplate}{Nota}
-grep, egrep, fgrep, rgrep - print lines that match patterns.
-In addition, the variant programs egrep, fgrep and rgrep are the same as grep -E, grep -F, and grep -r, respectively.  These variants are deprecated, but are provided for backward compatibility.
-\end{blocktemplate}
-
-\subsection{Two variants of grep usage}
-\begin{enumerate}
-    \item \textbf{Use grep to search text in a file / files}
-\begin{codetemplate}{}
-\begin{verbatim}
-$ grep "texto-buscado" <archivo/archivos>
-\end{verbatim}
-\end{codetemplate}
-
-    \item \textbf{Use grep to search text in the Terminal STDOUT}
-\begin{codetemplate}{}
-\begin{verbatim}
-$ COMMAND [args...] | grep "texto-buscado"
-\end{verbatim}
-\end{codetemplate}
-\end{enumerate}
-El resultado de esto son las ocurrencias del patrón (por la línea en la que se encuentra) en los archivos / stdout. Si no existe una coincidencia, no se imprimirá ninguna salida en la terminal.
-
-
-\begin{blocktemplateII}{Nota}
-Las son necesarias para convertir a String. Si lo que le introducimos ya lo es no harian falta. Ejemplo:
-\begin{itemize}
-    \item \verb|grep alias file.txt|: No necesitamos comillas
-    \item \verb|grep "alias pepito" file.txt|: Si necesitamos comillas
-\end{itemize}
-\end{blocktemplateII}
-
-\subsection{Useful Flags}
-
-\textbf{liNe Number}
-\begin{codetemplate}{}
-\begin{verbatim}
-$ grep -n ...
-\end{verbatim}
-\end{codetemplate}
-
-\textbf{Count, el numero de línes de coincidencia}
-\begin{codetemplate}{}
-\begin{verbatim}
-$ grep -c ...
-\end{verbatim}
-\end{codetemplate}
-
-\textbf{IgnoreCase, indiferencia mayusculas-minusculas}
-\begin{codetemplate}{}
-\begin{verbatim}
-$ grep -i ...
-\end{verbatim}
-\end{codetemplate}
-
-\textbf{Before Context or Aftercontext}
-\begin{codetemplate}{}
-\begin{verbatim}
-$ grep "text" file -A NUMBER_A -B NUMBER_B
-\end{verbatim}
-\end{codetemplate}
-Con este comando imprimimos las \verb|NUMBER_B| lineas antes (before-context) y las \verb|NUMBER_A| lineas después de la coincidencia (after-context).
-
-\textbf{Recursive Search}
-\begin{codetemplate}{}
-\begin{verbatim}
-$ grep -R
-\end{verbatim}
-\end{codetemplate}
-Por defecto, grep no puede buscar directorios. Si tú intentas hacerlo, obtendrás un error ("Es un directorio"). Con la opción  -R, la búsqueda de archivos entre directorios y subdirectorios se vuelve posible.
-
-\textbf{Introduce "-"}
-\begin{codetemplate}{}
-\begin{verbatim}
-$ grep -e "-loquesea" file
-\end{verbatim}
-\end{codetemplate}
-\begin{codetemplate}{}
-\begin{verbatim}
-$ grep -- "-loquesea" file
-\end{verbatim}
-\end{codetemplate}
-
-\newpage
+%-------------------------------------------------------------------------------------------------
 \section{Helm}
 \textbf{Compilar}
 \newline Estando en el directorio que contiene el fichero Chart.yaml:
@@ -1540,6 +2279,7 @@ $ helm install -f ./values_ssp.yaml . --debug \
 \end{codetemplate}
 
 \newpage
+%-------------------------------------------------------------------------------------------------
 \section{JSONPath}
 JSONPath is a query language for JSON, similar to XPath for XML. AlertSite API endpoint monitors let you use JSONPath in assertions to specify the JSON fields that need to be verified.
 
@@ -1974,410 +2714,6 @@ $  kc get RESOURCE_NAME -o jsonpath=\
 \end{figure}
 
 \newpage
-\section{JQ}
-To parse into a beatufiul json format:
-
-\begin{codetemplate}{}
-\begin{verbatim}
-$ cat file.json | jq '.'
-\end{verbatim}
-\end{codetemplate}
-
-
-\newpage
-\section{Localhost Networking}
-\subsection{Ports Exposed}
-
-Para saber que puertos tiene escuchando nuestro localhost:
-
-\begin{enumerate}
-    \item Using \verb|lsoft|
-\begin{codetemplate}{}
-\begin{verbatim}
-$ sudo lsof -i -P -n
-\end{verbatim}
-\end{codetemplate}
-\begin{codetemplate}{}
-\begin{verbatim}
-$ sudo lsof -i -P -n | grep -i listen
-\end{verbatim}
-\end{codetemplate}
-
-    \item Using \verb|netstat|
-\begin{codetemplate}{}
-\begin{verbatim}
-$ netstat -putona | grep numero-de-puerto
-\end{verbatim}
-\end{codetemplate}
-
-\begin{itemize}
-    \item \textbf{p:} muestra las conexiones para el protocolo especificado que puede ser TCP o UDP
-    \item \textbf{u:} lista todos los puertos UDP
-    \item \textbf{t:} lista todos los puertos TCP
-    \item \textbf{o:} muestra los timers
-    \item \textbf{n:} muestra el numero de puerto
-    \item \textbf{a:} visualiza todas las conexiones activas del sistema
-\end{itemize}
-\end{enumerate}
-
-\begin{blocktemplate}{NOTE}
-\verb|netstat| command shows the system’s network information, like routing and sockets.
-\end{blocktemplate}
-
-\subsection{Localhost Adresses}
-
-\textbf{De puertas para adentro}
-\begin{enumerate}
-    \item \textbf{Ipv4:}
-    \begin{itemize}
-        \item localhost
-        \item 127.0.0.1
-    \end{itemize}
-    \item \textbf{Ipv6}
-    \begin{itemize}
-        \item 0:0:0:0:0:0:0:1
-        \item ::1
-    \end{itemize}
-\end{enumerate}
-
-\textbf{De puertas para fuera}
-\begin{itemize}
-    \item \verb|ifconfig|: displays the system’s network interfaces and their configurations. In this case our localhost direction to outside is 172.21.220.125/20 (172.21.220.125 with mask 255.255.240.0)
-\begin{codetemplate}{}
-\begin{verbatim}
-$ ifconfig
-\end{verbatim}
-\end{codetemplate}
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.45]{pictures/image35.PNG}
-    \caption{ifconfig}
-\end{figure}
-    
-    \item \verb|ip -br addr list eth0|
-    \begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.45]{pictures/image36.PNG}
-    \caption{ip -br}
-\end{figure}
-\end{itemize}
-
-\begin{blocktemplateIII}{Nota}
-\begin{codetemplate}{Netmask}
-\begin{verbatim}
-24 (number of 1's):
-255.255.255.0
-11111111 11111111 11111111 00000000
-
-20 (number of 1's):
-255.255.240.0
-11111111 11111111 11110000
-\end{verbatim}
-\end{codetemplate}
-\end{blocktemplateIII}
-
-
-\newpage
-\section{Others}
-
-\textbf{Netcat}
-\begin{codetemplate}
-\begin{verbatim}
-$ nc -zv hostname port
-\end{verbatim}
-\end{codetemplate}
-
-
-\textbf{Telnet}
-\begin{codetemplate}
-\begin{verbatim}
-$ telnet hostname port
-\end{verbatim}
-\end{codetemplate}
-
-
-\newpage
-\section{Source}
-\begin{codetemplate}
-\begin{verbatim}
-$ source filename [arguments]
-\end{verbatim}
-\end{codetemplate}
-
-Cuando se ejecuta desde una shell un comando o un script, se crea un subproceso (proceso hijo) de la shell que ejecuta el comando o el script (proceso padre).
-
-Si el script que ejecuta el proceso hijo crea o modifica alguna variable de entorno, esos cambios o variables desaparecen cuando finaliza el comando o script.
-
-Si deseamos que dichos cambios permanezcan, podemos utilizar el comando de Bash source. Este comando hace que el proceso o comando se ejecute sin crear ningún proceso hijo, de forma que los cambios efectuados en las variables de entorno y demás, se mantengan al finalizar el archivo.
-
-More information: \url{Source in Bash}
-
-\textbf{Example:}
-\newline
-\begin{codetemplate}{script.sh}
-\begin{verbatim}
-#!/bin/bash
-
-export RHT_OCP4_DEV_USER="nwmwsv"
-export RHT_OCP4_DEV_PASSWORD="1ecc25feca97466e81c5"
-export RHT_OCP4_MASTER_API="https://api.eu410.prod.nextcle.com:6443"
-export Console_Web_Application=\
-"https://console-openshift-console.apps.eu410.prod.nextcle.com"
-export Cluster_Id="5650752a-edc7-4546-a1ff-8900d7e8e35b"
-\end{verbatim}
-\end{codetemplate}
-
-\begin{enumerate}
-    \item Si lo ejecutamos con \verb|./|
-    \begin{itemize}
-        \item En primer lugar hay que darle permisos
-    \begin{figure}[H]
-        \centering
-        \includegraphics[scale=0.45]{pictures/image13.PNG}
-        \label{./bash}
-    \end{figure}
-        \item En segundo lugar, como bien prevehiamos, no se guardan los cambios en la terminal, pues se ejecuta un subproceso por detrás el cual nunca mergea cambios a nivel de sistema en el proceso padre.
-    \begin{figure}[H]
-        \centering
-        \includegraphics[scale=0.6]{pictures/image12.PNG}
-        \label{./bash 2}
-    \end{figure}
-    \end{itemize}
-    \item Si lo ejecutamos con \verb|bash/sh|
-        \begin{itemize}
-            \item En este caso, no son necesarios permisos, pues se pasa como argumento del ejecutable bash.
-            \item En segundo lugar, como bien prevehiamos, sucede lo mismo que con ./, no se guardan los cambios en el terminal (proceso padre).
-    \begin{figure}[H]
-        \centering
-        \includegraphics[scale=0.45]{pictures/image14.PNG}
-        \label{bash scrip.sh}
-    \end{figure}
-    \end{itemize}
-    \item \textbf{Si lo ejecutamos con source}
-        \begin{itemize}
-            \item En este caso, no son necesarios permisos, pues se pasa como argumento del ejecutable source.
-            \item En segundo lugar, como bien prevehiamos, los cambios se transmiten al proceso padre! Y por tanto se guardan en nuestro terminal.
-    \begin{figure}[H]
-        \centering
-        \includegraphics[scale=0.45]{pictures/image15.PNG}
-        \label{source scrip.sh}
-    \end{figure}
-    \end{itemize}
-\end{enumerate}
-
-\newpage
-\section{Tar Command}
-The tar command on Linux is often used to create .tar.gz or .tgz archive files, or extract them into local directories.
-\subsection{Compress}
-\textbf{Basics}
-\newline
-Use the following command to compress an entire directory or a single file on Linux. It’ll also compress every other directory inside a directory you specify–in other words, it works recursively.
-\begin{codetemplate}{}
-\begin{verbatim}
-$ tar -czvf name-of-archive.tar.gz /path/to/directory-or-file
-\end{verbatim}
-\end{codetemplate}
-
-\textbf{Compress multiple files/directories in a unique archive}
-\begin{codetemplate}{}
-\begin{verbatim}
-$ tar -czf FILENAME.tar.gz path/to/dir1 path/to/file1 path/to/dir2 ...
-\end{verbatim}
-\end{codetemplate}
-
-\textbf{Exclude files or directories}
-\begin{codetemplate}{}
-\begin{verbatim}
-$ tar -czf FILENAME.tar.gz path/to/dir1 \
---exclude=/path/to/dir1/excludeddir \
-path/to/dir2 --exclude=/path/to/dir1/*.mp4
-\end{verbatim}
-\end{codetemplate}
-
-\subsection{Extract}
-\textbf{Basics}
-\newline
-Once you have an archive, you can extract it with the tar command. The following command will extract the contents of archive.tar.gz to the current directory.
-\begin{codetemplate}{}
-\begin{verbatim}
-$ tar -xzvf archive.tar.gz
-\end{verbatim}
-\end{codetemplate}
-\textbf{Choose the extract directory}
-\newline
-You may want to extract the contents of the archive to a specific directory. You can do so by appending the -C switch to the end of the command:
-\begin{codetemplate}{}
-\begin{verbatim}
-$ tar -xzvf archive.tar.gz -C /path/to/directory/to/extract
-\end{verbatim}
-\end{codetemplate}
-
-More information in: \href{https://www.howtogeek.com/248780/how-to-compress-and-extract-files-using-the-tar-command-on-linux/}{How-To Geek tar}
-
-Here’s what those switches actually mean:
-
-\begin{itemize}
-    \item \textbf{-c:} \textbf{c}reate an archive
-    \item \textbf{-z:} compress into g\textbf{z}ip
-    \item \textbf{-v:} \textbf{v}erbose [removable]
-    \item \textbf{-f:} allows you to specify the FILENAME \textbf{filename} of archive
-\end{itemize}
-
-\begin{blocktemplateIII}{Nota}
--f switch must be the last one, because is the flag which specifies the name of the file indicated after.
-\end{blocktemplateIII}
-
-\subsection{More flags}
-\begin{itemize}
-    \item \textbf{-x:} Extract the archive 
-    \item \textbf{-t:} displays or lists files in archived file 
-    \item \textbf{-u:} archives and adds to an existing archive file 
-    \item \textbf{-A:} concatenates the archive files 
-    \item \textbf{-j:} filter archive tar file using tbzip
-    \item \textbf{-W:} verify a archive file
-    \item \textbf{-r:} update or add file or directory in already existed .tar file
-\end{itemize}
-
-\newpage
-\section{Vim}
-
-\subsection{Vim Config}
-
-\begin{codetemplate}{}
-\begin{verbatim}
-$ sudo vim ~/.vimrc
-\end{verbatim}
-\end{codetemplate}
-
-\begin{codetemplate}{}
-\begin{verbatim}
-" Disable compatibility with vi which can cause unexpected issues.
-set nocompatible
-
-" Enable type file detection. Vim will be able to try to detect the type of file in use.
-filetype on
-
-" Enable plugins and load plugin for the detected file type.
-filetype plugin on
-
-" Load an indent file for the detected file type.
-filetype indent on
-
-" Set authomatic indentation
-" set autoindent
-
-" Turn syntax highlightin
-syntax on
-
-" Add numbers to each line on the left-hand side.
-set number
-
-" Highlight cursor line underneath the cursor horizontally.
-set cursorline
-
-" Highlight cursor line underneath the cursor vertically.
-set cursorcolumn
-
-" Set shift width to 4 spaces.
-set shiftwidth=4
-
-" Set tab width to 4 columns.
-set tabstop=4
-
-" Use space characters instead of tabs.
-set expandtab
-
-" Colorful (),[],{}
-set showmatch
-
-" While searching though a file incrementally highlight matching characters as you type.
-set incsearch
-
-" Ignore capital letters during search.
-set ignorecase
-
-" Use highlighting when doing a search.
-set hlsearch
-
-" Enable auto completion menu after pressing TAB.
-set wildmenu
-
-" Make wildmenu behave like similar to Bash completion.
-set wildmode=list:longest
-
-" Enable black theme
-" set background=dark
-
-" Tab helper
-" set smarttab
-\end{verbatim}
-\end{codetemplate}
-
-If you want to persistthis configuration when using \verb|sudo vim| you will need to do something a little bit tricky:
-
-\begin{itemize}
-    \item Create an alias in your \verb|~/.bashrc| file:
-\begin{codetemplate}{}
-\begin{verbatim}
-alias svim='sudo -E vim'
-\end{verbatim}
-\end{codetemplate}
-
-    \item Use always
-\begin{codetemplate}{}
-\begin{verbatim}
-$ svim <file>
-\end{verbatim}
-\end{codetemplate}
-\end{itemize}
-
-\subsection{Hacer y deshacer}
-\textbf{undo:} para deshacer acciones
-\begin{codetemplate}{vim editor - Command Mode}
-\begin{verbatim}
-:u
-\end{verbatim}
-\end{codetemplate}
-
-\textbf{redo:} para volver a hacer acciones
-\begin{codetemplate}{vim editor - Normal Mode}
-\begin{verbatim}
-Ctrl + r
-\end{verbatim}
-\end{codetemplate}
-\begin{codetemplate}{vim editor - Normal Mode}
-\begin{verbatim}
-:r
-\end{verbatim}
-\end{codetemplate}
-
-\subsection{Borrar lineas enteras}
-\begin{codetemplate}
-\begin{verbatim}{vim editor - Normal Mode}
-dd + intro
-\end{verbatim}
-\end{codetemplate}
-
-
-\subsection{Buscar Ocurrencias}
-\textbf{Para buscar}
-\begin{codetemplate}
-\begin{verbatim}{vim editor - Normal Mode}
-/<palabra>
-\end{verbatim}
-\end{codetemplate}
-\textbf{Para ir a cualquier ocurrencia:} Intro
-\\\\
-\textbf{Para pasar entre ocurrencias:} n
-\\\\
-\textbf{Si queremos hacerlo insensible a minusculas y mayusculas:} antes de buscar, ejecutar lo siguiente.
-\begin{codetemplate}
-\begin{verbatim}{vim editor - Normal Mode}
-:set ignorecase
-\end{verbatim}
-\end{codetemplate}
-
-\newpage
 \section{WSL}
 \subsection{Remove all old dependencies}
 \begin{enumerate}
@@ -2419,356 +2755,6 @@ $ wsl --install -d <DISTRO_NAME>
 \end{verbatim}
 \end{codetemplate}
 \end{enumerate}
-
-
-
-\newpage
-\section{Cat}
-Cat nos va a permitir ver el contenido de ficheros sin abrirlos, crear ficheros si no existen o redireccionar salidas del terminal.
-
-\begin{itemize}
-    \item Basic usage: mostrar el contenido de un fichero
-\begin{codetemplate}{}
-\begin{verbatim}
-$ cat test
-\end{verbatim}
-\end{codetemplate}
-
-    \item Mostrar contenido de test y test2
-\begin{codetemplate}{}
-\begin{verbatim}
-$ cat test1 test2
-\end{verbatim}
-\end{codetemplate}
-
-    \item Nos añade el contenido de test2 en el fichero test1, si habia contenido sobreescribe, si no había nada, crea el nuevo fichero
-\begin{codetemplate}{}
-\begin{verbatim}
-$ cat test1 > test2
-\end{verbatim}
-\end{codetemplate}
-
-    \item Para que nos añada el contenido de test2 en el final del fichero test1, sin sobreescribir lo que había
-\begin{codetemplate}{}
-\begin{verbatim}
-$ cat test1 >> test2
-\end{verbatim}
-\end{codetemplate}
-
-    \item Show line number
-\begin{codetemplate}{}
-\begin{verbatim}
-$ cat -n file
-\end{verbatim}
-\end{codetemplate}
-
-    \item Para \textbf{escribir en un fichero el conenido que queramos} (ACABAR CON CTRL+D)
-\begin{codetemplate}{}
-\begin{verbatim}
-$ cat > filename
-\end{verbatim}
-\end{codetemplate}
-\end{itemize}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.7]{pictures/image1.png}
-    \caption{amazing cat}
-\end{figure}
-
-\newpage
-\section{SSH}
-
-\subsection{What is SSH?}
-
-SSH, also known as Secure Shell or Secure Socket Shell, is a network protocol that gives users, particularly system administrators, a secure way to access a computer over an unsecured network.  Secure Shell provides strong password authentication and public key authentication, as well as encrypted data communications between two computers connecting over an open network, such as the internet.
-
-In addition to providing strong encryption, SSH is widely used by network administrators to manage systems and applications remotely, enabling them to log in to another computer over a network, execute commands and move files from one computer to another.
-
-
-The most basic use of SSH is to connect to a remote host for a terminal session. The form of that command is the following:
-\begin{itemize}
-    \item IP:
-\begin{codetemplate}{}
-\begin{verbatim}
-$ ssh user_name@host_IP
-\end{verbatim}
-\end{codetemplate}
-    \item Hostname:
-\begin{codetemplate}{}
-\begin{verbatim}
-$ ssh user_name@SSHserve.example.com
-\end{verbatim}
-\end{codetemplate}   
-\end{itemize}
-
-
-The SSH key command instructs your system that you want to open an encrypted Secure Shell Connection. \verb|user_name| represents the account you want to access. For example, you may want to access the \verb|root| user or \verb|acampos| user.
-
-\begin{blocktemplate}{NOTE}
-To connect via ssh using a user, it is needed to have this user created in the host machine.
-
-\begin{itemize}
-    \item \textbf{host machine:} refers to the remote server you are trying to access.
-    \item \textbf{client machine:} refers to the server you are using to access the host.
-\end{itemize}
-\end{blocktemplate}
-
-For the first time negotiating a connection between the local host and the server, the user will be prompted with the remote host's public key fingerprint and prompted to connect.
-
-\begin{codetemplate}{}
-\begin{verbatim}
-The authenticity of host 'sample.ssh.com' cannot be established.
- DSA key fingerprint is 01:23:45:67:89:ab:cd:ef:ff:fe:dc:ba:98:76:54:32:10.
- Are you sure you want to continue connecting (yes/no)?
-\end{verbatim}
-\end{codetemplate}
-
-Answering yes to the prompt will cause the session to continue, and the host key is stored in the local system's \verb|known_hosts| file. This is a hidden file, stored by default in a hidden directory, called \verb|/.ssh/known_hosts|, in the user's home directory. Once the host key has been stored in the \verb|known_hosts| file, the client system can connect directly to that server again without need for any approvals; the host key authenticates the connection.
-
-\begin{figure}[H]
-    \includegraphics[width=\textwidth]{pictures/ssh1.png}
-    \centering
-\end{figure}
-
-Present in all data centers, SSH ships by default with every Unix, Linux and Mac server. SSH connections have been used to secure many different types of communications between a local machine and a remote host, including secure remote access to resources, remote execution of commands, delivery of software patches, and updates and other administrative or management tasks, manage routers, server hardware, virtualization platforms, operating systems (OSes), and inside systems management and file transfer applications.
-
-Secure Shell is used to connect to servers, make changes, perform uploads and exit, either using tools or directly through the terminal. SSH keys can be employed to automate access to servers and often are used in scripts, backup systems and configuration management tools.
-
-\begin{blocktemplateI}{NOTE}
-
-SSH operates on \textbf{TCP port 22} by default (though SSH port can be changed if needed). The host (server) listens on port 22 (or any other SSH assigned port) for incoming connections. It organizes the secure connection by authenticating the client and opening the correct shell environment if the verification is successful.
-\\\\
-It is hardly recommended to change the port in which the host machine listen, because to let port 22 is more easily to enter the machine without authorization.
-\end{blocktemplateI}
-
-\subsection{How to authenticate via SSH?}
-
-\subsubsection{Default user-password authentication method}
-
-By default SSH protocol doesn't use public key cryptography for authenticating hosts and users. It still uses the \textbf{Linux user-password authentication method}, so you only have to pass the \verb|username| of the Linux user via the ssh command and introduce the \verb|password| of this user:
-
-\begin{codetemplate}{}
-\begin{verbatim}
-$ ssh -P=custom_port linux_username@hostname_or_ip
-\end{verbatim}
-\end{codetemplate}
-
-\begin{blocktemplate}{NOTE}
- If you run the command without specifying user, ssh will take your Linux current \verb|username|.
-\end{blocktemplate}
-
-\subsubsection{Public Key authentication method}
-
-Generally, the SSH service is configured to use public key cryptography for authenticating hosts and users. SSH introduced public key authentication as a more secure alternative to the older \verb|.rhosts| authentication. It improved security by avoiding the need to have password stored in files, and eliminated the possibility of a compromised server stealing the user's password.
-
-However, SSH keys are authentication credentials just like passwords. Thus, they must be managed somewhat analogously to user names and passwords. They should have a proper termination process so that keys are removed when no longer needed.
-
-\subsubsection{Generating public and private keys in our host}
-For that reason, we should generate SSH public and private key on our client and authorize them into the host.
-
-Depending on the technology of the host you want to connect, you need to create the keys:
-
-\begin{itemize}
-    \item \textbf{rsa:} an old algorithm based on the difficulty of factoring large numbers. A key size of at least 2048 bits is recommended for RSA; 4096 bits is better. All SSH clients support this algorithm.
-\begin{codetemplate}{}
-\begin{verbatim}
-$ ssh-keygen -t rsa -b 4096 -C "your_email@example.com" 
-\end{verbatim}
-\end{codetemplate}
-    \item \textbf{ed25519:} this is a new algorithm added in OpenSSH. Support for it in clients is not yet universal.
-\begin{codetemplate}{}
-\begin{verbatim}
-$ ssh-keygen -t ed25519 -C "your_email@example.com"
-\end{verbatim}
-\end{codetemplate}
-\end{itemize}
-
-\begin{blocktemplateIII}{WARNING}
-For SSH to recognize the SSH keys they should be stored in:
-\begin{codetemplate}{}
-\begin{verbatim}
-~/.ssh/
-\end{verbatim}
-\end{codetemplate}
-\begin{figure}[H]
-    \includegraphics[width=\textwidth]{pictures/ssh2.png}
-    \centering
-\end{figure}
-Also, \textbf{rsa keys} should have the \textbf{permissions} you see in the image above, if not, it will not be valid to authenticate in any server. If you have generated the keys, they are generated with the correct permissions, but if you have copied, it can be wrong.
-\end{blocktemplateIII}
-
-\begin{blocktemplateII}{NOTE}
-By default, when you stablish ssh connection, it uses the following private keys names:
-\begin{itemize}
-    \item \verb|~/.ssh/id_ecdsa|
-    \item \verb|~/.ssh/id_ecdsa_sk|
-    \item \verb|~/.ssh/id_ed25519|
-    \item \verb|~/.ssh/id_ed25519_sk|
-    \item \verb|~/.ssh/id_xmss|
-    \item \verb|~/.ssh/id_xmss_sk|
-    \item \verb|~/.ssh/id_dsa|
-    \item \verb|~/.ssh/id_rsa|
-\end{itemize}
-\end{blocktemplateII}
-
-For more information, check the documentation of \href{https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent}{how to do if for github servers}.
-
-
-\subsubsection{Appending the Public Key into the authorized\_keys of the Server}
-To use public key authentication, the public key must be \textbf{installed in the} \verb|authorized_keys| file of the server. This can be conveniently done using the \verb|ssh-copy-id tool|. Like this:
-
-\begin{codetemplate}{}
-\begin{verbatim}
-$ ssh-copy-id -i ~/.ssh/my_ssh_key.pub user_name@hostname
-\end{verbatim}
-\end{codetemplate}
-
-\begin{blocktemplateIII}{WARNING}
-With the command above, we will append the host \textbf{pubkey} in the \verb|authorized_keys| file of the server.
-\end{blocktemplateIII}
-
-Once the public key has been configured on the server, the server will allow any connecting user that has the private key to log in. During the login process, the client proves possession of the private key by digitally signing the key exchange.
-
-\begin{blocktemplateII}{NOTE}
-For git you should do it different, just adding your public ssh key in the GUI, accessing to your profile settings. You can follow the \href{https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account}{Official Documentation}
-\end{blocktemplateII}
-
-\subsection{SFTP}
-
-FTP, or “File Transfer Protocol” was a popular unencrypted method of trans-
-ferring files between two remote systems.
-
-SFTP, which stands for SSH File Transfer Protocol, or Secure File Transfer
-Protocol, is a separate protocol packaged with SSH that works in a similar way
-but over a secure connection. The advantage is the ability to leverage a secure
-connection to transfer files and traverse the filesystem on both the local and
-remote system.
-
-In almost all cases, SFTP is preferable to FTP because of its underlying security
-features and ability to piggy-back on an SSH connection. FTP is an insecure
-protocol that should only be used in limited cases or on networks you trust.
-
-\begin{codetemplate}{}
-\begin{verbatim}
-$ sftp -oPort=custom_port user_name@host_ip_or_hostname
-\end{verbatim}
-\end{codetemplate}
-
-\newpage
-\section{Find}
-
-
-\begin{itemize}
-    \item  Buscar ficheros desde la raiz con el nombre "linux"
-\begin{codetemplate}{}
-\begin{verbatim}
-$ find  / -name "linux"
-\end{verbatim}
-\end{codetemplate}
-    \item  Buscar ficheros desde la raiz con el nombre "linux" y listarlos
-\begin{codetemplate}{}
-\begin{verbatim}
-$ find  / -name "linux" -ls
-\end{verbatim}
-\end{codetemplate}
- 
-    \item Buscar dentro del directorio /etc/config/ del sistema de todos los ficheros y directorios con el nombre "linux" sin importar mayúsculas y minúsculas
-\begin{codetemplate}{}
-\begin{verbatim}
-$ find  /etc/config/ -type d -name "linux"
-\end{verbatim}
-\end{codetemplate}
-    \item Buscar desde el directorio donde nos encontramos los ficheros cuyo nombre contienen la cadena "Thr"
-\begin{codetemplate}{}
-\begin{verbatim}
-$ find . -name "*Thr*" 
-\end{verbatim}
-\end{codetemplate}
-\end{itemize}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.7]{pictures/image3.png}
-    \caption{use of find}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.7]{pictures/image4.png}
-    \caption{another use of find}
-\end{figure}
-
-\begin{blocktemplateII}{NOTE}
-Las comillas en estos casos son opcionales, pues como siempre, tan solo sirven para marcar string
-\end{blocktemplateII}
-
-\newpage
-\section{Sed (Stream Editor)}
-
- It is a very essential tool for text processing, specifically it is common used for text replacement. Con Sed podemos editar archivos, incluso sin abrirlos, de manera individual o masiva. Dicho sea, que esta forma, es mucho más rápida para encontrar y reemplazar algo en un archivo de manera manual.
-
- Print the content of "fichero.txt" replacing the first occurrence of the string "Microsoft Windows" by "GNU Linux" in the file "fichero.txt"
-\begin{codetemplate}{}
-\begin{verbatim}
-$ sed 's/Microsoft Windows/GNU Linux/' fichero.txt
-\end{verbatim}
-\end{codetemplate}
-
-Save the changes in the file:
-\begin{codetemplate}{}
-\begin{verbatim}
-$ sed -i 's/Microsoft Windows/GNU Linux/' fichero.txt
-\end{verbatim}
-\end{codetemplate}
-
- Replace all the occurrences of the string "Microsoft Windows" by "GNU Linux" in the file "fichero.txt" and save.
- \begin{codetemplate}{}
-\begin{verbatim}
-$ sed -i 's/Microsoft Windows/GNU Linux/g' fichero.txt
-\end{verbatim}
-\end{codetemplate}
-
- Replace just the 3rd occurrence of "Microsoft Windows" by "GNU Linux" in the text and save
-\begin{codetemplate}{}
-\begin{verbatim}
-$ sed 's/Microsoft Windows/GNU Linux/3g' fichero.txt
-\end{verbatim}
-\end{codetemplate}
-
-Replace the string "Microsoft Windows" just in line 1:
-\begin{codetemplate}{}
-\begin{verbatim}
-$ sed '1 s/Microsoft Windows/GNU Linux/' fichero.txt
-\end{verbatim}
-\end{codetemplate}
-
-\begin{blocktemplate}{NOTE}
-By default sed is \textbf{case SENSITIVE} but to change it by case insensitive, you can add \verb|I| at the end of the REGEX:
- \begin{codetemplate}{}
-\begin{verbatim}
-$ sed -i 's/Microsoft Windows/GNU Linux/gI' fichero.txt
-\end{verbatim}
-\end{codetemplate}
-\end{blocktemplate}
-
-\begin{blocktemplateIII}{WARNING}
-Sed will replace all the string matches, without differentiating if it is completed or partial, for example:
-\begin{figure}[H]
-    \includegraphics[width=\textwidth]{pictures/sed.png}
-    \centering
-\end{figure}
-
-To replace the exact match you should use spaces, \textbf{in REGEX} \verb|space=\s|:
-\begin{codetemplate}{}
-\begin{verbatim}
-$ sed 's/Alex\s/Claudia /g'
-\end{verbatim}
-\end{codetemplate}
-\end{blocktemplateIII}
-
-For more information:
-\href{https://www.ochobitshacenunbyte.com/2019/05/28/uso-del-comando-sed-en-linux-y-unix-con-ejemplos/}{Uso del Comando Sed} 
 
 \newpage
 \section{Docker Desktop}
@@ -2998,14 +2984,14 @@ It is capable of:
 
 \subsubsection{YUM}
 
-\section{Timeshift to Backup and Restore Your Linux System}
+\subsection{Timeshift to Backup and Restore Your Linux System}
 
-\subsection{Introduction}
+\subsubsection{Introduction}
 Linux is susceptible to system failures caused by incorrect commands or system operations. So if you use Linux on your main computer, you may frequently encounter problems. Fortunately, there are system restoration tools that create snapshots of your files and settings, which you can restore on your system to put it back to its previous functioning point in case any of your operations renders it unusable.
 
 Timeshift works by creating a snapshot of your system using either rsync or btrfs mode, depending on your Linux distro. To do this, what Timeshift essentially does is create a restore point for your system at a time when everything's running smoothly. This backup includes all the system files and settings—and no user files or documents. That way, when you accidentally mess up something on your system while configuring or customizing it, you can restore it back to this restore point and revert all your changes.
 
-\subsection{Timeshift Installation}
+\subsubsection{Timeshift Installation}
 The first step is install timeshift, depending on your system you will use different commands. For Ubuntu:
 \begin{codetemplate}{}
 \begin{verbatim}
@@ -3013,7 +2999,7 @@ $ sudo apt install timeshift
 \end{verbatim}
 \end{codetemplate}
 
-\subsection{Create a Snapshot}
+\subsubsection{Create a Snapshot}
 \begin{codetemplate}{}
 \begin{verbatim}
 $ sudo timeshift --create --comments "A new backup" --tags D
