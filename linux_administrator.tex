@@ -1,0 +1,3000 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\PassOptionsToPackage{svgnames}{xcolor}
+\usepackage{tcolorbox}
+\usepackage{xcolor}
+\usepackage{lipsum}
+\usepackage{verbatim}
+\tcbuselibrary{skins,breakable}
+\usetikzlibrary{shadings,shadows}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage[a4paper]{geometry}
+\usepackage{listings}
+\usepackage{titlesec}
+\usepackage{amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{multirow} % for Tables
+\usepackage{fancyvrb} % for "\Verb" macro
+\VerbatimFootnotes % enable use of \Verb in footnotes
+\usepackage{listings}
+
+\lstset{basicstyle=\ttfamily,
+  showstringspaces=false,
+  commentstyle=\color{green},
+  keywordstyle=\color{blue}
+}
+
+\setcounter{secnumdepth}{4}
+\titleformat{\paragraph}
+{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+\title{\textbf{Linux Administrator}}
+\author{Alejandro Campos}
+\date{October, 2023}
+
+\setlength{\parindent}{0ex}
+\setlength{\parskip}{6pt}
+\geometry{top=2.5cm, bottom=3cm,left=2.5cm, right=2.5cm}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=magenta,      
+    urlcolor=blue,
+}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\newenvironment{blocktemplate}[1]{%
+    \tcolorbox[beamer,%
+    noparskip,breakable,
+    colframe=Blue,%
+    colbacklower=LimeGreen!75!LightGreen,%
+    title=#1]}%
+    {\endtcolorbox}
+
+\newenvironment{blocktemplateI}[1]{%
+    \tcolorbox[beamer,%
+    noparskip,breakable,
+    colframe=Violet,%
+    colbacklower=Black,%
+    title=#1]}%
+    {\endtcolorbox}
+
+\newenvironment{blocktemplateII}[1]{%
+    \tcolorbox[beamer,%
+    noparskip,breakable,
+    colframe=Green,%
+    colbacklower=LimeGreen!75!LightGreen,%
+    title=#1]}%
+    {\endtcolorbox}
+
+\newenvironment{blocktemplateIII}[1]{%
+    \tcolorbox[beamer,%
+    noparskip,breakable,
+    ,colframe=Red,%
+    colbacklower=LimeGreen!75!LightGreen,%
+    title=#1]}%
+    {\endtcolorbox}
+
+\newtcolorbox{mybasecolorbox}[1][]{%
+  colback=gray!25, colframe=gray!25,
+  coltitle=black,
+  width=(\linewidth)}
+
+\newenvironment{codetemplate}[1][]{%
+  \mybasecolorbox[#1]
+  \itshape
+}{%
+  \endmybasecolorbox
+}
+
+\usepackage{array}
+
+\begin{document}
+\maketitle
+\newpage
+\tableofcontents
+
+%====================================================================================================
+\newpage
+\section{ Linux Directory Structure Explained}
+
+\subsection{/ -- The Root Directory}
+Everything on your Linux system is located under the \verb|/| directory, known as the root directory. You can think of the \verb|/| directory as being similar to the \verb|C:\| directory on Windows. But this isn't strictly true, as Linux doesn't have drive letters. While another partition would be located at \verb|D:\| on Windows, this other partition would appear in another folder under / on Linux.
+
+\subsection{/bin -- Essential User Binaries}
+The \verb|/bin| directory contains the essential user binaries (programs) that must be present when the system is mounted in single-user mode. Users applications such as Firefox are stored in \verb|/usr/bin|, while important system programs and utilities such as the bash shell, python, ansible, docker are located in \verb|/bin|. Placing these files in the /bin directory ensures the system will have these important utilities even if no other file systems are mounted.
+
+\subsection{/sbin -- System Administration Binaries}
+The \verb|/sbin| directory is similar to the /bin directory. It contains essential system administration binaries, which are generally intended to be run by the root user for system administration.
+
+\subsection{/boot -- Static Boot Files}
+The \verb|/boot| directory contains the files needed to boot the system. For example, the GRUB boot loader's files and your Linux kernels are stored here. The boot loader's configuration files aren't located here, though they're in \verb|/etc| with the other configuration files.
+
+\subsection{/dev -- Device Files}
+Linux exposes devices as files, and the \verb|/dev| directory contains a number of special files that represent devices. This directory also contains pseudo-devices, which are virtual devices that don't actually correspond to hardware. For example, \verb|/dev/random| produces random numbers. \verb|/dev/null| is a special device that produces no output and automatically discards all input. When you pipe the output of a command to \verb|/dev|, you discard it
+
+\subsection{/etc -- Configuration Files}
+The \verb|/etc| directory contains configuration files, which can generally be edited by hand in a text editor. Note that the \verb|/etc| directory contains system-wide configuration files.
+
+\begin{blocktemplate}{NOTE}
+user-specific configuration files are located in each user's home directory.
+\end{blocktemplate}
+
+\subsection{/home -- Home Folders}
+The \verb|/home| directory contains a home folder \textbf{for each user}. For example, if your user name is bob, you have a home folder located at \verb|/home/bob|. This home folder contains the user's data files and user-specific configuration files. \textbf{Each user only has write access to their own home folder} and must obtain elevated permissions (become the root user) to modify other files on the system.
+
+\subsection{/root -- Root Home Directory}
+The \verb|/root| directory is the home directory of the root user. Instead of being located at \verb|/home/root|, as the rest of the users, it's located at \verb|/root|. This is distinct from \verb|/|, which is the system root directory.
+
+\subsection{/lib -- Essential Shared Libraries}
+The \verb|/lib| directory contains libraries needed by the essential binaries in the \verb|/bin| and \verb|/sbin| folder.
+
+\begin{blocktemplateII}{NOTE}
+Libraries needed by the binaries in the \verb|/usr/bin| folder are located in \verb|/usr/lib|.
+\end{blocktemplateII}
+
+\subsection{/lost+found -- Recovered Files}
+Each Linux file system has a \verb|lost+found| directory. If the file system crashes, a file system check will be performed at next boot. Any corrupted files found will be placed in the \verb|lost+found| directory, so you can attempt to recover as much data as possible.
+
+\subsection{/media -- Removable Media}
+The \verb|/media| directory contains subdirectories where removable media devices inserted into the computer are mounted. For example, when you insert a CD into your Linux system, a directory will automatically be created inside the \verb|/media| directory. You can access the contents of the CD inside this directory.
+
+\subsection{/mnt -- Temporary Mount Points}
+Historically speaking, the \verb|/mnt| directory is where system administrators mounted temporary file systems while using them. For example, if you're mounting a Windows partition to perform some file recovery operations, you might mount it at \verb|/mnt/windows|. However, you can mount other file systems anywhere on the system.
+
+\subsection{/opt -- Optional Packages}
+The \verb|/opt| directory contains subdirectories for optional software packages. It's commonly used by proprietary software that doesn't obey the standard file system hierarchy. For example, a proprietary program might dump its files in \verb|/opt/application| when you install it.
+
+\subsection{/tmp -- Temporary Files}
+Applications store temporary files in the \verb|/tmp| directory. These files are generally deleted whenever your system is restarted and may be deleted at any time by utilities such as tmpwatch.
+
+\subsection{/usr -- User Binaries \& Read-Only Data}
+The \verb|/usr| directory contains applications and files used by users, as opposed to applications and files used by the system. For example, non-essential applications are located inside the \verb|/usr/bin| directory instead of the /bin directory and non-essential system administration binaries are located in the \verb|/usr/bin| directory instead of the \verb|/sbin| directory.
+
+\subsection{/var -- Variable Data Files}
+The \verb|/var| directory is the writable counterpart to the \verb|/usr| directory, which must be read-only in normal operation. Log files and everything else that would normally be written to \verb|/usr| during normal operation are written to the \verb|/var| directory. For example, you'll find log files in \verb|/var/log|.
+
+\newpage
+\section{Managing Linux Users and Groups}
+
+\subsection{Introduction}
+Linux is a multi-user system, which means that more than one person can interact with the same system at the same time. As a system administrator, you have the responsibility to manage the system’s users and groups by creating and removing users and assign them to different groups .
+
+\subsection{Managing Linux Users}
+In a Linux system, users refer to individuals or entities that interact with the operating system by logging in and performing various tasks. User management plays a crucial role in ensuring secure access control, resource allocation, and system administration.
+
+A user in Linux is associated with a user account, which consists of several properties defining their identity and privileges within the system. These properties are a username, UID (User ID), GID (Group ID), home directory, default shell, and password.
+
+\subsubsection{Type of Users in Linux}
+Linux supports two types of users: system users and regular users.
+
+\begin{itemize}
+    \item \textbf{System users:} are created by the system during installation and are used to run system services and applications.
+    \item \textbf{Regular users:} are created by the administrator and can access the system and its resources based on their permissions.
+\end{itemize}
+
+
+\subsubsection{Understanding the /etc/passwd file}
+
+User account information is stored in the \verb|/etc/passwd| file. This information includes the account name, home directory location, and default shell, among other values. Each field is separated by a ":" character, and not all fields must be populated, but you must delineate them.
+
+\begin{codetemplate}{}
+\begin{verbatim}
+username:password:UID:GID:comment:home:shell
+\end{verbatim}
+\end{codetemplate}
+
+\begin{itemize}
+    \item \textbf{UID:} User Identyfier
+    \begin{itemize}
+        \item \textbf{0:} reserved for root user
+        \item \textbf{1-999:} reserved by system for administrative and system users.
+    \end{itemize}
+    \item \textbf{GID:} Group Identyfier
+    \begin{itemize}
+        \item \textbf{0:} reserved for root group
+        \item \textbf{1-99:} reserved by system for administrative and system groups.
+    \end{itemize}
+\end{itemize}
+
+\begin{blocktemplateI}{NOTE}
+UID and GUI assignation policies are defined in the file \verb|/etc/login.defs|
+\begin{figure}[H]
+    \includegraphics[scale=0.7]{images/defsbig.png}
+    \centering
+\end{figure}
+\end{blocktemplateI}
+
+
+
+So you can trim the output using AWK or cut:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ awk -F ":" '{ print $1}' /etc/passwd
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ cut -d ":" -f1 /etc/passwd
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplate}{NOTE}
+We will discuss passwords in the next sect, but expect to see an "x" in the password field of this file.
+\end{blocktemplate}
+
+\subsubsection{Understand the /etc/shadow file}
+Long ago, password hashes were stored in the \verb|/etc/passwd| file. This file was world-readable, allowing inquisitive users to pull password hashes for other accounts from the file and run them through password-cracking utilities. Eventually, the password hashes were moved to a file readable only by root: \verb|/etc/shadow|. Today, the password field in the \verb|/etc/passwd| file is marked with an x.
+
+\begin{blocktemplateI}{NOTE}
+To know more about the passwords, the value we can see in the \verb|/etc/passwd| is a hashed value, produced by the crypt function in Linux when we set the passphrase for the user using the passwd command. The hashed passphrase follows a specific format:
+\begin{codetemplate}{}
+\begin{verbatim}
+$id$salt$hashedpassword
+\end{verbatim}
+\end{codetemplate}
+\begin{itemize}
+    \item \textbf{id:} is the hashing method used when hashing the passphrase. For example, if the hash value is produced by yescrypt, the ID will be y, and 6 if the sha512crypt method is used. For a complete list of hashing methods and their ID, we can refer to the \href{https://manpages.debian.org/unstable/libcrypt-dev/crypt.5.en.html}{Official Documentation}.
+    \item \textbf{salt:} adding random data to the input of a hash function to guarantee a unique output, the hash, even when the inputs are the same.
+    \item \textbf{hashedpassword:} the password encrypted
+\end{itemize}
+\end{blocktemplateI}
+
+\subsubsection{Add User to Linux System}
+\paragraph{Basic Addition}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo useradd [OPTIONS] user_name
+\end{verbatim}
+\end{codetemplate}
+When invoked, \verb||useradd| creates a new user account according to the options specified on the command line and the default values set in the \verb|/etc/default/useradd| file.
+
+\begin{blocktemplateII}{NOTE}
+When executed without any option, useradd creates a new user account using the default settings specified in the /etc/default/useradd file.
+\end{blocktemplateII}
+
+\begin{blocktemplateIII}{WARNING}
+Only root or users with sudo privileges can use the \verb|useradd| command to create new user accounts.
+\end{blocktemplateIII}
+
+\textbf{To check the user has been correctly created}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ id username
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{To be able to log in as the newly created user, you need to set the user password}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo passwd username
+\end{verbatim}
+\end{codetemplate}
+You will be prompted to enter and confirm the password. Make sure you use a strong password.
+
+\paragraph{Addition with Home Directory Creation}
+On most Linux distributions, when creating a new user account with useradd, \textbf{by default the user’s home directory is not created}.
+
+\textbf{Use the} \verb|-m (--create-home)| \textbf{option to create the user home directory as} \verb|/home/username|
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo useradd -m username
+\end{verbatim}
+\end{codetemplate}
+The command above creates the new user’s home directory and copies files from \verb|/etc/skel| directory to the user’s home directory. If you list the files in the /home/username directory, you will see the initialization files:
+\begin{itemize}
+    \item \verb|.bash_logout|
+    \item \verb|.bashrc|
+    \item \verb|.profile|
+\end{itemize}
+
+\begin{figure}[H]
+    \includegraphics[scale=0.7]{images/etcskel.png}
+    \centering
+\end{figure}
+
+\begin{blocktemplate}{NOTE}
+Within the home directory, the user can write, edit and delete all files and directories.
+\end{blocktemplate}
+
+\textbf{To create another different home}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo useradd -d /custom/home username
+\end{verbatim}
+\end{codetemplate}
+
+\paragraph{Custom Shell}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo useradd -s /custom/shell username
+\end{verbatim}
+\end{codetemplate}
+
+
+\paragraph{Addition Specifing the UID}
+By default, when a new user is created, the system assigns the next available UID from the range of user IDs specified in the \verb|/etc/login.defs| file.
+
+\begin{figure}[H]
+    \includegraphics[scale=0.7]{images/loginsfile.png}
+    \centering
+\end{figure}
+
+Invoke useradd with the -u (--uid) option to create a user with a specific UID. For example to create a new user named username with UID of 1500 you would type:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo useradd -u 1500 username
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplateIII}{WARNING}
+If the specified UID is already allocated to another user, you're alerted that the UID is unavailable and the operation aborts. Rerun it with a different UID number.
+\end{blocktemplateIII}
+
+\begin{blocktemplateI}{NOTE}
+An easy way to look your user UID:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ id -u username
+\end{verbatim}
+\end{codetemplate}
+\end{blocktemplateI}
+
+\paragraph{Addition Specifing the GID}
+When creating a new user, the default behavior of the useradd command is to create a group with the same name as the username, and same GID as UID.
+
+The \verb|-g| (\verb|--gid|) option allows you to create a user with a specific initial login group. You can specify either the group name or the GID number. The group name or GID must already exist.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo useradd -g group username
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplateIII}{WARNING}
+If the specified group ID is already allocated to another group, you're alerted that the GID is unavailable and the operation aborts. Rerun it with a different group ID number.
+\end{blocktemplateIII}
+
+\begin{blocktemplateI}{NOTE}
+An easy way to look your user primary group:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ id -gn username
+\end{verbatim}
+\end{codetemplate}
+\end{blocktemplateI}
+
+\paragraph{Addition Assigning Multiple Groups}
+
+There are two types of groups in Linux operating systems Primary group and Secondary (or supplementary) group. Each user can belong to \textbf{exactly one primary} group and\textbf{ zero or more secondary groups}.
+
+You to specify a list of supplementary groups which the user will be a member of with the \verb|-G| (\verb|--groups|) option.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo useradd -g primary_group -G sec_group1, sec_group2, sec_group3 username
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplateI}{NOTE}
+An easy way to look all your user configuration:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ id username
+\end{verbatim}
+\end{codetemplate}
+\end{blocktemplateI}
+
+\paragraph{Addition with more Configurations}
+To create users with more different configurations, you can check the \href{https://linuxize.com/post/how-to-create-users-in-linux-using-the-useradd-command/}{documentation}.
+
+\subsubsection{Switching User in Linux - su command}
+
+Su allows you to change the existing user to some other user. Use the \verb|–l username| method to define a user account if you need to execute a command as someone other than root.
+
+\subsubsection{Delete User in Linux System}
+ Deleting a user requires deleting both the user account as well as the files that are connected with the user account. With this command you do both:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ userdel -r username
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplateIII}{WARNING}
+The above command deletes the user whose username is provided. Make sure that the user is not part of a group. If the user is part of a group then it will not be deleted directly, hence we will have to first remove him from the group and then we can delete him.  
+\end{blocktemplateIII}
+
+\subsubsection{Manage User from Linux System}
+\textbf{Change the home directory}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ usermod -d new_home_directory_path username
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Change login name}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo usermod -l new_login_name old_login_name
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Change the user password}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ passwd
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplateIII}{WARNING}
+It will require authentication with the old password, so you should know the old password to change it this way.
+
+If you do not know the user password, you can use the sudo user to do it:
+\textbf{Change the user password}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo passwd username
+\end{verbatim}
+\end{codetemplate}
+\end{blocktemplateIII}
+
+\begin{blocktemplateI}{NOTE}
+Even further, you can force Linux user to change password at their next login, check the \href{https://www.cyberciti.biz/faq/linux-set-change-password-how-to/}{documentation}
+\end{blocktemplateI}
+
+\textbf{Modify the UID of a user}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ usermod -u  new_uid username
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Modify the group GID of a user}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ usermod -g  new_gid username
+\end{verbatim}
+\end{codetemplate}
+
+\subsubsection{SSH Key-Based Authentication}
+Secure Shell (SSH) key-based authentication provides a more secure alternative to password-based authentication. Users generate a public-private key pair, where the public key is stored on the server and the private key is kept securely on the user's device.
+
+With SSH key-based authentication, users like Lisa, a system administrator at CTechCo, can authenticate without entering a password. Instead, the server verifies the user's identity based on the possession of the private key.
+
+To configure SSH key-based authentication for Lisa, the following steps can be taken:
+
+\begin{itemize}
+    \item Generate an SSH key pair on Lisa's machine using the ssh-keygen command.
+    \item Copy the public key to the server's \verb|/home/lisasmith/.ssh/authorized_keys| file.
+    \item Configure the server to allow SSH key-based authentication.
+\end{itemize}
+
+
+\subsection{Managing Linux Groups}
+In Linux, groups are collections of users. Creating and managing groups is one of the simplest ways to deal with multiple users simultaneously, especially when dealing with permissions. It's more efficient to group user accounts with similar access requirements than to manage permissions on a user-by-user basis.
+
+
+\subsubsection{Understanding the /etc/group file}
+Similar to the \verb|/etc/passwd| file above, the \verb|/etc/group| file contains group account information. This information can be essential for troubleshooting, security audits, and ensuring users can access the resources they need.
+
+The fields in the \verb|/etc/group| file are:
+\begin{codetemplate}{}
+\begin{verbatim}
+groupname:password:GID:group members
+\end{verbatim}
+\end{codetemplate}
+
+\subsubsection{Add a Group in Linux}
+To create a new group:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo groupadd group_name
+\end{verbatim}
+\end{codetemplate}
+
+To view the group you just added, run the command below:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ cat /etc/group | grep -i group_name
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplate}{NOTE}
+When a group is created, a unique group ID gets assigned to that group. You can verify that the group appears (and see its group ID) by looking in the \verb|/etc/group| file.
+\end{blocktemplate}
+
+If you want to create a group with a specific group ID (GID), use the \verb|--gid| or \verb|-g| option:
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo groupadd -g 1009 group_name
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplateIII}{WARNING}
+If the specified group ID is already allocated to another group, you're alerted that the GID is unavailable and the operation aborts. Rerun it with a different group ID number.
+\end{blocktemplateIII}
+
+\subsubsection{Change the group ID}
+You can change the group ID of any group with the \verb|groupmod| command and the \verb|--gid| or \verb|-g| option:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo groupmod -g 1011 demo1
+\end{verbatim}
+\end{codetemplate}
+
+\subsubsection{Rename a group}
+You can rename a group using \verb|groupmod| with the \verb|--new-name| or \verb|-n| option:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo groupmod -n test demo1
+\end{verbatim}
+\end{codetemplate}
+
+\subsubsection{How to Assign Users to Groups in Linux}
+
+Once a group is created, users can be added to it in the following way:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo usermod -aG group_name username
+\end{verbatim}
+\end{codetemplate}
+
+To check the user has been successfully added:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ id username
+\end{verbatim}
+\end{codetemplate}
+
+\subsubsection{How to Delete Users from Groups in Linux}
+To remove a specific user from a group, you can use the gpasswd command to modify group information:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo gpasswd --delete username group_name
+\end{verbatim}
+\end{codetemplate}
+
+\subsubsection{How to delete a group}
+When a group is no longer needed, you delete it by using the groupdel command:
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo groupdel demo
+\end{verbatim}
+\end{codetemplate}
+
+\subsection{Sudo Command}
+The sudo command allows you to run programs as the root user. Using sudo instead of login in as root is more secure because you can grant limited administrative privileges to individual users without them knowing the root password. \textbf{That's why the root user account in Ubuntu is disabled by default for security reasons, and users are encouraged to perform system administrative tasks using sudo}. The initial user created by the Ubuntu installer is already a member of the sudo group, so if you are running Ubuntu, chances are that the user you are logged in as is already granted with sudo privileges.
+
+\subsubsection{Give sudo permissions with password}
+By default, on most Linux distributions granting sudo access is as simple as adding the user to the sudo group defined in the sudoers file . Members of this group will be able to run any command as root. The name of the \textbf{group} may differ from distribution to distribution.
+
+\begin{itemize}
+    \item \verb|sudo:| Debian, Ubuntu and derivates groups for sudo permissions.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ usermod -aG sudo username
+\end{verbatim}
+\end{codetemplate}
+    \item \verb|wheel:| RedHat, CentOs and Fedora group for sudo permissions
+\begin{codetemplate}{}
+\begin{verbatim}
+$ usermod -aG wheel username
+\end{verbatim}
+\end{codetemplate}
+\end{itemize}
+
+We can see the permission groups allowed in the \verb|/etc/sudoers| file:
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo cat /etc/sudoers
+\end{verbatim}
+\end{codetemplate}
+
+\begin{figure}[H]
+    \includegraphics[width=\textwidth]{images/sudoers.png}
+    \centering
+\end{figure}
+
+So in my Linux System, any user added to the groups \textbf{sudo} or \textbf{admin} will have all sudo permissions enabled.
+
+\textbf{What would happen with a user that is not in these groups?}
+\begin{figure}[H]
+    \includegraphics[width=\textwidth]{images/jiminy.png}
+    \centering
+\end{figure}
+
+But if we add him to the admin group... Voilà!
+\begin{figure}[H]
+    \includegraphics[width=\textwidth]{images/voliajiminy.png}
+    \centering
+\end{figure}
+
+\begin{blocktemplateII}{NOTE}
+The password you have to introduce to access to sudo permissions is the user password, in this case, the jiminy password.
+\end{blocktemplateII}
+
+
+\subsubsection{Give only some actions sudo permission}
+To allow a specific user to run only certain programs as sudo, instead of adding the user to the sudo group, add the users to the \verb|/ect/sudoers| file. For example, to allow the user linuxize to run only the mkdir command:
+
+\begin{blocktemplateIII}{WARNING}
+Modifying \verb|/etc/sudoers| file can be very dangerous, so do it carefully. \textbf{Se puede liar muy parda!}
+\\\\
+Advices:
+\begin{itemize}
+    \item Use \textbf{sudo visudo}, because visudo will warn you that there’s a syntax error and asks to undo the changes.
+    \item It is hardly recommended to make a copy of the file before
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo cp /etc/sudoers sudoerscopy
+\end{verbatim}
+\end{codetemplate}
+\end{itemize}
+\end{blocktemplateIII}
+Just if you  know what you're doing, keep going:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo visudo
+\end{verbatim}
+\end{codetemplate}
+
+\begin{codetemplate}{/etc/sudoers}
+\begin{verbatim}
+linuxize  ALL=/bin/mkdir
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplate}{NOTE}
+The file you are oppening with \verb|sudo visudo| is the \verb|/etc/sudoers| file with the Nano editor! If you are not used to Nano, you can open it with vim. But vim does not notify you if there are some syntax error in the file, nano does.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo vim /etc/sudoers
+\end{verbatim}
+\end{codetemplate}
+\end{blocktemplate}
+
+\subsubsection{How to enable sudo without entering a password}
+Modifying the \verb|/etc/sudoers| adding the user with the following:
+
+\begin{blocktemplateIII}{WARNING}
+Modifying \verb|/etc/sudoers| file can be very dangerous, so do it carefully. \textbf{Se puede liar muy parda!}
+\\\\
+Advices:
+\begin{itemize}
+    \item Use \textbf{sudo visudo}, because visudo will warn you that there’s a syntax error and asks to undo the changes.
+    \item It is hardly recommended to make a copy of the file before
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo cp /etc/sudoers sudoerscopy
+\end{verbatim}
+\end{codetemplate}
+\end{itemize}
+\end{blocktemplateIII}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo visudo
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}{/etc/sudoers}
+\begin{verbatim}
+jiminy ALL=(ALL:ALL) NOPASSWD: ALL
+\end{verbatim}
+\end{codetemplate}
+
+\begin{figure}[H]
+    \includegraphics[scale=0.8]{images/jiminyboss.png}
+    \centering
+\end{figure}
+
+Also you can modify it in the group configuration:
+\begin{codetemplate}{/etc/sudoers}
+\begin{verbatim}
+# Members of the admin group may gain root privileges without pwd
+%admin  ALL=(ALL) NOPASSWD: ALL
+\end{verbatim}
+\end{codetemplate}
+
+\subsubsection{How to gain su permissions with sudo}
+If you try to redirect the output of a command to a file that your user has no write permissions, you will get a “Permission denied” error.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo echo "test" > /root/file.txt
+# Output: bash: /root/file.txt: Permission denied
+\end{verbatim}
+\end{codetemplate}
+
+This happens because the redirection \verb|“>”| of the output is performed under the user you are logged in, not the user specified with sudo. The redirection happens before the sudo command is invoked.
+
+One solution is to invoke a new shell as root by using \verb|sudo sh -c|:
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo sh -c 'echo "test" > /root/file.txt'
+\end{verbatim}
+\end{codetemplate}
+
+Another option is to pipe the output as a regular user to the tee command , as shown below:
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo echo "test" | sudo tee /root/file.txt'
+\end{verbatim}
+\end{codetemplate}
+
+\subsection{Su - root user}
+
+As we comment in the previous section, Using sudo instead of login in as root is more secure because you can grant limited administrative privileges to individual users without them knowing the root password. \textbf{That's why the root user account in Ubuntu is disabled by default for security reasons, and users are encouraged to perform system administrative tasks using sudo}.
+
+\subsubsection{First Approach - Enabling root account temporary}
+If you only need the root account for a particular task or job, run the following command and supply the super user password to authenticate the action with sudo.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo –i
+\end{verbatim}
+\end{codetemplate}
+
+What behind the scenes this command makes is to enable the root user only in the current shell (associated Linux process), and when this shell is shot down (for example typing exit) and you come back to you user, the root will be disabled again.
+
+\subsubsection{Enable root user}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo –i passwd root
+\end{verbatim}
+\end{codetemplate}
+
+You will have to enter the new password for the root user and go ahead.
+
+\begin{figure}[H]
+    \includegraphics[scale=0.8]{images/su.png}
+    \centering
+\end{figure}
+
+\subsubsection{Disable root user}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo passwd -dl root
+\end{verbatim}
+\end{codetemplate}
+
+\begin{figure}[H]
+    \includegraphics[scale=0.7]{images/nopwdsu.png}
+    \centering
+\end{figure}
+
+\newpage
+\section{Basic Linux Commands}
+
+\subsection{Linux System Information}
+\textbf{Prints information about your machine’s kernel, name, and hardware}
+\\ \textbf{The order is: }kernel name, network node hostname, kernel release, kernel version, machine hardware name, processor type, hardware platform and os.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ uname -a
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{To check Linux Distro}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ uname -or
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{To know more about Linux Distro}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ cat /etc/os-release
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ cat /etc/lsb-release
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ lsb_release -a
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ hostnamectl
+\end{verbatim}
+\end{codetemplate}
+
+\subsection{Linux System Consumption}
+\textbf{Displays running processes and the system’s resource usage}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ top
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ htop
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Displays the system’s overall disk space usage}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ df -h
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Displays a folder/file disk space usage}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ df -h folder_name
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Checks a file or directory’s storage consumption}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ du -h directory_name
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplate}{NOTE}
+\verb|-h| flag shows an humanize output, it specifies K, M, G, etc. If you want to have the output in Kibibyte do not use the flag.
+\end{blocktemplate}
+
+\subsection{Moving between directories}
+\begin{itemize}
+    \item \verb+pwd:+ nos indica donde estamos
+    \item \verb+cd == cd ~ :+ nos lleva al \verb+$HOME+ del usuario
+    \item \verb+cd /+ : nos lleva a la raíz
+    \item \verb+cd .+ : no hace nada
+    \item \verb+cd ..+ : nos lleva un directorio atrás
+    \item \verb+ls -l+ : nos muestra todo lo que contiene un directorio (no oculto)
+    \item \verb+ls -la+ : nos muestra todo lo que contiene un directorio (oculto o no)
+    \item \verb|Ctrl + R| : nos busca comandos anteriores
+\end{itemize}
+
+\begin{blocktemplate}{Nota}
+Si después de un comando hacemos "\textbackslash ", nos pasa a la siguiente linea para que podamos seguir con el comando 
+\end{blocktemplate}
+
+\subsection{ls -la Analyzing Results}
+El primer carácter al extremo izquierdo representa el tipo de archivo, los posibles valores para esta posición son los siguientes:
+
+\begin{itemize}
+    \item \textbf{- (Guion):} representa un archivo comun (de texto, html, mp3, jpg, etc.)
+    \item \textbf{d:} representa un directorio
+    \item \textbf{l:} link, es decir un enlace o acceso directo
+    \item \textbf{b:} binario, un archivo generalmente ejecutable
+\end{itemize}
+
+Los siguientes 9 restantes, representan los permisos del archivo y deben verse en grupos de 3
+
+\begin{itemize}
+    \item Los \textbf{tres primeros} representan los permisos para el propietario del archivo. 
+    \item Los \textbf{tres siguientes} son los permisos para el grupo del archivo.
+    \item Los \textbf{tres últimos} son los permisos para el resto del mundo u otros.
+\end{itemize}
+\begin{itemize}
+    \item \textbf{r:} read
+    \item \textbf{w:} write 
+    \item \textbf{x:} execute
+\end{itemize}
+
+\begin{blocktemplateII}{Nota}
+The \verb+/etc/group+ is a text file which defines the groups to which users belong under Linux and UNIX operating system. Under Unix / Linux multiple users can be categorized into groups. Unix file system permissions are organized into three classes, user, group, and others. The use of groups allows additional abilities to be delegated in an organized fashion, such as access to disks, printers, and other peripherals    
+\end{blocktemplateII}
+
+\subsection{chmod}
+
+You may need to know how to change permissions in numeric code in Linux, so to do this you use numbers instead of “r”, “w”, or “x”. Cause Basically, you add up the numbers depending on the level of permission you want to give.
+
+\begin{itemize}
+    \item \textbf{0:} No Permission
+    \item \textbf{1:} Execute
+    \item \textbf{2:} Write
+    \item \textbf{4:} Read
+\end{itemize}
+
+\underline{Examples:}
+
+\begin{itemize}
+    \item To give read, write, and execute permissions for everyone:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ chmod 777 folder/file_name
+\end{verbatim}
+\end{codetemplate}
+
+    \item To give read, write, and execute permissions for the owner user only.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ chmod 700 folder/file_name
+\end{verbatim}
+\end{codetemplate}
+
+    \item To give write and execute (3) permission for the owner user, w (2) for the group, and read, write, and execute for the rest of users.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ chmod 321 foldername
+\end{verbatim}
+\end{codetemplate}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.55]{images/chmod.PNG}
+    \caption{Permissions}
+    \label{chmod}
+\end{figure}
+
+\subsection{chown}
+The \verb|chown| command allows you to change the user and/or group ownership of a given file, directory, or symbolic link.
+
+In Linux, all files are associated with an owner and a group and assigned with permission access rights for the file owner, the group members, and others.
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$ chown [OPTIONS] USER[:GROUP] FILE(s)
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{USER} is the user name or the user ID (UID) of the new owner. \textbf{GROUP} is the name of the new group or the group ID (GID). FILE(s) is the name of one or more files, directories or links.
+
+\begin{blocktemplate}{NOTE}
+Numeric IDs should be prefixed with the + symbol.
+\end{blocktemplate}
+
+For example, the following command will change the ownership of a file named file1 to a new owner named \verb|linuxize|:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ chown linuxize file1
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{To change recursively}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ chown -R linuxize /var/www/
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplateII}{NOTE}
+If the directory contains symbolic links you should add the flag \verb|-h|
+\begin{codetemplate}{}
+\begin{verbatim}
+$ chown -hR linuxize /var/www/
+\end{verbatim}
+\end{codetemplate}
+\end{blocktemplateII}
+
+\textbf{Using a Reference File}
+The \verb|--reference=ref_file| option allows you to change the user and group ownership of given files to be same as those of the specified reference file (\verb|ref_file|). 
+\begin{codetemplate}{}
+\begin{verbatim}
+$ chown --reference=REF_FILE FILE
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplateIII}{WARNING}
+If the reference file is a symbolic link chown will use the user and group of the target file.
+\end{blocktemplateIII}
+
+
+\subsection{Mkdir (create files)}
+\begin{itemize}
+    \item \verb+mkdir -p+: permite crear un directorio con padres e hijos (mkdir -p first/second/third…)
+    \item \verb+mkdir -m a=rwx+: permite crear un directorio cuyos ficheros vayan a tener los permisos a.
+    \item \verb+rm -rf+: borra el fichero escogido
+    \item \verb+rm *.txt+: borra todos los ficheros .txt que hay en un directorio
+\end{itemize}
+
+\subsection{Mv / Cp}
+\textbf{Para copiar / mover todo el contenido de una carpeta en otra:}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ cp -R path/to/source/* /path/dest/folder/
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ mv -R path/to/source/* /path/dest/folder/
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Para copiar / mover una carpeta en otra:}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ cp -R path/to/source/ /path/dest/folder/
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ mv -R path/to/source/ /path/dest/folder/
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{to copy / move multiple directories on Linux}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ cp -R path/to/source/ /path/dest/folder/
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ mv -R path/to/source1/ /path/dest/folder2/ ... path/to/sourcen/ /path/dest/foldern/
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplate}{NOTE}
+Ambos directorios deben existir
+\end{blocktemplate}
+
+\subsection{Simbolik Links}
+Para crearlo debemos encontrarnos en la carpeta donde queremos crearlo y hacer referencia a la carpeta que queremos apuntar desde esta con \verb|../| o desde el \verb|/|.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ln -s /Users/titocampis/Desktop/TFG/Proyecto TFG
+\end{verbatim}
+\end{codetemplate}
+
+\subsection{Alias}
+Para conocer los alias que tenemos en nuestro Linux:
+\begin{codetemplate}
+\begin{verbatim}
+$ alias
+\end{verbatim}
+\end{codetemplate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.6]{images/image45.PNG}
+    \caption{Los alias por defecto y configurados por mi en mi Ubuntu}
+\end{figure}
+
+\subsubsection{Alias Temporal}
+Para generar un alias temporal:
+\begin{codetemplate}
+\begin{verbatim}
+$ alias nombreAlias="tu comando personalizado aquí"
+\end{verbatim}
+\end{codetemplate}
+\underline{Examples}
+\begin{codetemplate}
+\begin{verbatim}
+$ alias docker=podman
+\end{verbatim}
+\end{codetemplate}
+
+\begin{codetemplate}
+\begin{verbatim}
+$ alias kcc="kubectl config"
+\end{verbatim}
+\end{codetemplate}
+
+\subsubsection{Alias Permanente}
+Para mantener los alias entre sesiones, vas a tener que guardarlos en el archivo de perfil para la  configuración de shell de tu usuario. Estos podrían ser:
+
+\begin{itemize}
+    \item Bash → \verb|~/.bashrc|
+    \item ZSH → \verb|~/.zshrc|
+    \item Fish → \verb|~/.config/fish/config.fish|
+\end{itemize}
+
+La sintaxis que hay que utilizar en este caso, es la misma que cuando creamos uno temporal. La única diferencia viene del hecho de que esta vez lo guardaremos en un archivo.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.6]{images/image2.PNG}
+    \caption{Alias in permanent files}
+    \label{export}
+\end{figure}
+
+\subsection{Shutdown machines or terminals}
+\begin{itemize}
+    \item Apagar la maquina que este corriendo en el momento.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo shutdown -r now
+\end{verbatim}
+\end{codetemplate}
+
+    \item Apagar la ventana de terminal.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ exec "$SHELL"
+\end{verbatim}
+\end{codetemplate}
+\end{itemize}
+
+\subsection{Others}
+\textbf{To create a new empty file}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ touch main.py
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Checks a file's type}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ file main.py
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Displays a file’s first ten lines}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ head main.py
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Displays a file’s last ten lines}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ tail main.py
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Compares two files’ content and their differences}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ diff main.py main_old.py
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Prints command outputs in Terminal and a file}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ echo "Hello" | tee output.txt
+\end{verbatim}
+\end{codetemplate}
+
+\subsection{Link with examples and usage of basic commands}
+\href{https://www.hostinger.com/tutorials/linux-commands}{https://www.hostinger.com/tutorials/linux-commands}
+
+\newpage
+\section{.bashrc, .bash\_profile, /etc/bashrc \& path}
+
+\subsection{.bashrc vs .bash\_profile}
+
+\begin{itemize}
+    \item \verb|.bashrc| \textbf{[non interactive login]:} para que se apliquen los cambios debemos abrir otro terminal interactivo (no se aplican en el actual pues este fichero se ejecuta la iniciare un nuevo terminal it).
+    \item \verb|.bash_profile| \textbf{[interactive login]:} solamente se ejecuta cuando hay un proceso de login, al iniciar de nuevo la maquina, al utilizar ssh, sudo... Pero no al abrir un nuevo terminal.
+\end{itemize}
+
+\subsection{PATH}
+\textbf{PATH} is an environmental variable in Linux that \textbf{tells the shell which directories to search for executable files} (i.e., ready-to-run programs) in response to commands issued by a user.
+
+When you type a command into the command prompt in Linux, all you're doing is telling it to run a program. Even simple commands, like ls, mkdir, rm, and others are just small programs that usually live inside a directory on your computer called \verb|/usr/bin|. Other places to search for executables: \verb+/usr/local/bin+, \verb+/usr/local/sbin+, and \verb+/usr/sbin+. 
+
+When you type a command into your Linux shell, it doesn't look in every directory to see if there's a program by that name. It only looks to the ones you specified in the \verb|$PATH| environment var.
+
+Sometimes, you may wish to install programs into other locations on your computer, but be able to execute them easily without specifying their exact location. You can do this easily by adding a directory to your \verb|$PATH|.
+
+View your PATH
+\begin{codetemplate}{}
+\begin{verbatim}
+$ echo $PATH
+\end{verbatim}
+\end{codetemplate}
+
+\subsection{Set your PATH}
+\subsubsection{For current terminal}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ export PATH=$PATH:/place/to/the/binary/file
+\end{verbatim}
+\end{codetemplate}
+
+\subsubsection{Permanently for interactive sessions}
+
+But what happens if you restart your computer or create a new terminal instance? Your addition to the path is gone! This is by design. The variable \verb|$PATH| is set by your shell every time it launches. The exact way to do this depends on which shell you're running.
+
+Add the following line to \verb|~/.bash_profile|, \verb|~/.bashrc|, or \verb|/.profile|
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$ export PATH=\$PATH:/place/with/the/file
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplateIII}{Nota}
+Be very careful editing these files, so one error in the configuration of these files can make somo binaries crash (example: mkdir, ls, etc.)
+\end{blocktemplateIII}
+
+\newpage
+\section{Curl}
+curl  is  a tool for transferring data from or to a server. It supports these protocols: DICT, FILE, FTP, FTPS, GOPHER, GOPHERS, HTTP, HTTPS, IMAP, IMAPS, LDAP, LDAPS, MQTT, POP3, POP3S, RTMP, RTMPS, RTSP, ... TELNET or TFTP. The command is designed to work without user interaction.
+
+\textbf{Without using proxy}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ curl --noproxy `*' 
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Using proxy}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ curl -x proxy_url conn_url 
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplateIII}{Nota}
+Cuidado con las single quotes ('), pues latex no procesa bien el simbolo, y cuando lo introduces en una terminal rebienta. 
+\end{blocktemplateIII}
+
+\textbf{With specific timeout in seconds}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ curl --connect-timeout 5
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Not show content, only info}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ curl -I
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Force the protocol}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ -0,       --http1.0            Use HTTP 1.0
+            --http1.1            Use HTTP 1.1
+            --http2              Use HTTP 2
+            --http2-prior-knowledge Use HTTP 2 without HTTP/1.1 Upgrade
+            --http3              Use HTTP v3
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Target different port than 443 or 8080}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ curl domain:port
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Verbose}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ curl -v 
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{HTTPS Protocol}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ curl https://hostname
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Allow insecure connections, skip certificate validation}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ curl -k hostname
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Authentication}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ curl -u user_name:pwd hostname 
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Pass Headers}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ curl -H "Content-Type:application/json" hostname 
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{GET HTTP Requests}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ curl -XGET -H hostname 
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{PUT HTTP Requests}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ curl -XPUT hostname 
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{POST HTTP Requests}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ curl -XPOST hostname 
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{POST HTTP Requests}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ curl -XDELETE hostname 
+\end{verbatim}
+\end{codetemplate}
+
+\newpage
+\section{Proxy definition for binaries}
+Configurando el proxy en las variables de entorno de sistema con una nomenclatura concreta, hará que muchos binarios del sistema los utilicen para establecer sus conexiones. Como por ejemplo: docker, curl, nslookup...
+
+Incluir las siguientes variables en el fichero \verb|/etc/bash.bashrc|:
+\begin{codetemplate}{}
+\begin{verbatim}
+# Configure Default Proxy
+export http_proxy=http://yourproxyserver.com
+export https_proxy=http://yourproxyserver.com
+export HTTP_PROXY=http://yourproxyserver.com
+export HTTPS_PROXY=http://yourproxyserver.com
+export NO_PROXY=localhost
+export no_proxy=localhost
+\end{verbatim}
+\end{codetemplate}
+
+\newpage
+\section{Update System CAs (Certificates Authority)}
+Las CA's de sistema nos ayudaran a autenticar nuestro host en conexiones seguras por https. Para descargar CA's en Linux:
+
+\begin{codetemplate}{}
+\begin{verbatim}
+# Download CA certificates & store them in local directory /tmp/ca-sources.tar.gz
+$ curl -k https://url_to_CAs.tar.gz -o /tmp/ca-sources.tar.gz
+# Untar them into /usr/local/share/ca-certificates
+$ sudo tar xzvf /tmp/ca-sources.tar.gz -C /usr/local/share/ca-certificates
+# Update System Certificates
+$ sudo update-ca-certificates
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplateII}{Nota}
+Cuando lanzamos el comando sudo update-ca-certificates, este nos actualiza e instala las CA's a nivel de sistema. Si bien es cierto que busca en /usr/local/share/ca-certificates, por mucho que de ahi los borremos no los borrará del sistema, pues el sistema los coge de otro directorio.
+\end{blocktemplateII}
+
+\begin{blocktemplateIII}{Nota}
+WSL utiliza tanto recursos de Linux como de Windows, dependiendo que programa se ejecute, tomará las configuraciones de Windows, Linux o ambas. Por tanto, es imprescindible tener también los certificados bien instalados, configurados y actualizados en nuestro sistema Windows.
+\end{blocktemplateIII}
+
+\newpage
+\section{FQDN} \label{FQDN}
+El término Fully Qualified Domain Name (FQDN) se refiere a la dirección completa y única necesaria para tener presencia en Internet. Está compuesta por el nombre de host y el de dominio y se utiliza para localizar hosts específicos en Internet y acceder a ellos mediante la resolución de nombres. Este nombre de dominio único que contiene toda la información necesaria para poder acceder a una máquina a través de una red pública, como puede ser internet. A través de un FQDN un equipo es capaz de conectarse con cualquier otro.
+
+La estructura del FQDN viene determinada por el sistema de nombres de dominio (DNS) y está conformada por etiquetas. Cada etiqueta se corresponde con el nombre de un nivel en el espacio de nombres de dominio y está separada de la siguiente por un punto. Ha de constar de entre 1 y 63 caracteres, que pueden ser números, letras y guiones (aunque realmente los guiones no se pueden usar al comenzar una etiqueta) y el total de caracteres del FQDN no debe exceder los 255. 
+
+El Fully Qualified Domain Name consta como mínimo de tres etiquetas: el dominio de nivel superior, el nombre de dominio y el nombre de host. Se lee al revés.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{images/image11.PNG}
+    \label{FQDN Image}
+    \caption{Representación esquemática de la estructura del Fully Qualified Domain Name}
+\end{figure}
+
+\textbf{Ejemplo de un FQDN}
+\begin{verbatim}
+[Nombre de host].[Dominio].[TLD].[Raíz]
+\end{verbatim}
+\begin{verbatim}
+hosting.ionos.es
+\end{verbatim}
+\begin{enumerate}
+    \item La etiqueta del dominio raíz tras el punto permanece vacía
+    \item El \textbf{dominio de primer nivel:} en nuestro ejemplo es "\textit{.es}", dominio de nivel superior geográfico, también conocido por las siglas ccTLD (country code-top level domain). Frente a ellos se encuentran losTLD genéricos como .com o .org, también designados gTLD (generic top-level domain).
+    \item El \textbf{dominio de segundo nivel}, también conocido como nombre de dominio.  En el ejemplo se corresponde con "\textit{ionos}".
+    \item El \textbf{domino de tercer nivel}, en el extremo izquierdo, tenemos el nombre del host, en nuestro ejemplo "\textit{hosting}".
+    
+\end{enumerate}
+
+Los FQDN se suelen utilizar en cualquier interacción en Internet, ya que son más fáciles de recordar que las direcciones IP. Otro ejemplo www.wordpress.com
+
+
+Para más información consultad: \href{https://www.ionos.es/digitalguide/dominios/gestion-de-dominios/fully-qualified-domain-name/}{FQDN}
+/ \href{https://www.hostinger.es/tutoriales/fqdn}{FQDN 2}
+
+\newpage
+\section{Grep (Global search for Regular Expressions and Print out)}
+
+\begin{blocktemplate}{Nota}
+grep, egrep, fgrep, rgrep - print lines that match patterns.
+In addition, the variant programs egrep, fgrep and rgrep are the same as grep -E, grep -F, and grep -r, respectively.  These variants are deprecated, but are provided for backward compatibility.
+\end{blocktemplate}
+
+\subsection{Two variants of grep usage}
+\begin{enumerate}
+    \item \textbf{Use grep to search text in a file / files}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ grep "texto-buscado" <archivo/archivos>
+\end{verbatim}
+\end{codetemplate}
+
+    \item \textbf{Use grep to search text in the Terminal STDOUT}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ COMMAND [args...] | grep "texto-buscado"
+\end{verbatim}
+\end{codetemplate}
+\end{enumerate}
+El resultado de esto son las ocurrencias del patrón (por la línea en la que se encuentra) en los archivos / stdout. Si no existe una coincidencia, no se imprimirá ninguna salida en la terminal.
+
+
+\begin{blocktemplateII}{Nota}
+Las son necesarias para convertir a String. Si lo que le introducimos ya lo es no harian falta. Ejemplo:
+\begin{itemize}
+    \item \verb|grep alias file.txt|: No necesitamos comillas
+    \item \verb|grep "alias pepito" file.txt|: Si necesitamos comillas
+\end{itemize}
+\end{blocktemplateII}
+
+\subsection{Useful Flags}
+
+\textbf{liNe Number}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ grep -n ...
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Count, el numero de línes de coincidencia}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ grep -c ...
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{IgnoreCase, indiferencia mayusculas-minusculas}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ grep -i ...
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Before Context or Aftercontext}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ grep "text" file -A NUMBER_A -B NUMBER_B
+\end{verbatim}
+\end{codetemplate}
+Con este comando imprimimos las \verb|NUMBER_B| lineas antes (before-context) y las \verb|NUMBER_A| lineas después de la coincidencia (after-context).
+
+\textbf{Recursive Search}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ grep -R
+\end{verbatim}
+\end{codetemplate}
+Por defecto, grep no puede buscar directorios. Si tú intentas hacerlo, obtendrás un error ("Es un directorio"). Con la opción  -R, la búsqueda de archivos entre directorios y subdirectorios se vuelve posible.
+
+\textbf{Introduce "-"}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ grep -e "-loquesea" file
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ grep -- "-loquesea" file
+\end{verbatim}
+\end{codetemplate}
+
+\newpage
+\section{Helm}
+\textbf{Compilar}
+\newline Estando en el directorio que contiene el fichero Chart.yaml:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ helm lint .
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Prueba de despliegue Resources en Cluster with file}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ helm install -f ./values_ssp.yaml . --debug \
+--name-template standalone-11 --dry-run > output.yaml
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Prueba de despliegue Resources en Cluster with file}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ helm install -f ./values_ssp.yaml . --debug \
+--name-template standalone-11
+\end{verbatim}
+\end{codetemplate}
+
+\newpage
+\section{JSONPath}
+JSONPath is a query language for JSON, similar to XPath for XML. AlertSite API endpoint monitors let you use JSONPath in assertions to specify the JSON fields that need to be verified.
+
+\begin{blocktemplateIII}{Nota}
+Cuidado en este apartado con las single quotes (` '). Pues latex no procesa bien el simbolo, y cuando lo introduces en una terminal rebienta.
+\end{blocktemplateIII}
+
+\subsection{Basic Usage}
+A JSONPath expression specifies a path to an element (or a set of elements) in a JSON structure. \\ \\
+\textbf{Dot Notation}
+\begin{codetemplate}{}
+\begin{verbatim}
+$.store.book[0].title
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Bracket Notation}
+\begin{codetemplate}{}
+\begin{verbatim}
+$[`store'][`book'][0][`title']
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Mix}
+\begin{codetemplate}{}
+\begin{verbatim}
+[`store'].book[0].title
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplate}{Nota}
+Note that dots are only used before property names not in brackets.
+\end{blocktemplate}
+
+\begin{blocktemplateII}{Nota 2}
+The leading "\textbf{\textit{\$}}" represents the root object or array and can be omitted. For example, \textbf{\textit{\$.foo.bar}} and \textbf{\textit{foo.bar}} are the same, and so are \textbf{\textit{\$[0].status}} and \textbf{\textit{[0].status}}.
+\end{blocktemplateII}
+
+\begin{blocktemplateIII}{Nota 3}
+Using Bracket Notation be care to put \textbf{single quotes}, because double quotes are not accepted:
+\begin{verbatim}
+['name']
+\end{verbatim}
+\end{blocktemplateIII}
+
+\begin{blocktemplateIII}{Nota 4}
+JSONPath expressions, including property names and values, are case-sensitive.
+\end{blocktemplateIII}
+
+\textbf{Syntax Elements}
+\begin{itemize}
+    \item \verb|$|: The root object or array.
+    \item \verb|.property = [`property']|: Selects the specified property in a parent object.
+    \item \verb|[n]|: Selects the n-th element from an array. Indexes are 0-based.
+    \item \verb|[index1,index2,…]|: Selects array elements with the specified indexes. Returns a list.
+    \item \verb|..property|: Recursive descent: Searches for the specified property name recursively and returns an array of all values with this property name. Always returns a list, even if just one property is found.
+    \item \verb|*|: Wildcard selects all elements in an object or an array, regardless of their names or indexes. For example, address. "*" means all properties of the address object, and book[*] means all items of the book array.
+    \item \verb|[:n]|: Selects the first n elements of the array. Returns a list.
+    \item \verb|[-n]|: Selects the last n elements of the array. Returns a list.
+\end{itemize}
+
+\subsection{Filters}
+We can use some expression to filter the output of the JSON in function of parameters introduced in the syntax.
+\\
+\\
+\textbf{Syntax Elements}
+\begin{itemize}
+    \item \verb|[?(expression)]|: Filter expression. Selects all elements in an object or array that match the specified filter. Returns a list.
+    \item \verb|@|: Used in filter expressions to refer to the current node being processed.
+\end{itemize}
+
+\subsection{Example}
+\begin{codetemplate}{JSON Example}
+\begin{verbatim}
+{
+  "store": {
+    "book": [
+      {
+        "category": "reference",
+        "author": "Nigel Rees",
+        "title": "Sayings of the Century",
+        "price": 8.95
+      },
+      {
+        "category": "fiction",
+        "author": "Herman Melville",
+        "title": "Moby Dick",
+        "isbn": "0-553-21311-3",
+        "price": 8.99
+      },
+      {
+        "category": "fiction",
+        "author": "J.R.R. Tolkien",
+        "title": "The Lord of the Rings",
+        "isbn": "0-395-19395-8",
+        "price": 22.99
+      }
+    ],
+    "bicycle": {
+      "color": "red",
+      "price": 19.95
+    }
+  },
+  "expensive": 10
+}
+\end{verbatim}
+\end{codetemplate}
+
+\underline{Expressions}
+
+\begin{blocktemplate}{Nota}
+In all these examples, the leading \$. is optional and can be omitted.
+\end{blocktemplate}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$.store.* = [`store'][*]
+\end{verbatim}
+\end{codetemplate}
+\begin{itemize}
+    \item \textbf{Meaning:} All direct properties of store (not recursive).
+    \item \textbf{Result:}
+\begin{verbatim}
+[
+    "book": [
+        {
+            "category": "reference",
+            "author": "Nigel Rees",
+            "title": "Sayings of the Century",
+            ...
+        },
+        { ...
+        }
+    ],
+    "bicycle": {
+        "color": "red",
+        ...
+    }
+]
+\end{verbatim}
+\end{itemize}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$.store.bicycle.color = [`store'][`bicycle'][`color']
+\end{verbatim}
+\end{codetemplate}
+\begin{itemize}
+    \item \textbf{Meaning:} The color of the bicycle in the store.
+    \item \textbf{Result:} \verb|red|
+\end{itemize}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$.store..price = \$..price = ..[`price']
+\end{verbatim}
+\end{codetemplate}
+\begin{itemize}
+    \item \textbf{Meaning:} The prices of all items in the store.
+    \item \textbf{Result:} \verb+[8.95, 8.99, 22.99, 19.95]+
+\end{itemize}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$.store.book[*] = \$..book[*] = ..[`book'][*]
+\end{verbatim}
+\end{codetemplate}
+\begin{itemize}
+    \item \textbf{Meaning:} All books in the store.
+    \item \textbf{Result:}
+\begin{verbatim}
+[
+  {
+    "category":"reference",
+    "author":"Nigel Rees",
+    "title":"Sayings of the Century",
+    "price":8.95
+  },
+  {
+    "category":"fiction",
+    "athor":"J.R.R. Tolkien"
+    ...
+  }
+]
+\end{verbatim}
+\end{itemize}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$..book[*].title = ..[`book'][*][`title']
+\end{verbatim}
+\end{codetemplate}
+\begin{itemize}
+    \item \textbf{Meaning:} The title of all books in the store.
+    \item \textbf{Result:}
+\begin{verbatim}
+[   
+    Sayings of the Century, 
+    Moby Dick,
+    The Lord of the Rings 
+]
+\end{verbatim}
+\end{itemize}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$..book[0]
+\end{verbatim}
+\end{codetemplate}
+\begin{itemize}
+    \item \textbf{Meaning:} The first book.
+    \item \textbf{Result:}
+\begin{verbatim}
+[
+  {
+    "category":"reference",
+    "author":"Nigel Rees",
+    "title":"Sayings of the Century",
+    "price":8.95
+  }
+]
+\end{verbatim}
+
+\end{itemize}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$..book[0].title
+\end{verbatim}
+\end{codetemplate}
+\begin{itemize}
+    \item \textbf{Meaning:} The title of the first book.
+    \item \textbf{Result:} \verb+Sayings of the Century+
+\end{itemize}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$..book[0,1].title
+\end{verbatim}
+\end{codetemplate}
+\begin{itemize}
+    \item \textbf{Meaning:} The titles of the first two books.
+    \item \textbf{Result:} \verb+[Sayings of the Century, Moby Dick]+
+\end{itemize}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$..book[-1:].title
+\end{verbatim}
+\end{codetemplate}
+\begin{itemize}
+    \item \textbf{Meaning:} The title of the last book.
+    \item \textbf{Result:} \verb+The Lord of the Rings+
+\end{itemize}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$..book[?(@.author==`J.R.R. Tolkien')].title
+\end{verbatim}
+\end{codetemplate}
+\begin{itemize}
+    \item \textbf{Meaning:} The titles of all books by J.R.R. Tolkien (exact match, case-sensitive).
+    \item \textbf{Result:} It is a list because -n always returns a list. \verb|[The Lord of the rings]|
+\end{itemize}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$..book[?(@.isbn)]
+\end{verbatim}
+\end{codetemplate}
+\begin{itemize}
+    \item \textbf{Meaning:} All books that have the isbn property.
+    \item \textbf{Result:} \verb+[Moby Dick, The Lord of the Rings]+
+\end{itemize}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$..book[?(!@.isbn)]
+\end{verbatim}
+\end{codetemplate}
+\begin{itemize}
+    \item \textbf{Meaning:} All books without the isbn property.
+    \item \textbf{Result:} \verb+[Saying of the Century]+
+\end{itemize}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$..book[?(@.price < 10)].title
+\end{verbatim}
+\end{codetemplate}
+\begin{itemize}
+    \item \textbf{Meaning:} All books cheaper than 10 titles.
+    \item \textbf{Result:} \verb+[Sayings of the Century, Moby Dick]+
+\end{itemize}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$..book[?(@.price > \$.expensive)]
+\end{verbatim}
+\end{codetemplate}
+\begin{itemize}
+    \item \textbf{Meaning:} All expensive books.
+    \item \textbf{Result:} 
+\begin{verbatim}
+$ [
+    {
+      "category": "fiction",
+      "author": "J.R.R. Tolkien",
+      "title": "The Lord of the Rings",
+      "isbn": "0-395-19395-8",
+      "price": 22.99
+    }
+  ]
+\end{verbatim}
+\end{itemize}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$..book[?(@.category == `fiction' ||
+@.category == `reference')].title
+\end{verbatim}
+\end{codetemplate}
+\begin{itemize}
+    \item \textbf{Meaning:} All fiction and reference books titles.
+    \item \textbf{Result:} \verb|[Sayings of the Century, Moby Dick, The Lord of The Rings]|
+\end{itemize}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$..book[?(@.category != `fiction')]
+\end{verbatim}
+\end{codetemplate}
+\begin{itemize}
+    \item \textbf{Meaning:} All not fiction books.
+    \item \textbf{Result:}
+\end{itemize}
+\begin{verbatim}
+[
+  {
+    "category":"reference",
+    "author":"Nigel Rees",
+    "title":"Sayings of the Century",
+    "price":8.95
+  }
+]
+\end{verbatim}
+
+For more information about JSONPath, check the following \href{https://support.smartbear.com/alertsite/docs/monitors/api/endpoint/jsonpath.html}{page}
+
+\subsection{JSONPath K8s} \label{jsonpath k8s}
+JSONPath template is composed of JSONPath expressions enclosed by curly braces {}. Kubectl uses JSONPath expressions to filter on specific fields in the JSON object and format the output. In addition to the original JSONPath template syntax, the following functions and syntax are valid:
+\begin{itemize}
+    \item \verb|range, end|: iterate list. \verb|{range .items[*]}{.metadata.name}|
+    \item \verb|{"\n}, {"\t"}|: to write salto de linea or tab. \verb|{..metadata.name}{"\t"}{..matadata.image}|
+\end{itemize}
+
+\underline{Example 1} 
+\\
+\\
+Get all \textbf{containers} / \textbf{initContainers} running and their images used inside a \textbf{Pod} or declared in pod.spec of \textbf{ Deployment/Statefulset} . It is exactly the same changing little things. At least, it is showed in column view separed by tab.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ kc get RESOURCE_TYPE RESOURCE_NAME \
+-o jsonpath=`{range ..containers[*]}{.name}{"\t"}{.image}{"\n"}' \
+|sort|column -t
+\end{verbatim}
+\end{codetemplate}
+\begin{enumerate}
+    \item To choose between \textbf{Pod} or \textbf{Deploy/Sateful}: modify  \verb|RESOURCE_TYPE & RESOURCE_NAME|
+    \item To choose between \textbf{containers} or \textbf{initContainers}: modify the range.
+    \begin{itemize}
+        \item containers:  \verb|{range ..containers[*]}|
+        \item initContainers: \verb|{range ..initContainers[*]}|
+    \end{itemize}
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/image18.png}
+    \caption{Get all containers parsing a Pod JSON}
+    \label{parsing json 1}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.54]{images/image19.png}
+    \caption{Get all initContainers parsing a Deployment JSON}
+    \label{parsing json 2}
+\end{figure}
+
+\underline{Example 2} 
+\\
+\\
+Get all ports exposed by a Pod, Deployment or Statefulset.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ kc get RESOURCE_TYPE RESOURCE_NAME \ 
+-o jsonpath=`{range ..containers[*]}{.name}{"\t"}{.ports}{"\n"}' \ 
+|sort|column -t
+\end{verbatim}
+\end{codetemplate}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{images/image20.png}
+    \caption{Get all ports exposed in a Pod parsing a Pod JSON}
+    \label{parsing json 3}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{images/image21.png}
+    \caption{Get all ports exposed in a Pod parsing a Deployment JSON}
+    \label{parsing json 4}
+\end{figure}
+
+\underline{Example 3} 
+\\
+\\
+Get all Volume Mounts of container called \verb|CONTAINER_NAME| inside a Pod, Deployment or Statefulset.
+\begin{codetemplate}{}
+\begin{verbatim}
+$  kc get RESOURCE_NAME -o jsonpath=\
+`{range ..containers[?(@.name == "CONTAINER_NAME")]\
+.volumeMounts[*]}.{.name}{"\t"}{.mountPath}{"\n"}' \
+|sort|column -t
+\end{verbatim}
+\end{codetemplate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.35]{images/image23.png}
+    \caption{Get all volumeMounts in a container parsing a Deployment JSON}
+    \label{parsing json 5}
+\end{figure}
+
+\newpage
+\section{JQ}
+To parse into a beatufiul json format:
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$ cat file.json | jq '.'
+\end{verbatim}
+\end{codetemplate}
+
+
+\newpage
+\section{Localhost Networking}
+\subsection{Ports Exposed}
+
+Para saber que puertos tiene escuchando nuestro localhost:
+
+\begin{enumerate}
+    \item Using \verb|lsoft|
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo lsof -i -P -n
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo lsof -i -P -n | grep -i listen
+\end{verbatim}
+\end{codetemplate}
+
+    \item Using \verb|netstat|
+\begin{codetemplate}{}
+\begin{verbatim}
+$ netstat -putona | grep numero-de-puerto
+\end{verbatim}
+\end{codetemplate}
+
+\begin{itemize}
+    \item \textbf{p:} muestra las conexiones para el protocolo especificado que puede ser TCP o UDP
+    \item \textbf{u:} lista todos los puertos UDP
+    \item \textbf{t:} lista todos los puertos TCP
+    \item \textbf{o:} muestra los timers
+    \item \textbf{n:} muestra el numero de puerto
+    \item \textbf{a:} visualiza todas las conexiones activas del sistema
+\end{itemize}
+\end{enumerate}
+
+\begin{blocktemplate}{NOTE}
+\verb|netstat| command shows the system’s network information, like routing and sockets.
+\end{blocktemplate}
+
+\subsection{Localhost Adresses}
+
+\textbf{De puertas para adentro}
+\begin{enumerate}
+    \item \textbf{Ipv4:}
+    \begin{itemize}
+        \item localhost
+        \item 127.0.0.1
+    \end{itemize}
+    \item \textbf{Ipv6}
+    \begin{itemize}
+        \item 0:0:0:0:0:0:0:1
+        \item ::1
+    \end{itemize}
+\end{enumerate}
+
+\textbf{De puertas para fuera}
+\begin{itemize}
+    \item \verb|ifconfig|: displays the system’s network interfaces and their configurations. In this case our localhost direction to outside is 172.21.220.125/20 (172.21.220.125 with mask 255.255.240.0)
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ifconfig
+\end{verbatim}
+\end{codetemplate}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.45]{images/image35.PNG}
+    \caption{ifconfig}
+\end{figure}
+    
+    \item \verb|ip -br addr list eth0|
+    \begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.45]{images/image36.PNG}
+    \caption{ip -br}
+\end{figure}
+\end{itemize}
+
+\begin{blocktemplateIII}{Nota}
+\begin{codetemplate}{Netmask}
+\begin{verbatim}
+24 (number of 1's):
+255.255.255.0
+11111111 11111111 11111111 00000000
+
+20 (number of 1's):
+255.255.240.0
+11111111 11111111 11110000
+\end{verbatim}
+\end{codetemplate}
+\end{blocktemplateIII}
+
+
+\newpage
+\section{Others}
+
+\textbf{Netcat}
+\begin{codetemplate}
+\begin{verbatim}
+$ nc -zv hostname port
+\end{verbatim}
+\end{codetemplate}
+
+
+\textbf{Telnet}
+\begin{codetemplate}
+\begin{verbatim}
+$ telnet hostname port
+\end{verbatim}
+\end{codetemplate}
+
+
+\newpage
+\section{Source}
+\begin{codetemplate}
+\begin{verbatim}
+$ source filename [arguments]
+\end{verbatim}
+\end{codetemplate}
+
+Cuando se ejecuta desde una shell un comando o un script, se crea un subproceso (proceso hijo) de la shell que ejecuta el comando o el script (proceso padre).
+
+Si el script que ejecuta el proceso hijo crea o modifica alguna variable de entorno, esos cambios o variables desaparecen cuando finaliza el comando o script.
+
+Si deseamos que dichos cambios permanezcan, podemos utilizar el comando de Bash source. Este comando hace que el proceso o comando se ejecute sin crear ningún proceso hijo, de forma que los cambios efectuados en las variables de entorno y demás, se mantengan al finalizar el archivo.
+
+More information: \url{Source in Bash}
+
+\textbf{Example:}
+\newline
+\begin{codetemplate}{script.sh}
+\begin{verbatim}
+#!/bin/bash
+
+export RHT_OCP4_DEV_USER="nwmwsv"
+export RHT_OCP4_DEV_PASSWORD="1ecc25feca97466e81c5"
+export RHT_OCP4_MASTER_API="https://api.eu410.prod.nextcle.com:6443"
+export Console_Web_Application=\
+"https://console-openshift-console.apps.eu410.prod.nextcle.com"
+export Cluster_Id="5650752a-edc7-4546-a1ff-8900d7e8e35b"
+\end{verbatim}
+\end{codetemplate}
+
+\begin{enumerate}
+    \item Si lo ejecutamos con \verb|./|
+    \begin{itemize}
+        \item En primer lugar hay que darle permisos
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.45]{images/image13.PNG}
+        \label{./bash}
+    \end{figure}
+        \item En segundo lugar, como bien prevehiamos, no se guardan los cambios en la terminal, pues se ejecuta un subproceso por detrás el cual nunca mergea cambios a nivel de sistema en el proceso padre.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/image12.PNG}
+        \label{./bash 2}
+    \end{figure}
+    \end{itemize}
+    \item Si lo ejecutamos con \verb|bash/sh|
+        \begin{itemize}
+            \item En este caso, no son necesarios permisos, pues se pasa como argumento del ejecutable bash.
+            \item En segundo lugar, como bien prevehiamos, sucede lo mismo que con ./, no se guardan los cambios en el terminal (proceso padre).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.45]{images/image14.PNG}
+        \label{bash scrip.sh}
+    \end{figure}
+    \end{itemize}
+    \item \textbf{Si lo ejecutamos con source}
+        \begin{itemize}
+            \item En este caso, no son necesarios permisos, pues se pasa como argumento del ejecutable source.
+            \item En segundo lugar, como bien prevehiamos, los cambios se transmiten al proceso padre! Y por tanto se guardan en nuestro terminal.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.45]{images/image15.PNG}
+        \label{source scrip.sh}
+    \end{figure}
+    \end{itemize}
+\end{enumerate}
+
+\newpage
+\section{Tar Command}
+The tar command on Linux is often used to create .tar.gz or .tgz archive files, or extract them into local directories.
+\subsection{Compress}
+\textbf{Basics}
+\newline
+Use the following command to compress an entire directory or a single file on Linux. It’ll also compress every other directory inside a directory you specify–in other words, it works recursively.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ tar -czvf name-of-archive.tar.gz /path/to/directory-or-file
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Compress multiple files/directories in a unique archive}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ tar -czf FILENAME.tar.gz path/to/dir1 path/to/file1 path/to/dir2 ...
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Exclude files or directories}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ tar -czf FILENAME.tar.gz path/to/dir1 \
+--exclude=/path/to/dir1/excludeddir \
+path/to/dir2 --exclude=/path/to/dir1/*.mp4
+\end{verbatim}
+\end{codetemplate}
+
+\subsection{Extract}
+\textbf{Basics}
+\newline
+Once you have an archive, you can extract it with the tar command. The following command will extract the contents of archive.tar.gz to the current directory.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ tar -xzvf archive.tar.gz
+\end{verbatim}
+\end{codetemplate}
+\textbf{Choose the extract directory}
+\newline
+You may want to extract the contents of the archive to a specific directory. You can do so by appending the -C switch to the end of the command:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ tar -xzvf archive.tar.gz -C /path/to/directory/to/extract
+\end{verbatim}
+\end{codetemplate}
+
+More information in: \href{https://www.howtogeek.com/248780/how-to-compress-and-extract-files-using-the-tar-command-on-linux/}{How-To Geek tar}
+
+Here’s what those switches actually mean:
+
+\begin{itemize}
+    \item \textbf{-c:} \textbf{c}reate an archive
+    \item \textbf{-z:} compress into g\textbf{z}ip
+    \item \textbf{-v:} \textbf{v}erbose [removable]
+    \item \textbf{-f:} allows you to specify the FILENAME \textbf{filename} of archive
+\end{itemize}
+
+\begin{blocktemplateIII}{Nota}
+-f switch must be the last one, because is the flag which specifies the name of the file indicated after.
+\end{blocktemplateIII}
+
+\subsection{More flags}
+\begin{itemize}
+    \item \textbf{-x:} Extract the archive 
+    \item \textbf{-t:} displays or lists files in archived file 
+    \item \textbf{-u:} archives and adds to an existing archive file 
+    \item \textbf{-A:} concatenates the archive files 
+    \item \textbf{-j:} filter archive tar file using tbzip
+    \item \textbf{-W:} verify a archive file
+    \item \textbf{-r:} update or add file or directory in already existed .tar file
+\end{itemize}
+
+\newpage
+\section{Vim}
+
+\subsection{Vim Config}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo vim ~/.vimrc
+\end{verbatim}
+\end{codetemplate}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+" Disable compatibility with vi which can cause unexpected issues.
+set nocompatible
+
+" Enable type file detection. Vim will be able to try to detect the type of file in use.
+filetype on
+
+" Enable plugins and load plugin for the detected file type.
+filetype plugin on
+
+" Load an indent file for the detected file type.
+filetype indent on
+
+" Set authomatic indentation
+" set autoindent
+
+" Turn syntax highlightin
+syntax on
+
+" Add numbers to each line on the left-hand side.
+set number
+
+" Highlight cursor line underneath the cursor horizontally.
+set cursorline
+
+" Highlight cursor line underneath the cursor vertically.
+set cursorcolumn
+
+" Set shift width to 4 spaces.
+set shiftwidth=4
+
+" Set tab width to 4 columns.
+set tabstop=4
+
+" Use space characters instead of tabs.
+set expandtab
+
+" Colorful (),[],{}
+set showmatch
+
+" While searching though a file incrementally highlight matching characters as you type.
+set incsearch
+
+" Ignore capital letters during search.
+set ignorecase
+
+" Use highlighting when doing a search.
+set hlsearch
+
+" Enable auto completion menu after pressing TAB.
+set wildmenu
+
+" Make wildmenu behave like similar to Bash completion.
+set wildmode=list:longest
+
+" Enable black theme
+" set background=dark
+
+" Tab helper
+" set smarttab
+\end{verbatim}
+\end{codetemplate}
+
+If you want to persistthis configuration when using \verb|sudo vim| you will need to do something a little bit tricky:
+
+\begin{itemize}
+    \item Create an alias in your \verb|~/.bashrc| file:
+\begin{codetemplate}{}
+\begin{verbatim}
+alias svim='sudo -E vim'
+\end{verbatim}
+\end{codetemplate}
+
+    \item Use always
+\begin{codetemplate}{}
+\begin{verbatim}
+$ svim <file>
+\end{verbatim}
+\end{codetemplate}
+\end{itemize}
+
+\subsection{Hacer y deshacer}
+\textbf{undo:} para deshacer acciones
+\begin{codetemplate}{vim editor - Command Mode}
+\begin{verbatim}
+:u
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{redo:} para volver a hacer acciones
+\begin{codetemplate}{vim editor - Normal Mode}
+\begin{verbatim}
+Ctrl + r
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}{vim editor - Normal Mode}
+\begin{verbatim}
+:r
+\end{verbatim}
+\end{codetemplate}
+
+\subsection{Borrar lineas enteras}
+\begin{codetemplate}
+\begin{verbatim}{vim editor - Normal Mode}
+dd + intro
+\end{verbatim}
+\end{codetemplate}
+
+
+\subsection{Buscar Ocurrencias}
+\textbf{Para buscar}
+\begin{codetemplate}
+\begin{verbatim}{vim editor - Normal Mode}
+/<palabra>
+\end{verbatim}
+\end{codetemplate}
+\textbf{Para ir a cualquier ocurrencia:} Intro
+\\\\
+\textbf{Para pasar entre ocurrencias:} n
+\\\\
+\textbf{Si queremos hacerlo insensible a minusculas y mayusculas:} antes de buscar, ejecutar lo siguiente.
+\begin{codetemplate}
+\begin{verbatim}{vim editor - Normal Mode}
+:set ignorecase
+\end{verbatim}
+\end{codetemplate}
+
+\newpage
+\section{WSL}
+\subsection{Remove all old dependencies}
+\begin{enumerate}
+    \item Remove all Ubuntu packages in Windows - \textbf{Add or remove programs}
+    \item Remove all WSL packages in Windows - \textbf{Add or remove programs}
+    \item Go to Powershell / Cmder
+    \item Remove the current distros:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ wsl --unregister
+\end{verbatim}
+\end{codetemplate}
+
+\item Install WSL:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ wsl --install
+\end{verbatim}
+\end{codetemplate}
+
+    \item Install WSL:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ wsl --install
+\end{verbatim}
+\end{codetemplate}
+
+    \item Check WSL available distros, if there is anyone, remove it using \verb|wsl --unregister <DISTRO>|
+\begin{codetemplate}{}
+\begin{verbatim}
+$ wsl -l
+\end{verbatim}
+\end{codetemplate}
+
+    \item Install the desired distro
+\begin{codetemplate}{}
+\begin{verbatim}
+$ wsl --install -d <DISTRO_NAME>
+\end{verbatim}
+\end{codetemplate}
+\end{enumerate}
+
+
+
+\newpage
+\section{Cat}
+Cat nos va a permitir ver el contenido de ficheros sin abrirlos, crear ficheros si no existen o redireccionar salidas del terminal.
+
+\begin{itemize}
+    \item Basic usage: mostrar el contenido de un fichero
+\begin{codetemplate}{}
+\begin{verbatim}
+$ cat test
+\end{verbatim}
+\end{codetemplate}
+
+    \item Mostrar contenido de test y test2
+\begin{codetemplate}{}
+\begin{verbatim}
+$ cat test1 test2
+\end{verbatim}
+\end{codetemplate}
+
+    \item Nos añade el contenido de test2 en el fichero test1, si habia contenido sobreescribe, si no había nada, crea el nuevo fichero
+\begin{codetemplate}{}
+\begin{verbatim}
+$ cat test1 > test2
+\end{verbatim}
+\end{codetemplate}
+
+    \item Para que nos añada el contenido de test2 en el final del fichero test1, sin sobreescribir lo que había
+\begin{codetemplate}{}
+\begin{verbatim}
+$ cat test1 >> test2
+\end{verbatim}
+\end{codetemplate}
+
+    \item Show line number
+\begin{codetemplate}{}
+\begin{verbatim}
+$ cat -n file
+\end{verbatim}
+\end{codetemplate}
+
+    \item Para \textbf{escribir en un fichero el conenido que queramos} (ACABAR CON CTRL+D)
+\begin{codetemplate}{}
+\begin{verbatim}
+$ cat > filename
+\end{verbatim}
+\end{codetemplate}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.7]{images/image1.png}
+    \caption{amazing cat}
+\end{figure}
+
+\newpage
+\section{SSH}
+
+\subsection{What is SSH?}
+
+SSH, also known as Secure Shell or Secure Socket Shell, is a network protocol that gives users, particularly system administrators, a secure way to access a computer over an unsecured network.  Secure Shell provides strong password authentication and public key authentication, as well as encrypted data communications between two computers connecting over an open network, such as the internet.
+
+In addition to providing strong encryption, SSH is widely used by network administrators to manage systems and applications remotely, enabling them to log in to another computer over a network, execute commands and move files from one computer to another.
+
+
+The most basic use of SSH is to connect to a remote host for a terminal session. The form of that command is the following:
+\begin{itemize}
+    \item IP:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ssh user_name@host_IP
+\end{verbatim}
+\end{codetemplate}
+    \item Hostname:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ssh user_name@SSHserve.example.com
+\end{verbatim}
+\end{codetemplate}   
+\end{itemize}
+
+
+The SSH key command instructs your system that you want to open an encrypted Secure Shell Connection. \verb|user_name| represents the account you want to access. For example, you may want to access the \verb|root| user or \verb|acampos| user.
+
+\begin{blocktemplate}{NOTE}
+To connect via ssh using a user, it is needed to have this user created in the host machine.
+
+\begin{itemize}
+    \item \textbf{host machine:} refers to the remote server you are trying to access.
+    \item \textbf{client machine:} refers to the server you are using to access the host.
+\end{itemize}
+\end{blocktemplate}
+
+For the first time negotiating a connection between the local host and the server, the user will be prompted with the remote host's public key fingerprint and prompted to connect.
+
+\begin{codetemplate}{}
+\begin{verbatim}
+The authenticity of host 'sample.ssh.com' cannot be established.
+ DSA key fingerprint is 01:23:45:67:89:ab:cd:ef:ff:fe:dc:ba:98:76:54:32:10.
+ Are you sure you want to continue connecting (yes/no)?
+\end{verbatim}
+\end{codetemplate}
+
+Answering yes to the prompt will cause the session to continue, and the host key is stored in the local system's \verb|known_hosts| file. This is a hidden file, stored by default in a hidden directory, called \verb|/.ssh/known_hosts|, in the user's home directory. Once the host key has been stored in the \verb|known_hosts| file, the client system can connect directly to that server again without need for any approvals; the host key authenticates the connection.
+
+\begin{figure}[H]
+    \includegraphics[width=\textwidth]{images/ssh1.png}
+    \centering
+\end{figure}
+
+Present in all data centers, SSH ships by default with every Unix, Linux and Mac server. SSH connections have been used to secure many different types of communications between a local machine and a remote host, including secure remote access to resources, remote execution of commands, delivery of software patches, and updates and other administrative or management tasks, manage routers, server hardware, virtualization platforms, operating systems (OSes), and inside systems management and file transfer applications.
+
+Secure Shell is used to connect to servers, make changes, perform uploads and exit, either using tools or directly through the terminal. SSH keys can be employed to automate access to servers and often are used in scripts, backup systems and configuration management tools.
+
+\begin{blocktemplateI}{NOTE}
+
+SSH operates on \textbf{TCP port 22} by default (though SSH port can be changed if needed). The host (server) listens on port 22 (or any other SSH assigned port) for incoming connections. It organizes the secure connection by authenticating the client and opening the correct shell environment if the verification is successful.
+\\\\
+It is hardly recommended to change the port in which the host machine listen, because to let port 22 is more easily to enter the machine without authorization.
+\end{blocktemplateI}
+
+\subsection{How to authenticate via SSH?}
+
+\subsubsection{Default user-password authentication method}
+
+By default SSH protocol doesn't use public key cryptography for authenticating hosts and users. It still uses the \textbf{Linux user-password authentication method}, so you only have to pass the \verb|username| of the Linux user via the ssh command and introduce the \verb|password| of this user:
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ssh -P=custom_port linux_username@hostname_or_ip
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplate}{NOTE}
+ If you run the command without specifying user, ssh will take your Linux current \verb|username|.
+\end{blocktemplate}
+
+\subsubsection{Public Key authentication method}
+
+Generally, the SSH service is configured to use public key cryptography for authenticating hosts and users. SSH introduced public key authentication as a more secure alternative to the older \verb|.rhosts| authentication. It improved security by avoiding the need to have password stored in files, and eliminated the possibility of a compromised server stealing the user's password.
+
+However, SSH keys are authentication credentials just like passwords. Thus, they must be managed somewhat analogously to user names and passwords. They should have a proper termination process so that keys are removed when no longer needed.
+
+\subsubsection{Generating public and private keys in our host}
+For that reason, we should generate SSH public and private key on our client and authorize them into the host.
+
+Depending on the technology of the host you want to connect, you need to create the keys:
+
+\begin{itemize}
+    \item \textbf{rsa:} an old algorithm based on the difficulty of factoring large numbers. A key size of at least 2048 bits is recommended for RSA; 4096 bits is better. All SSH clients support this algorithm.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ssh-keygen -t rsa -b 4096 -C "your_email@example.com" 
+\end{verbatim}
+\end{codetemplate}
+    \item \textbf{ed25519:} this is a new algorithm added in OpenSSH. Support for it in clients is not yet universal.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ssh-keygen -t ed25519 -C "your_email@example.com"
+\end{verbatim}
+\end{codetemplate}
+\end{itemize}
+
+\begin{blocktemplateIII}{WARNING}
+For SSH to recognize the SSH keys they should be stored in:
+\begin{codetemplate}{}
+\begin{verbatim}
+~/.ssh/
+\end{verbatim}
+\end{codetemplate}
+\begin{figure}[H]
+    \includegraphics[width=\textwidth]{images/ssh2.png}
+    \centering
+\end{figure}
+Also, \textbf{rsa keys} should have the \textbf{permissions} you see in the image above, if not, it will not be valid to authenticate in any server. If you have generated the keys, they are generated with the correct permissions, but if you have copied, it can be wrong.
+\end{blocktemplateIII}
+
+\begin{blocktemplateII}{NOTE}
+By default, when you stablish ssh connection, it uses the following private keys names:
+\begin{itemize}
+    \item \verb|~/.ssh/id_ecdsa|
+    \item \verb|~/.ssh/id_ecdsa_sk|
+    \item \verb|~/.ssh/id_ed25519|
+    \item \verb|~/.ssh/id_ed25519_sk|
+    \item \verb|~/.ssh/id_xmss|
+    \item \verb|~/.ssh/id_xmss_sk|
+    \item \verb|~/.ssh/id_dsa|
+    \item \verb|~/.ssh/id_rsa|
+\end{itemize}
+\end{blocktemplateII}
+
+For more information, check the documentation of \href{https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent}{how to do if for github servers}.
+
+
+\subsubsection{Appending the Public Key into the authorized\_keys of the Server}
+To use public key authentication, the public key must be \textbf{installed in the} \verb|authorized_keys| file of the server. This can be conveniently done using the \verb|ssh-copy-id tool|. Like this:
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ssh-copy-id -i ~/.ssh/my_ssh_key.pub user_name@hostname
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplateIII}{WARNING}
+With the command above, we will append the host \textbf{pubkey} in the \verb|authorized_keys| file of the server.
+\end{blocktemplateIII}
+
+Once the public key has been configured on the server, the server will allow any connecting user that has the private key to log in. During the login process, the client proves possession of the private key by digitally signing the key exchange.
+
+\begin{blocktemplateII}{NOTE}
+For git you should do it different, just adding your public ssh key in the GUI, accessing to your profile settings. You can follow the \href{https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account}{Official Documentation}
+\end{blocktemplateII}
+
+\subsection{SFTP}
+
+FTP, or “File Transfer Protocol” was a popular unencrypted method of trans-
+ferring files between two remote systems.
+
+SFTP, which stands for SSH File Transfer Protocol, or Secure File Transfer
+Protocol, is a separate protocol packaged with SSH that works in a similar way
+but over a secure connection. The advantage is the ability to leverage a secure
+connection to transfer files and traverse the filesystem on both the local and
+remote system.
+
+In almost all cases, SFTP is preferable to FTP because of its underlying security
+features and ability to piggy-back on an SSH connection. FTP is an insecure
+protocol that should only be used in limited cases or on networks you trust.
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sftp -oPort=custom_port user_name@host_ip_or_hostname
+\end{verbatim}
+\end{codetemplate}
+
+\newpage
+\section{Find}
+
+
+\begin{itemize}
+    \item  Buscar ficheros desde la raiz con el nombre "linux"
+\begin{codetemplate}{}
+\begin{verbatim}
+$ find  / -name "linux"
+\end{verbatim}
+\end{codetemplate}
+    \item  Buscar ficheros desde la raiz con el nombre "linux" y listarlos
+\begin{codetemplate}{}
+\begin{verbatim}
+$ find  / -name "linux" -ls
+\end{verbatim}
+\end{codetemplate}
+ 
+    \item Buscar dentro del directorio /etc/config/ del sistema de todos los ficheros y directorios con el nombre "linux" sin importar mayúsculas y minúsculas
+\begin{codetemplate}{}
+\begin{verbatim}
+$ find  /etc/config/ -type d -name "linux"
+\end{verbatim}
+\end{codetemplate}
+    \item Buscar desde el directorio donde nos encontramos los ficheros cuyo nombre contienen la cadena "Thr"
+\begin{codetemplate}{}
+\begin{verbatim}
+$ find . -name "*Thr*" 
+\end{verbatim}
+\end{codetemplate}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.7]{images/image3.png}
+    \caption{use of find}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.7]{images/image4.png}
+    \caption{another use of find}
+\end{figure}
+
+\begin{blocktemplateII}{NOTE}
+Las comillas en estos casos son opcionales, pues como siempre, tan solo sirven para marcar string
+\end{blocktemplateII}
+
+\newpage
+\section{Sed (Stream Editor)}
+
+ It is a very essential tool for text processing, specifically it is common used for text replacement. Con Sed podemos editar archivos, incluso sin abrirlos, de manera individual o masiva. Dicho sea, que esta forma, es mucho más rápida para encontrar y reemplazar algo en un archivo de manera manual.
+
+ Print the content of "fichero.txt" replacing the first occurrence of the string "Microsoft Windows" by "GNU Linux" in the file "fichero.txt"
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sed 's/Microsoft Windows/GNU Linux/' fichero.txt
+\end{verbatim}
+\end{codetemplate}
+
+Save the changes in the file:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sed -i 's/Microsoft Windows/GNU Linux/' fichero.txt
+\end{verbatim}
+\end{codetemplate}
+
+ Replace all the occurrences of the string "Microsoft Windows" by "GNU Linux" in the file "fichero.txt" and save.
+ \begin{codetemplate}{}
+\begin{verbatim}
+$ sed -i 's/Microsoft Windows/GNU Linux/g' fichero.txt
+\end{verbatim}
+\end{codetemplate}
+
+ Replace just the 3rd occurrence of "Microsoft Windows" by "GNU Linux" in the text and save
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sed 's/Microsoft Windows/GNU Linux/3g' fichero.txt
+\end{verbatim}
+\end{codetemplate}
+
+Replace the string "Microsoft Windows" just in line 1:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sed '1 s/Microsoft Windows/GNU Linux/' fichero.txt
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplate}{NOTE}
+By default sed is \textbf{case SENSITIVE} but to change it by case insensitive, you can add \verb|I| at the end of the REGEX:
+ \begin{codetemplate}{}
+\begin{verbatim}
+$ sed -i 's/Microsoft Windows/GNU Linux/gI' fichero.txt
+\end{verbatim}
+\end{codetemplate}
+\end{blocktemplate}
+
+\begin{blocktemplateIII}{WARNING}
+Sed will replace all the string matches, without differentiating if it is completed or partial, for example:
+\begin{figure}[H]
+    \includegraphics[width=\textwidth]{images/sed.png}
+    \centering
+\end{figure}
+
+To replace the exact match you should use spaces, \textbf{in REGEX} \verb|space=\s|:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sed 's/Alex\s/Claudia /g'
+\end{verbatim}
+\end{codetemplate}
+\end{blocktemplateIII}
+
+For more information:
+\href{https://www.ochobitshacenunbyte.com/2019/05/28/uso-del-comando-sed-en-linux-y-unix-con-ejemplos/}{Uso del Comando Sed} 
+
+\newpage
+\section{Docker Desktop}
+
+\begin{itemize}
+    \item Docker desktop corre en nuestro Ubuntu desde Windows. Por tanto, si queremos que el Docker de nuestro Ubuntu tenga los certificados necesarios para conectarse a los recursos de nuestra empresa, debemos tener los certificados descargados, actualizados e instalados en nuestro sistema Windows nativo.
+    \item Desde un terminal rellenamos el contenido del fichero de configuración de docker \verb|~/.docker/config.json|:
+\begin{codetemplate}{\~/.docker/config.json}
+\begin{verbatim}
+{
+  "auths": {
+    "docker-registry.cloud.yourcompany.com": {}
+  },
+  "credsStore": "desktop.exe",
+  "proxies": {
+    "default": {
+      "httpProxy": "http://urltoproxy",
+      "httpsProxy": "http://urltoproxy/"
+    }
+  }
+}
+\end{verbatim}
+\end{codetemplate}
+
+    \item En Docker Engine modificar el fichero que ahí introducimos por el siguiente:
+\begin{codetemplate}{}
+\begin{verbatim}
+{
+  "builder": {
+    "gc": {
+      "defaultKeepStorage": "20GB",
+      "enabled": true
+    }
+  },
+  "experimental": false,
+  "features": {
+    "buildkit": false
+  },
+  "insecure-registries": [
+    "docker-registry.cloud.yourcompany.com"
+  ]
+}
+\end{verbatim}
+\end{codetemplate}
+
+    \item Ejecutar el comando para logearnos contra el registry que hayamos escogido:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ docker login -u USER -p PASSWORD docker-registry.cloud.yourcompany.com
+\end{verbatim}
+\end{codetemplate}
+
+    \item Probar el acceso al registry:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ docker pull docker-registry.cloud.yourcompany.com/catalog/paas/j
+\end{verbatim}
+\end{codetemplate} 
+\end{itemize}
+
+\newpage
+\section{Base64 Encoding}
+\textbf{Code}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ echo -n $PASSWORD_CLEAR | base64
+\end{verbatim}
+\end{codetemplate}
+\textbf{Decode}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ echo -n $PASSWORD_CODED | base64 -d
+\end{verbatim}
+\end{codetemplate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{images/base64.png}
+\end{figure}
+
+\newpage
+\section{Tmux}
+
+Tmux, short for "Terminal Multiplexer," is a powerful command-line tool that enhances the capabilities of your terminal sessions. It allows you to organize multiple terminal windows or sessions within a single terminal window, effectively turning your terminal into a multi-pane workspace.
+
+With Tmux, you can create multiple independent terminal sessions within a single window. This means you can work on different tasks or projects simultaneously without cluttering your desktop with multiple terminal windows.
+
+As well tmux enable separate the execution from terminal, so if you lose the connection, what you launched continues executing.
+
+\subsection{Arguments}
+
+\textbf{Configuration File}
+
+The configuration file is passed through arguments:
+\begin{codetemplate}
+\begin{verbatim}
+$ tmux -f /path/to/file
+\end{verbatim}
+\end{codetemplate}
+
+What we can do is generate a file in \verb|/tmp/custom-tmux.conf| as follows:
+The configuration file is passed through arguments:
+
+\begin{codetemplate}{/tmp/custom-tmux.conf}
+\begin{verbatim}
+set -g history-limit 10000
+setw -g mode-keys vi
+
+# MAJOR ops
+set-option -g prefix C-a
+unbind C-b
+bind-key C-a last-window
+
+
+# Set status bar
+set -g status-left-length 30
+set -g status-bg black
+set -g status-fg white
+set -g status-left "#[fg=green]#H"
+set -g status-right "#[fg=yellow]#(uptime | awk -F\: '{print $5}')"
+setw -g monitor-activity on
+set -g visual-activity on
+\end{verbatim}
+\end{codetemplate}
+
+In tmux, when we want to go to \textbf{command mode}, by default we need to use \textbf{Ctrl+b}. But we are going to configurate it as \verb|screen|, with \textbf{Ctrl+a}, it is configured in the config file.
+
+\textbf{-2}
+
+tells Tmux to start in 256-color mode. Tmux supports both 256-color and 16-color modes for terminal color support. The -2 option enables the 256-color mode.
+
+\begin{codetemplate}
+\begin{verbatim}
+$ tmux -f /path/to/file -2
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{-L [socket\_name]}
+
+Sets the name of the socket used by the tmux server. The socket is a communication endpoint that allows different processes to communicate with each other, in this case, allowing the tmux client (the terminal you're using) to communicate with the tmux server (the process managing your terminal sessions).
+
+\begin{codetemplate}
+\begin{verbatim}
+$ tmux -f /path/to/file -2 -L test-tmux
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{attach}
+
+Attach to tmux session X, it is used when you want to join an already created tmux session:
+
+\begin{codetemplate}
+\begin{verbatim}
+$ tmux -f /path/to/file -2 -L attach
+\end{verbatim}
+\end{codetemplate}
+
+\subsection{Commands Inside tmux}
+\textbf{General}
+\begin{table}[H]
+\begin{tabular}{| c  |c  |}
+\hline
+\textbf{Command} & \textbf{What it does?} \\ \hline
+CTRL-a c & New tmux "tab"/session \\
+CTRL-a n & Next “tab” \\
+CTRL-a p & Prev “tab” \\
+CTRL-a \verb|#N| & Next “tab” \\
+exit & exit current tab \\
+CTRL-d & exit current tab \\
+CTRL-a , & change current tab name \\
+CRTL-a d & de-attach tmux \\
+CTRL-a \verb|&| & Destroy current tab \\
+\hline
+\end{tabular}
+\end{table}
+
+\textbf{Sppliting}
+\begin{table}[H]
+\begin{tabular}{| c  |c  |}
+\hline
+\textbf{Command} & \textbf{What it does?} \\ \hline
+CTRL-a “ & New tmux "tab"/session \\
+CTRL-a \% & Next “tab” \\
+CTRL-a \verb|<arrow-keys>| & Prev “tab” \\
+CTRL-a CTRL-\verb|<arrow-keys>| & Next “tab” \\
+exit & exit current tab \\
+CTRL-a x & exit current tab \\
+CTRL-a CTRL-o & change current tab name \\
+CTRL-a q & de-attach tmux \\
+CTRL-a META-o & de-attach tmux \\
+CTRL-a space \verb|&| & Destroy current tab \\
+\hline
+\end{tabular}
+\end{table}
+
+\newpage
+\section{Others}
+\subsection{Ubuntu vs RH7}
+Ubuntu es una distribución de Linux que se basa en un kernel Debian, lo que significa que no funciona exactamente igual que otras distribuciones con otros kernel. RH7 al igual que Centos (Open Source) trabajan con un kernel diferente y por tanto los comandos son diferentes. Por ejemplo el gestor de paquetes de Debian es apt-get y el de RH7 es yum.
+
+\subsection{Vagrant}
+Vagrant is a tool for building and managing virtual machine environments in a single workflow.
+
+\begin{itemize}
+    \item \textbf{vagrant global-status:} nos muestra el estado de todas las maquinas vagrant que tenemos corriendo. Ojo! \textcolor{red}{This data is cached and may not be completely up-to-date (use "vagrant global-status \texttt{--}prune" to prune invalid entries)}.
+    \item \textbf{vagrant global-status \texttt{--}prune:} same as before, but up-to-date.
+   \item \textbf{vagrant status vagrant\_id or vagrant\_name:} shows the status of the vagrant with "vagrant\_id" or "vagrant\_name" (vagrant\_name == cloudlabxxx)
+   \item \textbf{vagrant up vagrant\_name:} initialize a new vagrant with the id "vagrant\_id", it can take a lot of time (15 minutes).
+   \item \textbf{vagrant halt vagrant\_id or vagrant\_name:} stops the vagrant
+   \item \textbf{vagrant destroy -f vagrant\_id or vagrant\_name:} destroy the vagrant with the id "vagrant\_id", you lose all your configurations, but not your data into /vagrant.
+   \item \textbf{ps -ef \texttt{|} grep cloudlabxxx:} show the processes running in vagrant.
+   \item \textbf{kill -9 process\_id:} kill the process with "process\_id"
+\end{itemize}
+
+\subsection{Red Had Package Installer}
+\subsubsection{RPM}
+\textbf{RPM (Red Hat Package Manager)} is a free open and \textbf{powerful package management system}. The name refers to file format \textbf{.rpm} and the package manager program itself. An RPM package can contain an arbitrary set of files. Most RPM files are “binary RPMs” (or BRPMs) containing the compiled version of some software. There are also “source RPMs” (or SRPMs) containing the source code used to build a binary package.
+
+It is capable of:
+
+\begin{itemize}
+    \item \textbf{Building computer software from source} into easily distributable packages.
+    \item \textbf{Installing, updating and uninstalling} packaged software.
+    \item \textbf{Querying detailed information} about the packaged software, whether installed or not.
+    \item \textbf{Verifying integrity} of packaged software and resulting software installation.
+\end{itemize}
+
+\subsubsection{YUM}
+
+\section{Timeshift to Backup and Restore Your Linux System}
+
+\subsection{Introduction}
+Linux is susceptible to system failures caused by incorrect commands or system operations. So if you use Linux on your main computer, you may frequently encounter problems. Fortunately, there are system restoration tools that create snapshots of your files and settings, which you can restore on your system to put it back to its previous functioning point in case any of your operations renders it unusable.
+
+Timeshift works by creating a snapshot of your system using either rsync or btrfs mode, depending on your Linux distro. To do this, what Timeshift essentially does is create a restore point for your system at a time when everything's running smoothly. This backup includes all the system files and settings—and no user files or documents. That way, when you accidentally mess up something on your system while configuring or customizing it, you can restore it back to this restore point and revert all your changes.
+
+\subsection{Timeshift Installation}
+The first step is install timeshift, depending on your system you will use different commands. For Ubuntu:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo apt install timeshift
+\end{verbatim}
+\end{codetemplate}
+
+\subsection{Create a Snapshot}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo timeshift --create --comments "A new backup" --tags D
+\end{verbatim}
+\end{codetemplate}
+
+\end{document}
