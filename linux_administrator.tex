@@ -104,7 +104,7 @@
 
 %====================================================================================================
 \newpage
-\section{ Linux Directory Structure Explained}
+\section{Linux Directory Structure Explained}
 
 \subsection{/ -- The Root Directory}
 Everything on your Linux system is located under the \verb|/| directory, known as the root directory. You can think of the \verb|/| directory as being similar to the \verb|C:\| directory on Windows. But this isn't strictly true, as Linux doesn't have drive letters. While another partition would be located at \verb|D:\| on Windows, this other partition would appear in another folder under / on Linux.
@@ -208,7 +208,7 @@ username:password:UID:GID:comment:home:shell
 \begin{blocktemplateI}{NOTE}
 UID and GUI assignation policies are defined in the file \verb|/etc/login.defs|
 \begin{figure}[H]
-    \includegraphics[scale=0.7]{images/defsbig.png}
+    \includegraphics[scale=0.7]{pictures/defsbig.png}
     \centering
 \end{figure}
 \end{blocktemplateI}
@@ -297,7 +297,7 @@ The command above creates the new user’s home directory and copies files from 
 \end{itemize}
 
 \begin{figure}[H]
-    \includegraphics[scale=0.7]{images/etcskel.png}
+    \includegraphics[scale=0.7]{pictures/etcskel.png}
     \centering
 \end{figure}
 
@@ -324,7 +324,7 @@ $ sudo useradd -s /custom/shell username
 By default, when a new user is created, the system assigns the next available UID from the range of user IDs specified in the \verb|/etc/login.defs| file.
 
 \begin{figure}[H]
-    \includegraphics[scale=0.7]{images/loginsfile.png}
+    \includegraphics[scale=0.7]{pictures/loginsfile.png}
     \centering
 \end{figure}
 
@@ -600,7 +600,7 @@ $ sudo cat /etc/sudoers
 \end{codetemplate}
 
 \begin{figure}[H]
-    \includegraphics[width=\textwidth]{images/sudoers.png}
+    \includegraphics[width=\textwidth]{pictures/sudoers.png}
     \centering
 \end{figure}
 
@@ -608,13 +608,13 @@ So in my Linux System, any user added to the groups \textbf{sudo} or \textbf{adm
 
 \textbf{What would happen with a user that is not in these groups?}
 \begin{figure}[H]
-    \includegraphics[width=\textwidth]{images/jiminy.png}
+    \includegraphics[width=\textwidth]{pictures/jiminy.png}
     \centering
 \end{figure}
 
 But if we add him to the admin group... Voilà!
 \begin{figure}[H]
-    \includegraphics[width=\textwidth]{images/voliajiminy.png}
+    \includegraphics[width=\textwidth]{pictures/voliajiminy.png}
     \centering
 \end{figure}
 
@@ -692,7 +692,7 @@ jiminy ALL=(ALL:ALL) NOPASSWD: ALL
 \end{codetemplate}
 
 \begin{figure}[H]
-    \includegraphics[scale=0.8]{images/jiminyboss.png}
+    \includegraphics[scale=0.8]{pictures/jiminyboss.png}
     \centering
 \end{figure}
 
@@ -755,7 +755,7 @@ $ sudo –i passwd root
 You will have to enter the new password for the root user and go ahead.
 
 \begin{figure}[H]
-    \includegraphics[scale=0.8]{images/su.png}
+    \includegraphics[scale=0.8]{pictures/su.png}
     \centering
 \end{figure}
 
@@ -767,7 +767,7 @@ $ sudo passwd -dl root
 \end{codetemplate}
 
 \begin{figure}[H]
-    \includegraphics[scale=0.7]{images/nopwdsu.png}
+    \includegraphics[scale=0.7]{pictures/nopwdsu.png}
     \centering
 \end{figure}
 
@@ -850,38 +850,51 @@ $ du -h directory_name
 \verb|-h| flag shows an humanize output, it specifies K, M, G, etc. If you want to have the output in Kibibyte do not use the flag.
 \end{blocktemplate}
 
+\subsection{Linux Services Running}
+
+\textbf{Display a snapshot of the currently running processes}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ps waux
+\end{verbatim}
+\end{codetemplate}
+
+\begin{itemize}
+    \item \textbf{ps:} the command to list processes
+    \item \textbf{w:} display the full command line of each process
+    \item \textbf{a:} list processes from all users
+    \item \textbf{u:} detailed information about each process
+    \item \textbf{x:} list processes without controlling terminals
+\end{itemize}
+
 \subsection{Moving between directories}
+\subsubsection{Introduction}
 \begin{itemize}
-    \item \verb+pwd:+ nos indica donde estamos
-    \item \verb+cd == cd ~ :+ nos lleva al \verb+$HOME+ del usuario
-    \item \verb+cd /+ : nos lleva a la raíz
-    \item \verb+cd .+ : no hace nada
-    \item \verb+cd ..+ : nos lleva un directorio atrás
-    \item \verb+ls -l+ : nos muestra todo lo que contiene un directorio (no oculto)
-    \item \verb+ls -la+ : nos muestra todo lo que contiene un directorio (oculto o no)
-    \item \verb|Ctrl + R| : nos busca comandos anteriores
+    \item \verb+pwd:+ which directory we are
+    \item \verb+cd == cd ~ :+ go to users \verb+$HOME+
+    \item \verb+cd /+ : go to /
+    \item \verb+cd .+ : does not do anything
+    \item \verb+cd ..+ : go one directory back
+    \item \verb+ls -l+ : list all directory content (not hidden)
+    \item \verb+ls -la+ : list all directory content (hidden or not)
 \end{itemize}
 
-\begin{blocktemplate}{Nota}
-Si después de un comando hacemos "\textbackslash ", nos pasa a la siguiente linea para que podamos seguir con el comando 
-\end{blocktemplate}
-
-\subsection{ls -la Analyzing Results}
-El primer carácter al extremo izquierdo representa el tipo de archivo, los posibles valores para esta posición son los siguientes:
+\subsubsection{ls -la Analyzing Results}
+The first character on the left represents the type, possible values for this position are as follows:
 
 \begin{itemize}
-    \item \textbf{- (Guion):} representa un archivo comun (de texto, html, mp3, jpg, etc.)
-    \item \textbf{d:} representa un directorio
-    \item \textbf{l:} link, es decir un enlace o acceso directo
-    \item \textbf{b:} binario, un archivo generalmente ejecutable
+    \item \textbf{- (Guion):} file
+    \item \textbf{d:} directory
+    \item \textbf{l:} symbolic link
+    \item \textbf{b:} binary (executable file)
 \end{itemize}
 
-Los siguientes 9 restantes, representan los permisos del archivo y deben verse en grupos de 3
+The following 9 represent the file permissions and should be viewed in groups of 3.
 
 \begin{itemize}
-    \item Los \textbf{tres primeros} representan los permisos para el propietario del archivo. 
-    \item Los \textbf{tres siguientes} son los permisos para el grupo del archivo.
-    \item Los \textbf{tres últimos} son los permisos para el resto del mundo u otros.
+    \item Los \textbf{tres primeros} owner permissions 
+    \item Los \textbf{tres siguientes} group permissions
+    \item Los \textbf{tres últimos} rest of the world permissions
 \end{itemize}
 \begin{itemize}
     \item \textbf{r:} read
@@ -889,7 +902,7 @@ Los siguientes 9 restantes, representan los permisos del archivo y deben verse e
     \item \textbf{x:} execute
 \end{itemize}
 
-\begin{blocktemplateII}{Nota}
+\begin{blocktemplateII}{Note}
 The \verb+/etc/group+ is a text file which defines the groups to which users belong under Linux and UNIX operating system. Under Unix / Linux multiple users can be categorized into groups. Unix file system permissions are organized into three classes, user, group, and others. The use of groups allows additional abilities to be delegated in an organized fashion, such as access to disks, printers, and other peripherals    
 \end{blocktemplateII}
 
@@ -931,7 +944,7 @@ $ chmod 321 foldername
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.55]{images/chmod.PNG}
+    \includegraphics[scale=0.55]{pictures/chmod.PNG}
     \caption{Permissions}
     \label{chmod}
 \end{figure}
@@ -988,6 +1001,16 @@ $ chown --reference=REF_FILE FILE
 If the reference file is a symbolic link chown will use the user and group of the target file.
 \end{blocktemplateIII}
 
+\subsection{Ctrl+R}
+
+With this command we can search in the history the past commands we have run on the machine.
+
+Be carefull using Ctrl+R, because for example if you click on tab, you will crash it:
+
+\begin{itemize}
+    \item \textbf{Intro:} to execute the command it is showing you
+    \item \textbf{Ctrl+R:} to go to the command behind that matches the pattern
+\end{itemize}
 
 \subsection{Mkdir (create files)}
 \begin{itemize}
@@ -1056,7 +1079,7 @@ $ alias
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.6]{images/image45.PNG}
+    \includegraphics[scale=0.6]{pictures/image45.PNG}
     \caption{Los alias por defecto y configurados por mi en mi Ubuntu}
 \end{figure}
 
@@ -1093,7 +1116,7 @@ La sintaxis que hay que utilizar en este caso, es la misma que cuando creamos un
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.6]{images/image2.PNG}
+    \includegraphics[scale=0.6]{pictures/image2.PNG}
     \caption{Alias in permanent files}
     \label{export}
 \end{figure}
@@ -1378,7 +1401,7 @@ El Fully Qualified Domain Name consta como mínimo de tres etiquetas: el dominio
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.4]{images/image11.PNG}
+    \includegraphics[scale=0.4]{pictures/image11.PNG}
     \label{FQDN Image}
     \caption{Representación esquemática de la estructura del Fully Qualified Domain Name}
 \end{figure}
@@ -1895,13 +1918,13 @@ $ kc get RESOURCE_TYPE RESOURCE_NAME \
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.5]{images/image18.png}
+    \includegraphics[scale=0.5]{pictures/image18.png}
     \caption{Get all containers parsing a Pod JSON}
     \label{parsing json 1}
 \end{figure}
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.54]{images/image19.png}
+    \includegraphics[scale=0.54]{pictures/image19.png}
     \caption{Get all initContainers parsing a Deployment JSON}
     \label{parsing json 2}
 \end{figure}
@@ -1919,13 +1942,13 @@ $ kc get RESOURCE_TYPE RESOURCE_NAME \
 \end{codetemplate}
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.4]{images/image20.png}
+    \includegraphics[scale=0.4]{pictures/image20.png}
     \caption{Get all ports exposed in a Pod parsing a Pod JSON}
     \label{parsing json 3}
 \end{figure}
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.4]{images/image21.png}
+    \includegraphics[scale=0.4]{pictures/image21.png}
     \caption{Get all ports exposed in a Pod parsing a Deployment JSON}
     \label{parsing json 4}
 \end{figure}
@@ -1945,7 +1968,7 @@ $  kc get RESOURCE_NAME -o jsonpath=\
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.35]{images/image23.png}
+    \includegraphics[scale=0.35]{pictures/image23.png}
     \caption{Get all volumeMounts in a container parsing a Deployment JSON}
     \label{parsing json 5}
 \end{figure}
@@ -2027,14 +2050,14 @@ $ ifconfig
 \end{codetemplate}
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.45]{images/image35.PNG}
+    \includegraphics[scale=0.45]{pictures/image35.PNG}
     \caption{ifconfig}
 \end{figure}
     
     \item \verb|ip -br addr list eth0|
     \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.45]{images/image36.PNG}
+    \includegraphics[scale=0.45]{pictures/image36.PNG}
     \caption{ip -br}
 \end{figure}
 \end{itemize}
@@ -2110,13 +2133,13 @@ export Cluster_Id="5650752a-edc7-4546-a1ff-8900d7e8e35b"
         \item En primer lugar hay que darle permisos
     \begin{figure}[H]
         \centering
-        \includegraphics[scale=0.45]{images/image13.PNG}
+        \includegraphics[scale=0.45]{pictures/image13.PNG}
         \label{./bash}
     \end{figure}
         \item En segundo lugar, como bien prevehiamos, no se guardan los cambios en la terminal, pues se ejecuta un subproceso por detrás el cual nunca mergea cambios a nivel de sistema en el proceso padre.
     \begin{figure}[H]
         \centering
-        \includegraphics[scale=0.6]{images/image12.PNG}
+        \includegraphics[scale=0.6]{pictures/image12.PNG}
         \label{./bash 2}
     \end{figure}
     \end{itemize}
@@ -2126,7 +2149,7 @@ export Cluster_Id="5650752a-edc7-4546-a1ff-8900d7e8e35b"
             \item En segundo lugar, como bien prevehiamos, sucede lo mismo que con ./, no se guardan los cambios en el terminal (proceso padre).
     \begin{figure}[H]
         \centering
-        \includegraphics[scale=0.45]{images/image14.PNG}
+        \includegraphics[scale=0.45]{pictures/image14.PNG}
         \label{bash scrip.sh}
     \end{figure}
     \end{itemize}
@@ -2136,7 +2159,7 @@ export Cluster_Id="5650752a-edc7-4546-a1ff-8900d7e8e35b"
             \item En segundo lugar, como bien prevehiamos, los cambios se transmiten al proceso padre! Y por tanto se guardan en nuestro terminal.
     \begin{figure}[H]
         \centering
-        \includegraphics[scale=0.45]{images/image15.PNG}
+        \includegraphics[scale=0.45]{pictures/image15.PNG}
         \label{source scrip.sh}
     \end{figure}
     \end{itemize}
@@ -2449,7 +2472,7 @@ $ cat > filename
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.7]{images/image1.png}
+    \includegraphics[scale=0.7]{pictures/image1.png}
     \caption{amazing cat}
 \end{figure}
 
@@ -2504,7 +2527,7 @@ The authenticity of host 'sample.ssh.com' cannot be established.
 Answering yes to the prompt will cause the session to continue, and the host key is stored in the local system's \verb|known_hosts| file. This is a hidden file, stored by default in a hidden directory, called \verb|/.ssh/known_hosts|, in the user's home directory. Once the host key has been stored in the \verb|known_hosts| file, the client system can connect directly to that server again without need for any approvals; the host key authenticates the connection.
 
 \begin{figure}[H]
-    \includegraphics[width=\textwidth]{images/ssh1.png}
+    \includegraphics[width=\textwidth]{pictures/ssh1.png}
     \centering
 \end{figure}
 
@@ -2569,7 +2592,7 @@ For SSH to recognize the SSH keys they should be stored in:
 \end{verbatim}
 \end{codetemplate}
 \begin{figure}[H]
-    \includegraphics[width=\textwidth]{images/ssh2.png}
+    \includegraphics[width=\textwidth]{pictures/ssh2.png}
     \centering
 \end{figure}
 Also, \textbf{rsa keys} should have the \textbf{permissions} you see in the image above, if not, it will not be valid to authenticate in any server. If you have generated the keys, they are generated with the correct permissions, but if you have copied, it can be wrong.
@@ -2666,13 +2689,13 @@ $ find . -name "*Thr*"
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.7]{images/image3.png}
+    \includegraphics[scale=0.7]{pictures/image3.png}
     \caption{use of find}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.7]{images/image4.png}
+    \includegraphics[scale=0.7]{pictures/image4.png}
     \caption{another use of find}
 \end{figure}
 
@@ -2732,7 +2755,7 @@ $ sed -i 's/Microsoft Windows/GNU Linux/gI' fichero.txt
 \begin{blocktemplateIII}{WARNING}
 Sed will replace all the string matches, without differentiating if it is completed or partial, for example:
 \begin{figure}[H]
-    \includegraphics[width=\textwidth]{images/sed.png}
+    \includegraphics[width=\textwidth]{pictures/sed.png}
     \centering
 \end{figure}
 
@@ -2823,7 +2846,7 @@ $ echo -n $PASSWORD_CODED | base64 -d
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{images/base64.png}
+    \includegraphics[width=\textwidth]{pictures/base64.png}
 \end{figure}
 
 \newpage
