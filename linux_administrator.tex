@@ -219,7 +219,7 @@ UID and GUI assignation policies are defined in the file \verb|/etc/login.defs|
 So you can trim the output using AWK or cut:
 \begin{codetemplate}{}
 \begin{verbatim}
-$ awk -F ":" '{ print $1}' /etc/passwd
+$ awk -F ":" '{ print $1 }' /etc/passwd
 \end{verbatim}
 \end{codetemplate}
 \begin{codetemplate}{}
@@ -706,7 +706,7 @@ Also you can modify it in the group configuration:
 \end{codetemplate}
 
 \subsubsection{How to gain su permissions with sudo}
-If you try to redirect the output of a command to a file that your user has no write permissions, you will get a “Permission denied” error.
+If you try to redirect the output of a command to a file that your user has no write permissions, you will get a “Permission denied" error.
 \begin{codetemplate}{}
 \begin{verbatim}
 $ sudo echo "test" > /root/file.txt
@@ -714,7 +714,7 @@ $ sudo echo "test" > /root/file.txt
 \end{verbatim}
 \end{codetemplate}
 
-This happens because the redirection \verb|“>”| of the output is performed under the user you are logged in, not the user specified with sudo. The redirection happens before the sudo command is invoked.
+This happens because the redirection \verb|“>"| of the output is performed under the user you are logged in, not the user specified with sudo. The redirection happens before the sudo command is invoked.
 
 One solution is to invoke a new shell as root by using \verb|sudo sh -c|:
 
@@ -728,7 +728,7 @@ Another option is to pipe the output as a regular user to the tee command , as s
 
 \begin{codetemplate}{}
 \begin{verbatim}
-$ sudo echo "test" | sudo tee /root/file.txt'
+$ sudo echo "test" | sudo tee /root/file.txt
 \end{verbatim}
 \end{codetemplate}
 
@@ -852,22 +852,96 @@ $ du -h directory_name
 \verb|-h| flag shows an humanize output, it specifies K, M, G, etc. If you want to have the output in Kibibyte do not use the flag.
 \end{blocktemplate}
 
-\subsection{Linux Services Running}
+\subsection{Linux Services}
 
+\subsubsection{ps}
+ps displays information about a selection of the active processes.  If you want a repetitive update of the selection and the displayed information, use top instead.
 \textbf{Display a snapshot of the currently running processes}
 \begin{codetemplate}{}
 \begin{verbatim}
 $ ps waux
 \end{verbatim}
 \end{codetemplate}
-
 \begin{itemize}
-    \item \textbf{ps:} the command to list processes
     \item \textbf{w:} display the full command line of each process
     \item \textbf{a:} list processes from all users
     \item \textbf{u:} detailed information about each process
     \item \textbf{x:} list processes without controlling terminals
 \end{itemize}
+
+\subsubsection{systemctl}
+\textbf{Systemctl} manages systemd services and other units such as sockets, devices, mount points, and timers in Linux systems. It is a powerful command-line tool used to query or send control commands to the system manager.
+
+\textbf{Systemd} is a system and service manager for Linux operating systems
+
+\textbf{Start a Service}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ systemctl start <service_name>
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Stop a Service}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ systemctl stop <service_name>
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Check the status of a Service}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ systemctl status <service_name>
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Restart a Service}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ systemctl restart <service_name>
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Reload configuration of a Service}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ systemctl reload <service_name>
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Enable a service to start on Boot}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ systemctl enable <service_name>
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Disable a service to start on Boot}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ systemctl disable <service_name>
+\end{verbatim}
+\end{codetemplate}
+
+\subsection{Service}
+
+The \textbf{service} command is commonly used in older versions of Linux distributions or those that haven't fully adopted systemd yet. It provides a simpler interface compared to systemctl, but it offers similar functionality for starting, stopping, restarting, and checking the status of services.
+
+It is very similar to \textbf{systemctl}, with almost same functionalities, just reversing arguments
+
+\textbf{Start a Service}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ service <service_name> start
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Check the status of a Service}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ service <service_name> status
+\end{verbatim}
+\end{codetemplate}
 
 \subsection{Moving between directories}
 \subsubsection{Introduction}
@@ -885,7 +959,7 @@ $ ps waux
 The first character on the left represents the type, possible values for this position are as follows:
 
 \begin{itemize}
-    \item \textbf{- (Guion):} file
+    \item \textbf{-:} file
     \item \textbf{d:} directory
     \item \textbf{l:} symbolic link
     \item \textbf{b:} binary (executable file)
@@ -894,9 +968,9 @@ The first character on the left represents the type, possible values for this po
 The following 9 represent the file permissions and should be viewed in groups of 3.
 
 \begin{itemize}
-    \item Los \textbf{tres primeros} owner permissions 
-    \item Los \textbf{tres siguientes} group permissions
-    \item Los \textbf{tres últimos} rest of the world permissions
+    \item Los \textbf{first 3} owner permissions 
+    \item Los \textbf{3 in the middle} group permissions
+    \item Los \textbf{last 3} rest of the world permissions
 \end{itemize}
 \begin{itemize}
     \item \textbf{r:} read
@@ -910,7 +984,7 @@ The \verb+/etc/group+ is a text file which defines the groups to which users bel
 
 \subsection{chmod}
 
-You may need to know how to change permissions in numeric code in Linux, so to do this you use numbers instead of “r”, “w”, or “x”. Cause Basically, you add up the numbers depending on the level of permission you want to give.
+You may need to know how to change permissions in numeric code in Linux, so to do this you use numbers instead of “r", “w", or “x". Cause Basically, you add up the numbers depending on the level of permission you want to give.
 
 \begin{itemize}
     \item \textbf{0:} No Permission
@@ -1016,10 +1090,10 @@ Be carefull using Ctrl+R, because for example if you click on tab, you will cras
 
 \subsection{Mkdir (create files)}
 \begin{itemize}
-    \item \verb+mkdir -p+: permite crear un directorio con padres e hijos (mkdir -p first/second/third…)
-    \item \verb+mkdir -m a=rwx+: permite crear un directorio cuyos ficheros vayan a tener los permisos a.
-    \item \verb+rm -rf+: borra el fichero escogido
-    \item \verb+rm *.txt+: borra todos los ficheros .txt que hay en un directorio
+    \item \verb+mkdir -p+: create a directory recursively, with different subfolders (mkdir -p first/second/third…)
+    \item \verb+mkdir -m a=rwx+: create a directory which files are going to have the permissions specified
+    \item \verb+rm -rf <file>+: remove recursively the file
+    \item \verb+rm *.txt+: remove all the files which contains the string "txt" on the current directory
 \end{itemize}
 
 \subsection{Mv / Cp}
@@ -1047,7 +1121,7 @@ $ mv -R path/to/source/ /path/dest/folder/
 \end{verbatim}
 \end{codetemplate}
 
-\textbf{to copy / move multiple directories on Linux}
+\textbf{To copy / move multiple directories on Linux}
 \begin{codetemplate}{}
 \begin{verbatim}
 $ cp -R path/to/source/ /path/dest/folder/
@@ -1089,7 +1163,7 @@ $ alias
 To generate an ephimeral alias:
 \begin{codetemplate}
 \begin{verbatim}
-$ alias nombreAlias="tu comando personalizado aquí"
+$ alias <alias_name>="command arg1 arg2 ..."
 \end{verbatim}
 \end{codetemplate}
 \underline{Examples}
@@ -1128,11 +1202,11 @@ $ source filename [arguments]
 \end{verbatim}
 \end{codetemplate}
 
-Cuando se ejecuta desde una shell un comando o un script, se crea un subproceso (proceso hijo) de la shell que ejecuta el comando o el script (proceso padre).
+When you execute a command or a script from a shell, a subprocess (child process) of the shell is created to execute the command or script (parent process).
 
-Si el script que ejecuta el proceso hijo crea o modifica alguna variable de entorno, esos cambios o variables desaparecen cuando finaliza el comando o script.
+If the script that executes the child process creates or modifies any environment variable, those changes or variables disappear when the command or script finishes.
 
-Si deseamos que dichos cambios permanezcan, podemos utilizar el comando de Bash source. Este comando hace que el proceso o comando se ejecute sin crear ningún proceso hijo, de forma que los cambios efectuados en las variables de entorno y demás, se mantengan al finalizar el archivo.
+If we want those changes to remain, we can use the Bash command source. This command causes the process or command to execute without creating any child process, so that changes made to environment variables and others are maintained when the file finishes.
 
 More information: \url{Source in Bash}
 
@@ -1152,35 +1226,34 @@ export Cluster_Id="5650752a-edc7-4546-a1ff-8900d7e8e35b"
 \end{codetemplate}
 
 \begin{enumerate}
-    \item Si lo ejecutamos con \verb|./|
+    \item If we execute it with \verb|./|
     \begin{itemize}
-        \item En primer lugar hay que darle permisos
+        \item First, we need to give it permissions.
     \begin{figure}[H]
         \centering
         \includegraphics[scale=0.45]{pictures/image13.PNG}
         \label{./bash}
     \end{figure}
-        \item En segundo lugar, como bien prevehiamos, no se guardan los cambios en la terminal, pues se ejecuta un subproceso por detrás el cual nunca mergea cambios a nivel de sistema en el proceso padre.
-    \begin{figure}[H]
+        \item Secondly, as we anticipated, the changes are not saved in the terminal, since a subprocess is executed in the background which never merges system-level changes into the parent process.    \begin{figure}[H]
         \centering
         \includegraphics[scale=0.6]{pictures/image12.PNG}
         \label{./bash 2}
     \end{figure}
     \end{itemize}
-    \item Si lo ejecutamos con \verb|bash/sh|
+    \item If we execute it with \verb|bash/sh|
         \begin{itemize}
-            \item En este caso, no son necesarios permisos, pues se pasa como argumento del ejecutable bash.
-            \item En segundo lugar, como bien prevehiamos, sucede lo mismo que con ./, no se guardan los cambios en el terminal (proceso padre).
+            \item In this case, permissions are not necessary, as it is passed as an argument to the bash executable.
+            \item Secondly, as we anticipated, the same thing happens as with `./`, the changes are not saved in the terminal (parent process).
     \begin{figure}[H]
         \centering
         \includegraphics[scale=0.45]{pictures/image14.PNG}
         \label{bash scrip.sh}
     \end{figure}
     \end{itemize}
-    \item \textbf{Si lo ejecutamos con source}
+    \item \textbf{If we execute it with source}
         \begin{itemize}
-            \item En este caso, no son necesarios permisos, pues se pasa como argumento del ejecutable source.
-            \item En segundo lugar, como bien prevehiamos, los cambios se transmiten al proceso padre! Y por tanto se guardan en nuestro terminal.
+            \item In this case, permissions are not necessary, as it is passed as an argument to the source executable.
+            \item Secondly, as we anticipated, the changes are transmitted to the parent process! And therefore they are saved in our terminal.
     \begin{figure}[H]
         \centering
         \includegraphics[scale=0.45]{pictures/image15.PNG}
@@ -1188,7 +1261,6 @@ export Cluster_Id="5650752a-edc7-4546-a1ff-8900d7e8e35b"
     \end{figure}
     \end{itemize}
 \end{enumerate}
-
 
 \subsection{Shutdown machines or terminals}
 \begin{itemize}
@@ -1222,27 +1294,6 @@ $ file main.py
 \end{verbatim}
 \end{codetemplate}
 
-\textbf{Displays a file’s first ten lines}
-\begin{codetemplate}{}
-\begin{verbatim}
-$ head main.py
-\end{verbatim}
-\end{codetemplate}
-
-\textbf{Displays a file’s last ten lines}
-\begin{codetemplate}{}
-\begin{verbatim}
-$ tail main.py
-\end{verbatim}
-\end{codetemplate}
-
-\textbf{Compares two files’ content and their differences}
-\begin{codetemplate}{}
-\begin{verbatim}
-$ diff main.py main_old.py
-\end{verbatim}
-\end{codetemplate}
-
 \textbf{Prints command outputs in Terminal and a file}
 \begin{codetemplate}{}
 \begin{verbatim}
@@ -1250,8 +1301,7 @@ $ echo "Hello" | tee output.txt
 \end{verbatim}
 \end{codetemplate}
 
-\subsection{Link with examples and usage of basic commands}
-\href{https://www.hostinger.com/tutorials/linux-commands}{https://www.hostinger.com/tutorials/linux-commands}
+\href{https://www.hostinger.com/tutorials/linux-commands}{More basic interesting linux commands}
 
 \newpage
 %-------------------------------------------------------------------------------------------------
@@ -1304,34 +1354,36 @@ $ export PATH=\$PATH:/place/with/the/file
 Be very careful editing these files, so one error in the configuration of these files can make somo binaries crash (example: mkdir, ls, etc.)
 \end{blocktemplateIII}
 
+\newpage
+%-------------------------------------------------------------------------------------------------
 \section{Useful Tools}
 
 \subsection{Cat}
-Cat nos va a permitir ver el contenido de ficheros sin abrirlos, crear ficheros si no existen o redireccionar salidas del terminal.
+Cat will allow us to view the contents of files without opening them, create files if they do not exist or redirect terminal outputs.
 
 \begin{itemize}
-    \item Basic usage: mostrar el contenido de un fichero
+    \item \textbf{Basic usage:} show the content of a file
 \begin{codetemplate}{}
 \begin{verbatim}
 $ cat test
 \end{verbatim}
 \end{codetemplate}
 
-    \item Mostrar contenido de test y test2
+    \item Show the content of both files test and test2
 \begin{codetemplate}{}
 \begin{verbatim}
 $ cat test1 test2
 \end{verbatim}
 \end{codetemplate}
 
-    \item Nos añade el contenido de test2 en el fichero test1, si habia contenido sobreescribe, si no había nada, crea el nuevo fichero
+    \item Adds the content of test2 to the file test1, if there was content it overwrites, if there was nothing, it creates the new file
 \begin{codetemplate}{}
 \begin{verbatim}
 $ cat test1 > test2
 \end{verbatim}
 \end{codetemplate}
 
-    \item Para que nos añada el contenido de test2 en el final del fichero test1, sin sobreescribir lo que había
+    \item Appends the content of test2 into the file test1, if there is no test2, it will create it
 \begin{codetemplate}{}
 \begin{verbatim}
 $ cat test1 >> test2
@@ -1345,7 +1397,7 @@ $ cat -n file
 \end{verbatim}
 \end{codetemplate}
 
-    \item Para \textbf{escribir en un fichero el conenido que queramos} (ACABAR CON CTRL+D)
+    \item \textbf{Writte in a file the content we want, as we were with text editor} (Exit: Ctrl+D)
 \begin{codetemplate}{}
 \begin{verbatim}
 $ cat > filename
@@ -1359,6 +1411,102 @@ $ cat > filename
     \caption{amazing cat}
 \end{figure}
 
+\subsection{Head \& Tail}
+
+\textbf{Head:} print the first 10 lines of each FILE to standard output
+
+\begin{itemize}
+    \item Print the first NUM lines instead of the first 10
+\begin{codetemplate}{}
+\begin{verbatim}
+$ head -n <number_of_lines> <filename>
+\end{verbatim}
+\end{codetemplate}
+\end{itemize}
+
+\textbf{Tail:}  print the last 10 lines of each FILE to standard output.
+
+\begin{itemize}
+    \item Print the last NUM lines instead of the last 10
+\begin{codetemplate}{}
+\begin{verbatim}
+$ head -n <number_of_lines> <filename>
+\end{verbatim}
+\end{codetemplate}
+
+    \item Attach the terminal following the evolution of the file
+\begin{codetemplate}{}
+\begin{verbatim}
+$ head -f <filename>
+\end{verbatim}
+\end{codetemplate}
+\end{itemize}
+
+\subsection{Diff (File comparator)}
+Command to compare FILES line by line.
+
+\textbf{Basic usage}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ diff main.py main_old.py
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Report only when files differ}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ diff -q ...
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Report when two files are the same}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ diff -s ...
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Ignore case}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ diff -i ...
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Ignore changes in the amount of white space}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ diff -b ...
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Ignore all white space}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ diff -w ...
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Ignore changes where lines are all blank}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ diff -B ...
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Output NUM (default 3) lines of copied contex}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ diff -c ...
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Output side by side (2 columns)}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ diff -y ...
+\end{verbatim}
+\end{codetemplate}
 
 \subsection{Grep (Global search for Regular Expressions and Print out)}
 
@@ -1367,7 +1515,7 @@ grep, egrep, fgrep, rgrep - print lines that match patterns.
 In addition, the variant programs egrep, fgrep and rgrep are the same as grep -E, grep -F, and grep -r, respectively.  These variants are deprecated, but are provided for backward compatibility.
 \end{blocktemplate}
 
-\subsubsection{Two variants of grep usage}
+\subsubsection{Two flavors of grep usage}
 \begin{enumerate}
     \item \textbf{Use grep to search text in a file / files}
 \begin{codetemplate}{}
@@ -1383,37 +1531,78 @@ $ COMMAND [args...] | grep "texto-buscado"
 \end{verbatim}
 \end{codetemplate}
 \end{enumerate}
-El resultado de esto son las ocurrencias del patrón (por la línea en la que se encuentra) en los archivos / stdout. Si no existe una coincidencia, no se imprimirá ninguna salida en la terminal.
+The result of this is the occurrences of the pattern (by the line it is on) in the / stdout files. If there is no match, no output will be printed to the terminal.
 
-
-\begin{blocktemplateII}{Nota}
-Las son necesarias para convertir a String. Si lo que le introducimos ya lo es no harian falta. Ejemplo:
+\begin{blocktemplateII}{Note}
+    The "" are necessary to convert to String. If what we introduce is already a String, they would not be necessary. Example:
 \begin{itemize}
-    \item \verb|grep alias file.txt|: No necesitamos comillas
-    \item \verb|grep "alias pepito" file.txt|: Si necesitamos comillas
+    \item \verb|grep alias file.txt|: We dont need ""
+    \item \verb|grep "alias pepito" file.txt|: We need ""
 \end{itemize}
 \end{blocktemplateII}
 
 \subsubsection{Useful Flags}
 
-\textbf{liNe Number}
+\textbf{line Number}
 \begin{codetemplate}{}
 \begin{verbatim}
 $ grep -n ...
 \end{verbatim}
 \end{codetemplate}
 
-\textbf{Count, el numero de línes de coincidencia}
+\textbf{Count the number of coincident lines}
 \begin{codetemplate}{}
 \begin{verbatim}
 $ grep -c ...
 \end{verbatim}
 \end{codetemplate}
 
-\textbf{IgnoreCase, indiferencia mayusculas-minusculas}
+\textbf{IgnoreCase}
 \begin{codetemplate}{}
 \begin{verbatim}
 $ grep -i ...
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Execute in silent mode, suppress all normal output}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ grep -q ...
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Accept extended regular expressions}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ grep -E ...
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Use PATTERNS for matching, you can specify multiple patterns to search for}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ grep -e 'pattern1' -e 'pattern2' file.txt
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Match only full words}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ grep -w
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Match only full lines}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ grep -x
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Print non-matching liness}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ grep -v
 \end{verbatim}
 \end{codetemplate}
 
@@ -1423,57 +1612,70 @@ $ grep -i ...
 $ grep "text" file -A NUMBER_A -B NUMBER_B
 \end{verbatim}
 \end{codetemplate}
-Con este comando imprimimos las \verb|NUMBER_B| lineas antes (before-context) y las \verb|NUMBER_A| lineas después de la coincidencia (after-context).
+
 
 \textbf{Recursive Search}
+By default, grep cannot search for directories. If you try to do so, you will get an error ("It is a directory"). With the -R option, searching for files across directories and subdirectories becomes possible.
 \begin{codetemplate}{}
 \begin{verbatim}
 $ grep -R
 \end{verbatim}
 \end{codetemplate}
-Por defecto, grep no puede buscar directorios. Si tú intentas hacerlo, obtendrás un error ("Es un directorio"). Con la opción  -R, la búsqueda de archivos entre directorios y subdirectorios se vuelve posible.
 
-\textbf{Introduce "-"}
+\textbf{Print only names of FILEs with selected lines}
 \begin{codetemplate}{}
 \begin{verbatim}
-$ grep -e "-loquesea" file
+$ grep -l
 \end{verbatim}
 \end{codetemplate}
+
+\textbf{Print only names of FILEs with no selected lines}
 \begin{codetemplate}{}
 \begin{verbatim}
-$ grep -- "-loquesea" file
+$ grep -L
 \end{verbatim}
 \end{codetemplate}
+
 
 \subsection{Find}
 
-\begin{itemize}
-    \item  Buscar ficheros desde la raiz con el nombre "linux"
+Command to search for files in a directory hierarchy.
+
+
+\textbf{Find all files and directories from "/" with the name "linux"}
 \begin{codetemplate}{}
 \begin{verbatim}
-$ find  / -name "linux"
+$ find / -name "linux"
 \end{verbatim}
 \end{codetemplate}
-    \item  Buscar ficheros desde la raiz con el nombre "linux" y listarlos
+
+\textbf{Find all files and directories from "/" with the name "linux" and list them}
 \begin{codetemplate}{}
 \begin{verbatim}
-$ find  / -name "linux" -ls
+$ find / -name "linux" -ls
 \end{verbatim}
 \end{codetemplate}
- 
-    \item Buscar dentro del directorio /etc/config/ del sistema de todos los ficheros y directorios con el nombre "linux" sin importar mayúsculas y minúsculas
+
+\textbf{Find just files"}
 \begin{codetemplate}{}
 \begin{verbatim}
-$ find  /etc/config/ -type d -name "linux"
+$ find / -type f -name "linux"
 \end{verbatim}
 \end{codetemplate}
-    \item Buscar desde el directorio donde nos encontramos los ficheros cuyo nombre contienen la cadena "Thr"
+
+\textbf{Find just directories"}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ find / -type d -name "linux"
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Find from our current directory all the files which name contains the substring "Thr"}
 \begin{codetemplate}{}
 \begin{verbatim}
 $ find . -name "*Thr*" 
 \end{verbatim}
 \end{codetemplate}
-\end{itemize}
 
 \begin{figure}[H]
     \centering
@@ -1481,14 +1683,8 @@ $ find . -name "*Thr*"
     \caption{use of find}
 \end{figure}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.7]{pictures/image4.png}
-    \caption{another use of find}
-\end{figure}
-
 \begin{blocktemplateII}{NOTE}
-Las comillas en estos casos son opcionales, pues como siempre, tan solo sirven para marcar string
+The "" are optional, because they are just to define strings (process spaces and weird characters as part of the string)
 \end{blocktemplateII}
 
 
@@ -1499,35 +1695,35 @@ Las comillas en estos casos son opcionales, pues como siempre, tan solo sirven p
  Print the content of "fichero.txt" replacing the first occurrence of the string "Microsoft Windows" by "GNU Linux" in the file "fichero.txt"
 \begin{codetemplate}{}
 \begin{verbatim}
-$ sed 's/Microsoft Windows/GNU Linux/' fichero.txt
+$ sed "s/Microsoft Windows/GNU Linux/" fichero.txt
 \end{verbatim}
 \end{codetemplate}
 
 Save the changes in the file:
 \begin{codetemplate}{}
 \begin{verbatim}
-$ sed -i 's/Microsoft Windows/GNU Linux/' fichero.txt
+$ sed -i "s/Microsoft Windows/GNU Linux/" fichero.txt
 \end{verbatim}
 \end{codetemplate}
 
  Replace all the occurrences of the string "Microsoft Windows" by "GNU Linux" in the file "fichero.txt" and save.
  \begin{codetemplate}{}
 \begin{verbatim}
-$ sed -i 's/Microsoft Windows/GNU Linux/g' fichero.txt
+$ sed -i "s/Microsoft Windows/GNU Linux/g" fichero.txt
 \end{verbatim}
 \end{codetemplate}
 
  Replace just the 3rd occurrence of "Microsoft Windows" by "GNU Linux" in the text and save
 \begin{codetemplate}{}
 \begin{verbatim}
-$ sed 's/Microsoft Windows/GNU Linux/3g' fichero.txt
+$ sed "s/Microsoft Windows/GNU Linux/3g" fichero.txt
 \end{verbatim}
 \end{codetemplate}
 
 Replace the string "Microsoft Windows" just in line 1:
 \begin{codetemplate}{}
 \begin{verbatim}
-$ sed '1 s/Microsoft Windows/GNU Linux/' fichero.txt
+$ sed "1 s/Microsoft Windows/GNU Linux/" fichero.txt
 \end{verbatim}
 \end{codetemplate}
 
@@ -1535,7 +1731,7 @@ $ sed '1 s/Microsoft Windows/GNU Linux/' fichero.txt
 By default sed is \textbf{case SENSITIVE} but to change it by case insensitive, you can add \verb|I| at the end of the REGEX:
  \begin{codetemplate}{}
 \begin{verbatim}
-$ sed -i 's/Microsoft Windows/GNU Linux/gI' fichero.txt
+$ sed -i "s/Microsoft Windows/GNU Linux/gI" fichero.txt
 \end{verbatim}
 \end{codetemplate}
 \end{blocktemplate}
@@ -1550,7 +1746,7 @@ Sed will replace all the string matches, without differentiating if it is comple
 To replace the exact match you should use spaces, \textbf{in REGEX} \verb|space=\s|:
 \begin{codetemplate}{}
 \begin{verbatim}
-$ sed 's/Alex\s/Claudia /g'
+$ sed "s/Alex\s/Claudia /g"
 \end{verbatim}
 \end{codetemplate}
 \end{blocktemplateIII}
@@ -1558,6 +1754,36 @@ $ sed 's/Alex\s/Claudia /g'
 For more information:
 \href{https://www.ochobitshacenunbyte.com/2019/05/28/uso-del-comando-sed-en-linux-y-unix-con-ejemplos/}{Uso del Comando Sed} 
 
+\subsection{AWK}
+Powerful text processing tool in Linux and Unix environments. It's primarily used for pattern scanning and processing. awk reads input line by line and divides each line into fields (by default, using whitespace as the delimiter). You can then specify patterns and actions to perform on those patterns.
+
+\textbf{Basic:} Perform an action in the lines that match the pattern in the file
+\begin{codetemplate}{}
+\begin{verbatim}
+$ awk '/pattern/ { action }' <filename>
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Print the first field of each line in the file (separated by default by space)}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ awk '{ print $1 }' <filename>
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Print the 3rd field of each line in the file (separated by ":")}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ awk -F ":" '{ print $3 }' <filename>
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Print specific fields of each line in the file (separated by ":")}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ awk -F ":" '{ print $2, $3 }' <filename>
+\end{verbatim}
+\end{codetemplate}
 
 \subsection{Tar Command}
 The tar command on Linux is often used to create .tar.gz or .tgz archive files, or extract them into local directories.
@@ -1631,13 +1857,36 @@ Here’s what those switches actually mean:
     \item \textbf{-r:} update or add file or directory in already existed .tar file
 \end{itemize}
 
+\subsection{Base64 Encoding}
+
+Base64 encode or decode FILE, or standard input, to standard output.
+
+\textbf{Code}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ echo -n $PASSWORD_CLEAR | base64
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Decode}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ echo -n $PASSWORD_CODED | base64 -d
+\end{verbatim}
+\end{codetemplate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{pictures/base64.png}
+\end{figure}
+
 
 \subsection{JQ}
 To parse into a beatufiul json format:
 
 \begin{codetemplate}{}
 \begin{verbatim}
-$ cat file.json | jq '.'
+$ cat file.json | jq "."
 \end{verbatim}
 \end{codetemplate}
 
@@ -1726,7 +1975,7 @@ If you want to persistthis configuration when using \verb|sudo vim| you will nee
     \item Create an alias in your \verb|~/.bashrc| file:
 \begin{codetemplate}{}
 \begin{verbatim}
-alias svim='sudo -E vim'
+alias svim="sudo -E vim"
 \end{verbatim}
 \end{codetemplate}
 
@@ -1853,15 +2102,15 @@ $ ssh user_name@SSHserve.example.com
 The SSH key command instructs your system that you want to open an encrypted Secure Shell Connection. \verb|user_name| represents the account you want to access. For example, you may want to access the \verb|root| user or \verb|acampos| user.
 
 \begin{blocktemplate}{NOTE}
-To connect via ssh using a user, it is needed to have this user created in the host machine.
+To connect via ssh using a user, it is needed to have this user created in the host server.
 
 \begin{itemize}
-    \item \textbf{host machine:} refers to the remote server you are trying to access.
-    \item \textbf{client machine:} refers to the server you are using to access the host.
+    \item \textbf{host server:} refers to the remote server you are trying to access.
+    \item \textbf{client server:} refers to the server you are using to access the host.
 \end{itemize}
 \end{blocktemplate}
 
-For the first time negotiating a connection between the local host and the server, the user will be prompted with the remote host's public key fingerprint and prompted to connect.
+For the first time negotiating a connection between the client server and the host server, the user will be prompted with the remote host's public key fingerprint and prompted to connect.
 
 \begin{codetemplate}{}
 \begin{verbatim}
@@ -1871,7 +2120,7 @@ The authenticity of host 'sample.ssh.com' cannot be established.
 \end{verbatim}
 \end{codetemplate}
 
-Answering yes to the prompt will cause the session to continue, and the host key is stored in the local system's \verb|known_hosts| file. This is a hidden file, stored by default in a hidden directory, called \verb|/.ssh/known_hosts|, in the user's home directory. Once the host key has been stored in the \verb|known_hosts| file, the client system can connect directly to that server again without need for any approvals; the host key authenticates the connection.
+Answering yes to the prompt will cause the session to continue, and the host key is stored in the client server local system's \verb|known_hosts| file. This is a hidden file, stored by default in a hidden directory, called \verb|/.ssh/known_hosts|, in the user's home directory. Once the host key has been stored in the \verb|known_hosts| file, the client system can connect directly to that server again without need for any approvals; the host key authenticates the connection.
 
 \begin{figure}[H]
     \includegraphics[width=\textwidth]{pictures/ssh1.png}
@@ -1884,34 +2133,33 @@ Secure Shell is used to connect to servers, make changes, perform uploads and ex
 
 \begin{blocktemplateI}{NOTE}
 
-SSH operates on \textbf{TCP port 22} by default (though SSH port can be changed if needed). The host (server) listens on port 22 (or any other SSH assigned port) for incoming connections. It organizes the secure connection by authenticating the client and opening the correct shell environment if the verification is successful.
+SSH operates on \textbf{TCP port 22} by default (though SSH port can be changed if needed). The host server listens on port 22 (or any other SSH assigned port) for incoming connections. It organizes the secure connection by authenticating the client and opening the correct shell environment if the verification is successful.
 \\\\
-It is hardly recommended to change the port in which the host machine listen, because to let port 22 is more easily to enter the machine without authorization.
+It is hardly recommended to change the port in which the host server listen, because to let port 22 is more easily to enter the machine without authorization.
 \end{blocktemplateI}
 
-\subsubsection{How to authenticate via SSH?}
-
-\paragraph{Default user-password authentication method}
+\subsubsection{Authenticate SSH connections using user-password}
 
 By default SSH protocol doesn't use public key cryptography for authenticating hosts and users. It still uses the \textbf{Linux user-password authentication method}, so you only have to pass the \verb|username| of the Linux user via the ssh command and introduce the \verb|password| of this user:
 
 \begin{codetemplate}{}
 \begin{verbatim}
-$ ssh -P=custom_port linux_username@hostname_or_ip
+$ ssh -p custom_port linux_username@hostname_or_ip
 \end{verbatim}
 \end{codetemplate}
 
 \begin{blocktemplate}{NOTE}
- If you run the command without specifying user, ssh will take your Linux current \verb|username|.
+ If you run the command without specifying user, ssh will take the client server Linux current \verb|username|.
 \end{blocktemplate}
 
-\paragraph{Public Key authentication method}
+\subsubsection{Authenticate SSH connections using Asimetric Key authentication method}
 
-Generally, the SSH service is configured to use public key cryptography for authenticating hosts and users. SSH introduced public key authentication as a more secure alternative to the older \verb|.rhosts| authentication. It improved security by avoiding the need to have password stored in files, and eliminated the possibility of a compromised server stealing the user's password.
+Generally, the SSH service is configured to use Asimetric Key cryptography for authenticating hosts and users. SSH introduced Asimetric Key authentication as a more secure alternative to the older \verb|.rhosts| authentication. It improved security by avoiding the need to have password stored in files, and eliminated the possibility of a compromised server stealing the user's password.
 
 However, SSH keys are authentication credentials just like passwords. Thus, they must be managed somewhat analogously to user names and passwords. They should have a proper termination process so that keys are removed when no longer needed.
 
-\paragraph{Generating public and private keys in our host}
+\paragraph{Generate public and private keys on the client server side}
+
 For that reason, we should generate SSH public and private key on our client and authorize them into the host.
 
 Depending on the technology of the host you want to connect, you need to create the keys:
@@ -1945,24 +2193,9 @@ For SSH to recognize the SSH keys they should be stored in:
 Also, \textbf{rsa keys} should have the \textbf{permissions} you see in the image above, if not, it will not be valid to authenticate in any server. If you have generated the keys, they are generated with the correct permissions, but if you have copied, it can be wrong.
 \end{blocktemplateIII}
 
-\begin{blocktemplateII}{NOTE}
-By default, when you stablish ssh connection, it uses the following private keys names:
-\begin{itemize}
-    \item \verb|~/.ssh/id_ecdsa|
-    \item \verb|~/.ssh/id_ecdsa_sk|
-    \item \verb|~/.ssh/id_ed25519|
-    \item \verb|~/.ssh/id_ed25519_sk|
-    \item \verb|~/.ssh/id_xmss|
-    \item \verb|~/.ssh/id_xmss_sk|
-    \item \verb|~/.ssh/id_dsa|
-    \item \verb|~/.ssh/id_rsa|
-\end{itemize}
-\end{blocktemplateII}
-
 For more information, check the documentation of \href{https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent}{how to do if for github servers}.
 
-
-\paragraph{Appending the Public Key into the authorized\_keys of the Server}
+\paragraph{Upload the Public Key into the authorized\_keys of the host server}
 To use public key authentication, the public key must be \textbf{installed in the} \verb|authorized_keys| file of the server. This can be conveniently done using the \verb|ssh-copy-id tool|. Like this:
 
 \begin{codetemplate}{}
@@ -1975,15 +2208,147 @@ $ ssh-copy-id -i ~/.ssh/my_ssh_key.pub user_name@hostname
 With the command above, we will append the host \textbf{pubkey} in the \verb|authorized_keys| file of the server.
 \end{blocktemplateIII}
 
-Once the public key has been configured on the server, the server will allow any connecting user that has the private key to log in. During the login process, the client proves possession of the private key by digitally signing the key exchange.
+The authorized keys to enable an specific user accessing the server through ssh are stored in:
+
+\begin{codetemplate}{}
+\begin{verbatim}
+~/.ssh/authorized_keys
+\end{verbatim}
+\end{codetemplate}
+    
+So you can copy your public key directly to this directory inside the server.
 
 \begin{blocktemplateII}{NOTE}
 For git you should do it different, just adding your public ssh key in the GUI, accessing to your profile settings. You can follow the \href{https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account}{Official Documentation}
 \end{blocktemplateII}
 
+\paragraph{Configure the ssh service into the host server}
+
+To enable the SSH connection, the host server we want to connect should have the ssh service running and configured. 
+
+We can check if the sshd (ssh daemon) service is running. SSH Daemon listens for incoming SSH connections and handles authentication, encryption, and communications: 
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$ systemctl status sshd
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplateIII}{WARNING}
+So not confuse it with the ssh service,  which is the one used on the client-side to establish a secure connection to an SSH server. 
+\end{blocktemplateIII}
+
+The configuration file for the SSH Daemon is:
+\begin{codetemplate}{}
+\begin{verbatim}
+/etc/ssh/sshd_config
+\end{verbatim}
+\end{codetemplate}
+
+As we said before, by default SSH protocol doesn't use public key cryptography for authenticating hosts and users. So to enable it, we will need to modify this file in order to decoment the line:
+\begin{codetemplate}{/etc/ssh/sshd\_config}
+\begin{verbatim}
+PubkeyAuthentication yes
+\end{verbatim}
+\end{codetemplate}
+
+And then restart the sshd service:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ systemctl restart sshd
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplateII}{NOTE}
+As well you can disable the password authentication:
+\begin{codetemplate}{/etc/ssh/sshd\_config}
+\begin{verbatim}
+PasswordAuthentication no
+\end{verbatim}
+\end{codetemplate}
+\end{blocktemplateII}
+
+To see all the configurable parameters in the \verb|/etc/ssh/sshd_config| you can check
+
+\begin{itemize}
+    \item \href{https://www.ssh.com/academy/ssh/sshd_config}{All configurable parameters in sshd file}
+    \item Your template in ansible
+\end{itemize}
+
+
+\paragraph{Use the Asimetric Key authentication method}
+
+By default, when you try to stablish ssh connection, if the host server enables PubkeyAuthentication, your ssh service will try to authenticate with all this pub keys:
+\begin{itemize}
+    \item \verb|~/.ssh/id_ecdsa.pub|
+    \item \verb|~/.ssh/id_ecdsa_sk.pub|
+    \item \verb|~/.ssh/id_ed25519.pub|
+    \item \verb|~/.ssh/id_ed25519_sk.pub|
+    \item \verb|~/.ssh/id_xmss.pub|
+    \item \verb|~/.ssh/id_xmss_sk.pub|
+    \item \verb|~/.ssh/id_dsa.pub|
+    \item \verb|~/.ssh/id_rsa.pub|
+\end{itemize}
+
+If you want to enforce the client server ssh service use just one, or a custom one different from those shown, you should:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ssh -p <Port_Number> -i /path/to/the/priv_key
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplate}{NOTE}
+You should have both keys on the same folder, public and private, if not, it will fail.
+\end{blocktemplate}
+
+\subsubsection{SSH Extra Arguments}
+
+\textbf{Custom Port (by default is 22)}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ssh -p <Port_Number>
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Use specific pub\_key to authenticate}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ssh -i /path/to/the/priv_key ...
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Disable Check on the hosts file for this host}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ssh -o StrictHostKeyChecking=no ...
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Verbose Mode}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ssh -v ...
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Set timeout}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ssh -o ConnectTimeout=30 ...
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Using Proxy to establish the connection}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ssh -o ProxyCommand="ssh -p <Proxy_Port_Number> -W %h:%p \
+    -q <username>@<proxy_hostname_or_ip>"
+\end{verbatim}
+\end{codetemplate}
+
 \subsubsection{SFTP}
 
-FTP, or “File Transfer Protocol” was a popular unencrypted method of trans-
+FTP, or "File Transfer Protocol" was a popular unencrypted method of trans-
 ferring files between two remote systems.
 
 SFTP, which stands for SSH File Transfer Protocol, or Secure File Transfer
@@ -1996,14 +2361,31 @@ In almost all cases, SFTP is preferable to FTP because of its underlying securit
 features and ability to piggy-back on an SSH connection. FTP is an insecure
 protocol that should only be used in limited cases or on networks you trust.
 
+\textbf{Basic Usage}
 \begin{codetemplate}{}
 \begin{verbatim}
-$ sftp -oPort=custom_port user_name@host_ip_or_hostname
+$ sftp -P <Port_Number> <username>@<hostname_or_ip>
 \end{verbatim}
 \end{codetemplate}
 
-\section{Localhost Networking}
-\subsection{Ports Exposed}
+\textbf{Set timeout}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sftp -o ConnectTimeout=30 ...
+\end{verbatim}
+\end{codetemplate}
+
+You will be asked to insert the password if the sshd service is configured with password, so there is a way to insert it wihout be asked.
+
+\textbf{Send te password without interaction}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sshpass -p "your_password" sftp -P ...
+\end{verbatim}
+\end{codetemplate}
+
+\subsection{Localhost Networking}
+\subsubsection{Ports Exposed}
 
 Para saber que puertos tiene escuchando nuestro localhost:
 
@@ -2041,7 +2423,7 @@ $ netstat -putona | grep numero-de-puerto
 \verb|netstat| command shows the system’s network information, like routing and sockets.
 \end{blocktemplate}
 
-\subsection{Localhost Adresses}
+\subsubsection{Localhost Adresses}
 
 \textbf{De puertas para adentro}
 \begin{enumerate}
@@ -2106,7 +2488,7 @@ curl is a tool for transferring data from or to a server. It supports these prot
 \textbf{Without using proxy}
 \begin{codetemplate}{}
 \begin{verbatim}
-$ curl --noproxy `*' 
+$ curl --noproxy "*" 
 \end{verbatim}
 \end{codetemplate}
 
@@ -2116,10 +2498,6 @@ $ curl --noproxy `*'
 $ curl -x proxy_url conn_url 
 \end{verbatim}
 \end{codetemplate}
-
-\begin{blocktemplateIII}{Nota}
-Cuidado con las single quotes ('), pues latex no procesa bien el simbolo, y cuando lo introduces en una terminal rebienta. 
-\end{blocktemplateIII}
 
 \textbf{With specific timeout in seconds}
 \begin{codetemplate}{}
@@ -2253,589 +2631,6 @@ export no_proxy=localhost
 
 \newpage
 %-------------------------------------------------------------------------------------------------
-\section{Helm}
-\textbf{Compilar}
-\newline Estando en el directorio que contiene el fichero Chart.yaml:
-\begin{codetemplate}{}
-\begin{verbatim}
-$ helm lint .
-\end{verbatim}
-\end{codetemplate}
-
-\textbf{Prueba de despliegue Resources en Cluster with file}
-\begin{codetemplate}{}
-\begin{verbatim}
-$ helm install -f ./values_ssp.yaml . --debug \
---name-template standalone-11 --dry-run > output.yaml
-\end{verbatim}
-\end{codetemplate}
-
-\textbf{Prueba de despliegue Resources en Cluster with file}
-\begin{codetemplate}{}
-\begin{verbatim}
-$ helm install -f ./values_ssp.yaml . --debug \
---name-template standalone-11
-\end{verbatim}
-\end{codetemplate}
-
-\newpage
-%-------------------------------------------------------------------------------------------------
-\section{JSONPath}
-JSONPath is a query language for JSON, similar to XPath for XML. AlertSite API endpoint monitors let you use JSONPath in assertions to specify the JSON fields that need to be verified.
-
-\begin{blocktemplateIII}{Nota}
-Cuidado en este apartado con las single quotes (` '). Pues latex no procesa bien el simbolo, y cuando lo introduces en una terminal rebienta.
-\end{blocktemplateIII}
-
-\subsection{Basic Usage}
-A JSONPath expression specifies a path to an element (or a set of elements) in a JSON structure. \\ \\
-\textbf{Dot Notation}
-\begin{codetemplate}{}
-\begin{verbatim}
-$.store.book[0].title
-\end{verbatim}
-\end{codetemplate}
-
-\textbf{Bracket Notation}
-\begin{codetemplate}{}
-\begin{verbatim}
-$[`store'][`book'][0][`title']
-\end{verbatim}
-\end{codetemplate}
-
-\textbf{Mix}
-\begin{codetemplate}{}
-\begin{verbatim}
-[`store'].book[0].title
-\end{verbatim}
-\end{codetemplate}
-
-\begin{blocktemplate}{Nota}
-Note that dots are only used before property names not in brackets.
-\end{blocktemplate}
-
-\begin{blocktemplateII}{Nota 2}
-The leading "\textbf{\textit{\$}}" represents the root object or array and can be omitted. For example, \textbf{\textit{\$.foo.bar}} and \textbf{\textit{foo.bar}} are the same, and so are \textbf{\textit{\$[0].status}} and \textbf{\textit{[0].status}}.
-\end{blocktemplateII}
-
-\begin{blocktemplateIII}{Nota 3}
-Using Bracket Notation be care to put \textbf{single quotes}, because double quotes are not accepted:
-\begin{verbatim}
-['name']
-\end{verbatim}
-\end{blocktemplateIII}
-
-\begin{blocktemplateIII}{Nota 4}
-JSONPath expressions, including property names and values, are case-sensitive.
-\end{blocktemplateIII}
-
-\textbf{Syntax Elements}
-\begin{itemize}
-    \item \verb|$|: The root object or array.
-    \item \verb|.property = [`property']|: Selects the specified property in a parent object.
-    \item \verb|[n]|: Selects the n-th element from an array. Indexes are 0-based.
-    \item \verb|[index1,index2,…]|: Selects array elements with the specified indexes. Returns a list.
-    \item \verb|..property|: Recursive descent: Searches for the specified property name recursively and returns an array of all values with this property name. Always returns a list, even if just one property is found.
-    \item \verb|*|: Wildcard selects all elements in an object or an array, regardless of their names or indexes. For example, address. "*" means all properties of the address object, and book[*] means all items of the book array.
-    \item \verb|[:n]|: Selects the first n elements of the array. Returns a list.
-    \item \verb|[-n]|: Selects the last n elements of the array. Returns a list.
-\end{itemize}
-
-\subsection{Filters}
-We can use some expression to filter the output of the JSON in function of parameters introduced in the syntax.
-\\
-\\
-\textbf{Syntax Elements}
-\begin{itemize}
-    \item \verb|[?(expression)]|: Filter expression. Selects all elements in an object or array that match the specified filter. Returns a list.
-    \item \verb|@|: Used in filter expressions to refer to the current node being processed.
-\end{itemize}
-
-\subsection{Example}
-\begin{codetemplate}{JSON Example}
-\begin{verbatim}
-{
-  "store": {
-    "book": [
-      {
-        "category": "reference",
-        "author": "Nigel Rees",
-        "title": "Sayings of the Century",
-        "price": 8.95
-      },
-      {
-        "category": "fiction",
-        "author": "Herman Melville",
-        "title": "Moby Dick",
-        "isbn": "0-553-21311-3",
-        "price": 8.99
-      },
-      {
-        "category": "fiction",
-        "author": "J.R.R. Tolkien",
-        "title": "The Lord of the Rings",
-        "isbn": "0-395-19395-8",
-        "price": 22.99
-      }
-    ],
-    "bicycle": {
-      "color": "red",
-      "price": 19.95
-    }
-  },
-  "expensive": 10
-}
-\end{verbatim}
-\end{codetemplate}
-
-\underline{Expressions}
-
-\begin{blocktemplate}{Nota}
-In all these examples, the leading \$. is optional and can be omitted.
-\end{blocktemplate}
-
-\begin{codetemplate}{}
-\begin{verbatim}
-$.store.* = [`store'][*]
-\end{verbatim}
-\end{codetemplate}
-\begin{itemize}
-    \item \textbf{Meaning:} All direct properties of store (not recursive).
-    \item \textbf{Result:}
-\begin{verbatim}
-[
-    "book": [
-        {
-            "category": "reference",
-            "author": "Nigel Rees",
-            "title": "Sayings of the Century",
-            ...
-        },
-        { ...
-        }
-    ],
-    "bicycle": {
-        "color": "red",
-        ...
-    }
-]
-\end{verbatim}
-\end{itemize}
-
-\begin{codetemplate}{}
-\begin{verbatim}
-$.store.bicycle.color = [`store'][`bicycle'][`color']
-\end{verbatim}
-\end{codetemplate}
-\begin{itemize}
-    \item \textbf{Meaning:} The color of the bicycle in the store.
-    \item \textbf{Result:} \verb|red|
-\end{itemize}
-
-\begin{codetemplate}{}
-\begin{verbatim}
-$.store..price = \$..price = ..[`price']
-\end{verbatim}
-\end{codetemplate}
-\begin{itemize}
-    \item \textbf{Meaning:} The prices of all items in the store.
-    \item \textbf{Result:} \verb+[8.95, 8.99, 22.99, 19.95]+
-\end{itemize}
-
-\begin{codetemplate}{}
-\begin{verbatim}
-$.store.book[*] = \$..book[*] = ..[`book'][*]
-\end{verbatim}
-\end{codetemplate}
-\begin{itemize}
-    \item \textbf{Meaning:} All books in the store.
-    \item \textbf{Result:}
-\begin{verbatim}
-[
-  {
-    "category":"reference",
-    "author":"Nigel Rees",
-    "title":"Sayings of the Century",
-    "price":8.95
-  },
-  {
-    "category":"fiction",
-    "athor":"J.R.R. Tolkien"
-    ...
-  }
-]
-\end{verbatim}
-\end{itemize}
-
-\begin{codetemplate}{}
-\begin{verbatim}
-$..book[*].title = ..[`book'][*][`title']
-\end{verbatim}
-\end{codetemplate}
-\begin{itemize}
-    \item \textbf{Meaning:} The title of all books in the store.
-    \item \textbf{Result:}
-\begin{verbatim}
-[   
-    Sayings of the Century, 
-    Moby Dick,
-    The Lord of the Rings 
-]
-\end{verbatim}
-\end{itemize}
-
-\begin{codetemplate}{}
-\begin{verbatim}
-$..book[0]
-\end{verbatim}
-\end{codetemplate}
-\begin{itemize}
-    \item \textbf{Meaning:} The first book.
-    \item \textbf{Result:}
-\begin{verbatim}
-[
-  {
-    "category":"reference",
-    "author":"Nigel Rees",
-    "title":"Sayings of the Century",
-    "price":8.95
-  }
-]
-\end{verbatim}
-
-\end{itemize}
-
-\begin{codetemplate}{}
-\begin{verbatim}
-$..book[0].title
-\end{verbatim}
-\end{codetemplate}
-\begin{itemize}
-    \item \textbf{Meaning:} The title of the first book.
-    \item \textbf{Result:} \verb+Sayings of the Century+
-\end{itemize}
-
-\begin{codetemplate}{}
-\begin{verbatim}
-$..book[0,1].title
-\end{verbatim}
-\end{codetemplate}
-\begin{itemize}
-    \item \textbf{Meaning:} The titles of the first two books.
-    \item \textbf{Result:} \verb+[Sayings of the Century, Moby Dick]+
-\end{itemize}
-
-\begin{codetemplate}{}
-\begin{verbatim}
-$..book[-1:].title
-\end{verbatim}
-\end{codetemplate}
-\begin{itemize}
-    \item \textbf{Meaning:} The title of the last book.
-    \item \textbf{Result:} \verb+The Lord of the Rings+
-\end{itemize}
-
-\begin{codetemplate}{}
-\begin{verbatim}
-$..book[?(@.author==`J.R.R. Tolkien')].title
-\end{verbatim}
-\end{codetemplate}
-\begin{itemize}
-    \item \textbf{Meaning:} The titles of all books by J.R.R. Tolkien (exact match, case-sensitive).
-    \item \textbf{Result:} It is a list because -n always returns a list. \verb|[The Lord of the rings]|
-\end{itemize}
-
-\begin{codetemplate}{}
-\begin{verbatim}
-$..book[?(@.isbn)]
-\end{verbatim}
-\end{codetemplate}
-\begin{itemize}
-    \item \textbf{Meaning:} All books that have the isbn property.
-    \item \textbf{Result:} \verb+[Moby Dick, The Lord of the Rings]+
-\end{itemize}
-
-\begin{codetemplate}{}
-\begin{verbatim}
-$..book[?(!@.isbn)]
-\end{verbatim}
-\end{codetemplate}
-\begin{itemize}
-    \item \textbf{Meaning:} All books without the isbn property.
-    \item \textbf{Result:} \verb+[Saying of the Century]+
-\end{itemize}
-
-\begin{codetemplate}{}
-\begin{verbatim}
-$..book[?(@.price < 10)].title
-\end{verbatim}
-\end{codetemplate}
-\begin{itemize}
-    \item \textbf{Meaning:} All books cheaper than 10 titles.
-    \item \textbf{Result:} \verb+[Sayings of the Century, Moby Dick]+
-\end{itemize}
-
-\begin{codetemplate}{}
-\begin{verbatim}
-$..book[?(@.price > \$.expensive)]
-\end{verbatim}
-\end{codetemplate}
-\begin{itemize}
-    \item \textbf{Meaning:} All expensive books.
-    \item \textbf{Result:} 
-\begin{verbatim}
-$ [
-    {
-      "category": "fiction",
-      "author": "J.R.R. Tolkien",
-      "title": "The Lord of the Rings",
-      "isbn": "0-395-19395-8",
-      "price": 22.99
-    }
-  ]
-\end{verbatim}
-\end{itemize}
-
-\begin{codetemplate}{}
-\begin{verbatim}
-$..book[?(@.category == `fiction' ||
-@.category == `reference')].title
-\end{verbatim}
-\end{codetemplate}
-\begin{itemize}
-    \item \textbf{Meaning:} All fiction and reference books titles.
-    \item \textbf{Result:} \verb|[Sayings of the Century, Moby Dick, The Lord of The Rings]|
-\end{itemize}
-
-\begin{codetemplate}{}
-\begin{verbatim}
-$..book[?(@.category != `fiction')]
-\end{verbatim}
-\end{codetemplate}
-\begin{itemize}
-    \item \textbf{Meaning:} All not fiction books.
-    \item \textbf{Result:}
-\end{itemize}
-\begin{verbatim}
-[
-  {
-    "category":"reference",
-    "author":"Nigel Rees",
-    "title":"Sayings of the Century",
-    "price":8.95
-  }
-]
-\end{verbatim}
-
-For more information about JSONPath, check the following \href{https://support.smartbear.com/alertsite/docs/monitors/api/endpoint/jsonpath.html}{page}
-
-\subsection{JSONPath K8s} \label{jsonpath k8s}
-JSONPath template is composed of JSONPath expressions enclosed by curly braces {}. Kubectl uses JSONPath expressions to filter on specific fields in the JSON object and format the output. In addition to the original JSONPath template syntax, the following functions and syntax are valid:
-\begin{itemize}
-    \item \verb|range, end|: iterate list. \verb|{range .items[*]}{.metadata.name}|
-    \item \verb|{"\n}, {"\t"}|: to write salto de linea or tab. \verb|{..metadata.name}{"\t"}{..matadata.image}|
-\end{itemize}
-
-\underline{Example 1} 
-\\
-\\
-Get all \textbf{containers} / \textbf{initContainers} running and their images used inside a \textbf{Pod} or declared in pod.spec of \textbf{ Deployment/Statefulset} . It is exactly the same changing little things. At least, it is showed in column view separed by tab.
-\begin{codetemplate}{}
-\begin{verbatim}
-$ kc get RESOURCE_TYPE RESOURCE_NAME \
--o jsonpath=`{range ..containers[*]}{.name}{"\t"}{.image}{"\n"}' \
-|sort|column -t
-\end{verbatim}
-\end{codetemplate}
-\begin{enumerate}
-    \item To choose between \textbf{Pod} or \textbf{Deploy/Sateful}: modify  \verb|RESOURCE_TYPE & RESOURCE_NAME|
-    \item To choose between \textbf{containers} or \textbf{initContainers}: modify the range.
-    \begin{itemize}
-        \item containers:  \verb|{range ..containers[*]}|
-        \item initContainers: \verb|{range ..initContainers[*]}|
-    \end{itemize}
-\end{enumerate}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.5]{pictures/image18.png}
-    \caption{Get all containers parsing a Pod JSON}
-    \label{parsing json 1}
-\end{figure}
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.54]{pictures/image19.png}
-    \caption{Get all initContainers parsing a Deployment JSON}
-    \label{parsing json 2}
-\end{figure}
-
-\underline{Example 2} 
-\\
-\\
-Get all ports exposed by a Pod, Deployment or Statefulset.
-\begin{codetemplate}{}
-\begin{verbatim}
-$ kc get RESOURCE_TYPE RESOURCE_NAME \ 
--o jsonpath=`{range ..containers[*]}{.name}{"\t"}{.ports}{"\n"}' \ 
-|sort|column -t
-\end{verbatim}
-\end{codetemplate}
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.4]{pictures/image20.png}
-    \caption{Get all ports exposed in a Pod parsing a Pod JSON}
-    \label{parsing json 3}
-\end{figure}
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.4]{pictures/image21.png}
-    \caption{Get all ports exposed in a Pod parsing a Deployment JSON}
-    \label{parsing json 4}
-\end{figure}
-
-\underline{Example 3} 
-\\
-\\
-Get all Volume Mounts of container called \verb|CONTAINER_NAME| inside a Pod, Deployment or Statefulset.
-\begin{codetemplate}{}
-\begin{verbatim}
-$  kc get RESOURCE_NAME -o jsonpath=\
-`{range ..containers[?(@.name == "CONTAINER_NAME")]\
-.volumeMounts[*]}.{.name}{"\t"}{.mountPath}{"\n"}' \
-|sort|column -t
-\end{verbatim}
-\end{codetemplate}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.35]{pictures/image23.png}
-    \caption{Get all volumeMounts in a container parsing a Deployment JSON}
-    \label{parsing json 5}
-\end{figure}
-
-\newpage
-\section{WSL}
-\subsection{Remove all old dependencies}
-\begin{enumerate}
-    \item Remove all Ubuntu packages in Windows - \textbf{Add or remove programs}
-    \item Remove all WSL packages in Windows - \textbf{Add or remove programs}
-    \item Go to Powershell / Cmder
-    \item Remove the current distros:
-\begin{codetemplate}{}
-\begin{verbatim}
-$ wsl --unregister
-\end{verbatim}
-\end{codetemplate}
-
-\item Install WSL:
-\begin{codetemplate}{}
-\begin{verbatim}
-$ wsl --install
-\end{verbatim}
-\end{codetemplate}
-
-    \item Install WSL:
-\begin{codetemplate}{}
-\begin{verbatim}
-$ wsl --install
-\end{verbatim}
-\end{codetemplate}
-
-    \item Check WSL available distros, if there is anyone, remove it using \verb|wsl --unregister <DISTRO>|
-\begin{codetemplate}{}
-\begin{verbatim}
-$ wsl -l
-\end{verbatim}
-\end{codetemplate}
-
-    \item Install the desired distro
-\begin{codetemplate}{}
-\begin{verbatim}
-$ wsl --install -d <DISTRO_NAME>
-\end{verbatim}
-\end{codetemplate}
-\end{enumerate}
-
-\newpage
-\section{Docker Desktop}
-
-\begin{itemize}
-    \item Docker desktop corre en nuestro Ubuntu desde Windows. Por tanto, si queremos que el Docker de nuestro Ubuntu tenga los certificados necesarios para conectarse a los recursos de nuestra empresa, debemos tener los certificados descargados, actualizados e instalados en nuestro sistema Windows nativo.
-    \item Desde un terminal rellenamos el contenido del fichero de configuración de docker \verb|~/.docker/config.json|:
-\begin{codetemplate}{\~/.docker/config.json}
-\begin{verbatim}
-{
-  "auths": {
-    "docker-registry.cloud.yourcompany.com": {}
-  },
-  "credsStore": "desktop.exe",
-  "proxies": {
-    "default": {
-      "httpProxy": "http://urltoproxy",
-      "httpsProxy": "http://urltoproxy/"
-    }
-  }
-}
-\end{verbatim}
-\end{codetemplate}
-
-    \item En Docker Engine modificar el fichero que ahí introducimos por el siguiente:
-\begin{codetemplate}{}
-\begin{verbatim}
-{
-  "builder": {
-    "gc": {
-      "defaultKeepStorage": "20GB",
-      "enabled": true
-    }
-  },
-  "experimental": false,
-  "features": {
-    "buildkit": false
-  },
-  "insecure-registries": [
-    "docker-registry.cloud.yourcompany.com"
-  ]
-}
-\end{verbatim}
-\end{codetemplate}
-
-    \item Ejecutar el comando para logearnos contra el registry que hayamos escogido:
-\begin{codetemplate}{}
-\begin{verbatim}
-$ docker login -u USER -p PASSWORD docker-registry.cloud.yourcompany.com
-\end{verbatim}
-\end{codetemplate}
-
-    \item Probar el acceso al registry:
-\begin{codetemplate}{}
-\begin{verbatim}
-$ docker pull docker-registry.cloud.yourcompany.com/catalog/paas/j
-\end{verbatim}
-\end{codetemplate} 
-\end{itemize}
-
-\newpage
-\section{Base64 Encoding}
-\textbf{Code}
-\begin{codetemplate}{}
-\begin{verbatim}
-$ echo -n $PASSWORD_CLEAR | base64
-\end{verbatim}
-\end{codetemplate}
-\textbf{Decode}
-\begin{codetemplate}{}
-\begin{verbatim}
-$ echo -n $PASSWORD_CODED | base64 -d
-\end{verbatim}
-\end{codetemplate}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{pictures/base64.png}
-\end{figure}
-
-\newpage
 \section{Tmux}
 
 Tmux, short for "Terminal Multiplexer," is a powerful command-line tool that enhances the capabilities of your terminal sessions. It allows you to organize multiple terminal windows or sessions within a single terminal window, effectively turning your terminal into a multi-pane workspace.
@@ -2919,9 +2714,9 @@ $ tmux -f /path/to/file -2 -L attach
 \hline
 \textbf{Command} & \textbf{What it does?} \\ \hline
 CTRL-a c & New tmux "tab"/session \\
-CTRL-a n & Next “tab” \\
-CTRL-a p & Prev “tab” \\
-CTRL-a \verb|#N| & Next “tab” \\
+CTRL-a n & Next "tab" \\
+CTRL-a p & Prev "tab" \\
+CTRL-a \verb|#N| & Next "tab" \\
 exit & exit current tab \\
 CTRL-d & exit current tab \\
 CTRL-a , & change current tab name \\
@@ -2937,9 +2732,9 @@ CTRL-a \verb|&| & Destroy current tab \\
 \hline
 \textbf{Command} & \textbf{What it does?} \\ \hline
 CTRL-a “ & New tmux "tab"/session \\
-CTRL-a \% & Next “tab” \\
-CTRL-a \verb|<arrow-keys>| & Prev “tab” \\
-CTRL-a CTRL-\verb|<arrow-keys>| & Next “tab” \\
+CTRL-a \% & Next "tab" \\
+CTRL-a \verb|<arrow-keys>| & Prev "tab" \\
+CTRL-a CTRL-\verb|<arrow-keys>| & Next "tab" \\
 exit & exit current tab \\
 CTRL-a x & exit current tab \\
 CTRL-a CTRL-o & change current tab name \\
@@ -2951,7 +2746,521 @@ CTRL-a space \verb|&| & Destroy current tab \\
 \end{table}
 
 \newpage
+%-------------------------------------------------------------------------------------------------
 \section{Others}
+
+\subsection{Docker Desktop}
+
+\begin{itemize}
+    \item Docker desktop corre en nuestro Ubuntu desde Windows. Por tanto, si queremos que el Docker de nuestro Ubuntu tenga los certificados necesarios para conectarse a los recursos de nuestra empresa, debemos tener los certificados descargados, actualizados e instalados en nuestro sistema Windows nativo.
+    \item Desde un terminal rellenamos el contenido del fichero de configuración de docker \verb|~/.docker/config.json|:
+\begin{codetemplate}{\~/.docker/config.json}
+\begin{verbatim}
+{
+  "auths": {
+    "docker-registry.cloud.yourcompany.com": {}
+  },
+  "credsStore": "desktop.exe",
+  "proxies": {
+    "default": {
+      "httpProxy": "http://urltoproxy",
+      "httpsProxy": "http://urltoproxy/"
+    }
+  }
+}
+\end{verbatim}
+\end{codetemplate}
+
+    \item En Docker Engine modificar el fichero que ahí introducimos por el siguiente:
+\begin{codetemplate}{}
+\begin{verbatim}
+{
+  "builder": {
+    "gc": {
+      "defaultKeepStorage": "20GB",
+      "enabled": true
+    }
+  },
+  "experimental": false,
+  "features": {
+    "buildkit": false
+  },
+  "insecure-registries": [
+    "docker-registry.cloud.yourcompany.com"
+  ]
+}
+\end{verbatim}
+\end{codetemplate}
+
+    \item Ejecutar el comando para logearnos contra el registry que hayamos escogido:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ docker login -u USER -p PASSWORD docker-registry.cloud.yourcompany.com
+\end{verbatim}
+\end{codetemplate}
+
+    \item Probar el acceso al registry:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ docker pull docker-registry.cloud.yourcompany.com/catalog/paas/j
+\end{verbatim}
+\end{codetemplate} 
+\end{itemize}
+
+\subsection{Helm}
+\textbf{Compilar}
+\newline Estando en el directorio que contiene el fichero Chart.yaml:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ helm lint .
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Prueba de despliegue Resources en Cluster with file}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ helm install -f ./values_ssp.yaml . --debug \
+--name-template standalone-11 --dry-run > output.yaml
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Prueba de despliegue Resources en Cluster with file}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ helm install -f ./values_ssp.yaml . --debug \
+--name-template standalone-11
+\end{verbatim}
+\end{codetemplate}
+
+\subsection{JSONPath}
+JSONPath is a query language for JSON, similar to XPath for XML. AlertSite API endpoint monitors let you use JSONPath in assertions to specify the JSON fields that need to be verified.
+
+\subsubsection{Basic Usage}
+A JSONPath expression specifies a path to an element (or a set of elements) in a JSON structure. \\ \\
+\textbf{Dot Notation}
+\begin{codetemplate}{}
+\begin{verbatim}
+$.store.book[0].title
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Bracket Notation}
+\begin{codetemplate}{}
+\begin{verbatim}
+$["store"]["book"][0]["title"]
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Mix}
+\begin{codetemplate}{}
+\begin{verbatim}
+["store"].book[0].title
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplate}{Nota}
+Note that dots are only used before property names not in brackets.
+\end{blocktemplate}
+
+\begin{blocktemplateII}{Nota 2}
+The leading "\textbf{\textit{\$}}" represents the root object or array and can be omitted. For example, \textbf{\textit{\$.foo.bar}} and \textbf{\textit{foo.bar}} are the same, and so are \textbf{\textit{\$[0].status}} and \textbf{\textit{[0].status}}.
+\end{blocktemplateII}
+
+\begin{blocktemplateIII}{Nota 3}
+Using Bracket Notation be care to put \textbf{single quotes}, because double quotes are not accepted:
+\begin{verbatim}
+["name"]
+\end{verbatim}
+\end{blocktemplateIII}
+
+\begin{blocktemplateIII}{Nota 4}
+JSONPath expressions, including property names and values, are case-sensitive.
+\end{blocktemplateIII}
+
+\textbf{Syntax Elements}
+\begin{itemize}
+    \item \verb|$|: The root object or array.
+    \item \verb|.property = ["property"]|: Selects the specified property in a parent object.
+    \item \verb|[n]|: Select the n-th element from an array. Indexes are 0-based.
+    \item \verb|[index1,index2,…]|: Selects array elements with the specified indexes. Returns a list.
+    \item \verb|..property|: Recursive descent: Searches for the specified property name recursively and returns an array of all values with this property name. Always returns a list, even if just one property is found.
+    \item \verb|*|: Wildcard selects all elements in an object or an array, regardless of their names or indexes. For example, address. "*" means all properties of the address object, and book[*] means all items of the book array.
+    \item \verb|[:n]|: Selects the first n elements of the array. Returns a list.
+    \item \verb|[-n]|: Selects the last n elements of the array. Returns a list.
+\end{itemize}
+
+\subsubsection{Filters}
+We can use some expression to filter the output of the JSON in function of parameters introduced in the syntax.
+\\
+\\
+\textbf{Syntax Elements}
+\begin{itemize}
+    \item \verb|[?(expression)]|: Filter expression. Selects all elements in an object or array that match the specified filter. Returns a list.
+    \item \verb|@|: Used in filter expressions to refer to the current node being processed.
+\end{itemize}
+
+\subsubsection{Example}
+\begin{codetemplate}{JSON Example}
+\begin{verbatim}
+{
+  "store": {
+    "book": [
+      {
+        "category": "reference",
+        "author": "Nigel Rees",
+        "title": "Sayings of the Century",
+        "price": 8.95
+      },
+      {
+        "category": "fiction",
+        "author": "Herman Melville",
+        "title": "Moby Dick",
+        "isbn": "0-553-21311-3",
+        "price": 8.99
+      },
+      {
+        "category": "fiction",
+        "author": "J.R.R. Tolkien",
+        "title": "The Lord of the Rings",
+        "isbn": "0-395-19395-8",
+        "price": 22.99
+      }
+    ],
+    "bicycle": {
+      "color": "red",
+      "price": 19.95
+    }
+  },
+  "expensive": 10
+}
+\end{verbatim}
+\end{codetemplate}
+
+\underline{Expressions}
+
+\begin{blocktemplate}{Nota}
+In all these examples, the leading \$. is optional and can be omitted.
+\end{blocktemplate}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$.store.* = ["store"][*]
+\end{verbatim}
+\end{codetemplate}
+\begin{itemize}
+    \item \textbf{Meaning:} All direct properties of store (not recursive).
+    \item \textbf{Result:}
+\begin{verbatim}
+[
+    "book": [
+        {
+            "category": "reference",
+            "author": "Nigel Rees",
+            "title": "Sayings of the Century",
+            ...
+        },
+        { ...
+        }
+    ],
+    "bicycle": {
+        "color": "red",
+        ...
+    }
+]
+\end{verbatim}
+\end{itemize}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$.store.bicycle.color = ["store"]["bicycle"]["color"]
+\end{verbatim}
+\end{codetemplate}
+\begin{itemize}
+    \item \textbf{Meaning:} The color of the bicycle in the store.
+    \item \textbf{Result:} \verb|red|
+\end{itemize}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$.store..price = \$..price = ..["price"]
+\end{verbatim}
+\end{codetemplate}
+\begin{itemize}
+    \item \textbf{Meaning:} The prices of all items in the store.
+    \item \textbf{Result:} \verb+[8.95, 8.99, 22.99, 19.95]+
+\end{itemize}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$.store.book[*] = \$..book[*] = ..["book"][*]
+\end{verbatim}
+\end{codetemplate}
+\begin{itemize}
+    \item \textbf{Meaning:} All books in the store.
+    \item \textbf{Result:}
+\begin{verbatim}
+[
+  {
+    "category":"reference",
+    "author":"Nigel Rees",
+    "title":"Sayings of the Century",
+    "price":8.95
+  },
+  {
+    "category":"fiction",
+    "athor":"J.R.R. Tolkien"
+    ...
+  }
+]
+\end{verbatim}
+\end{itemize}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$..book[*].title = ..["book"][*]["title"]
+\end{verbatim}
+\end{codetemplate}
+\begin{itemize}
+    \item \textbf{Meaning:} The title of all books in the store.
+    \item \textbf{Result:}
+\begin{verbatim}
+[   
+    Sayings of the Century, 
+    Moby Dick,
+    The Lord of the Rings 
+]
+\end{verbatim}
+\end{itemize}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$..book[0]
+\end{verbatim}
+\end{codetemplate}
+\begin{itemize}
+    \item \textbf{Meaning:} The first book.
+    \item \textbf{Result:}
+\begin{verbatim}
+[
+  {
+    "category":"reference",
+    "author":"Nigel Rees",
+    "title":"Sayings of the Century",
+    "price":8.95
+  }
+]
+\end{verbatim}
+
+\end{itemize}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$..book[0].title
+\end{verbatim}
+\end{codetemplate}
+\begin{itemize}
+    \item \textbf{Meaning:} The title of the first book.
+    \item \textbf{Result:} \verb+Sayings of the Century+
+\end{itemize}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$..book[0,1].title
+\end{verbatim}
+\end{codetemplate}
+\begin{itemize}
+    \item \textbf{Meaning:} The titles of the first two books.
+    \item \textbf{Result:} \verb+[Sayings of the Century, Moby Dick]+
+\end{itemize}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$..book[-1:].title
+\end{verbatim}
+\end{codetemplate}
+\begin{itemize}
+    \item \textbf{Meaning:} The title of the last book.
+    \item \textbf{Result:} \verb+The Lord of the Rings+
+\end{itemize}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$..book[?(@.author=="J.R.R. Tolkien")].title
+\end{verbatim}
+\end{codetemplate}
+\begin{itemize}
+    \item \textbf{Meaning:} The titles of all books by J.R.R. Tolkien (exact match, case-sensitive).
+    \item \textbf{Result:} It is a list because -n always returns a list. \verb|[The Lord of the rings]|
+\end{itemize}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$..book[?(@.isbn)]
+\end{verbatim}
+\end{codetemplate}
+\begin{itemize}
+    \item \textbf{Meaning:} All books that have the isbn property.
+    \item \textbf{Result:} \verb+[Moby Dick, The Lord of the Rings]+
+\end{itemize}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$..book[?(!@.isbn)]
+\end{verbatim}
+\end{codetemplate}
+\begin{itemize}
+    \item \textbf{Meaning:} All books without the isbn property.
+    \item \textbf{Result:} \verb+[Saying of the Century]+
+\end{itemize}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$..book[?(@.price < 10)].title
+\end{verbatim}
+\end{codetemplate}
+\begin{itemize}
+    \item \textbf{Meaning:} All books cheaper than 10 titles.
+    \item \textbf{Result:} \verb+[Sayings of the Century, Moby Dick]+
+\end{itemize}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$..book[?(@.price > \$.expensive)]
+\end{verbatim}
+\end{codetemplate}
+\begin{itemize}
+    \item \textbf{Meaning:} All expensive books.
+    \item \textbf{Result:} 
+\begin{verbatim}
+$ [
+    {
+      "category": "fiction",
+      "author": "J.R.R. Tolkien",
+      "title": "The Lord of the Rings",
+      "isbn": "0-395-19395-8",
+      "price": 22.99
+    }
+  ]
+\end{verbatim}
+\end{itemize}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$..book[?(@.category == "fiction" ||
+@.category == "reference")].title
+\end{verbatim}
+\end{codetemplate}
+\begin{itemize}
+    \item \textbf{Meaning:} All fiction and reference books titles.
+    \item \textbf{Result:} \verb|[Sayings of the Century, Moby Dick, The Lord of The Rings]|
+\end{itemize}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$..book[?(@.category != "fiction")]
+\end{verbatim}
+\end{codetemplate}
+\begin{itemize}
+    \item \textbf{Meaning:} All not fiction books.
+    \item \textbf{Result:}
+\end{itemize}
+\begin{verbatim}
+[
+  {
+    "category":"reference",
+    "author":"Nigel Rees",
+    "title":"Sayings of the Century",
+    "price":8.95
+  }
+]
+\end{verbatim}
+
+For more information about JSONPath, check the following \href{https://support.smartbear.com/alertsite/docs/monitors/api/endpoint/jsonpath.html}{page}
+
+\subsubsection{JSONPath K8s} \label{jsonpath k8s}
+JSONPath template is composed of JSONPath expressions enclosed by curly braces {}. Kubectl uses JSONPath expressions to filter on specific fields in the JSON object and format the output. In addition to the original JSONPath template syntax, the following functions and syntax are valid:
+\begin{itemize}
+    \item \verb|range, end|: iterate list. \verb|{range .items[*]}{.metadata.name}|
+    \item \verb|{"\n}, {"\t"}|: to write salto de linea or tab. \verb|{..metadata.name}{"\t"}{..matadata.image}|
+\end{itemize}
+
+\underline{Example 1} 
+\\
+\\
+Get all \textbf{containers} / \textbf{initContainers} running and their images used inside a \textbf{Pod} or declared in pod.spec of \textbf{ Deployment/Statefulset} . It is exactly the same changing little things. At least, it is showed in column view separed by tab.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ kc get RESOURCE_TYPE RESOURCE_NAME \
+-o jsonpath="{range ..containers[*]}{.name}{"\t"}{.image}{"\n"}" \
+|sort|column -t
+\end{verbatim}
+\end{codetemplate}
+\begin{enumerate}
+    \item To choose between \textbf{Pod} or \textbf{Deploy/Sateful}: modify  \verb|RESOURCE_TYPE & RESOURCE_NAME|
+    \item To choose between \textbf{containers} or \textbf{initContainers}: modify the range.
+    \begin{itemize}
+        \item containers:  \verb|{range ..containers[*]}|
+        \item initContainers: \verb|{range ..initContainers[*]}|
+    \end{itemize}
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{pictures/image18.png}
+    \caption{Get all containers parsing a Pod JSON}
+    \label{parsing json 1}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.54]{pictures/image19.png}
+    \caption{Get all initContainers parsing a Deployment JSON}
+    \label{parsing json 2}
+\end{figure}
+
+\underline{Example 2} 
+\\
+\\
+Get all ports exposed by a Pod, Deployment or Statefulset.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ kc get RESOURCE_TYPE RESOURCE_NAME \ 
+-o jsonpath="{range ..containers[*]}{.name}{"\t"}{.ports}{"\n"}" \ 
+|sort|column -t
+\end{verbatim}
+\end{codetemplate}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{pictures/image20.png}
+    \caption{Get all ports exposed in a Pod parsing a Pod JSON}
+    \label{parsing json 3}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{pictures/image21.png}
+    \caption{Get all ports exposed in a Pod parsing a Deployment JSON}
+    \label{parsing json 4}
+\end{figure}
+
+\underline{Example 3} 
+\\
+\\
+Get all Volume Mounts of container called \verb|CONTAINER_NAME| inside a Pod, Deployment or Statefulset.
+\begin{codetemplate}{}
+\begin{verbatim}
+$  kc get RESOURCE_NAME -o jsonpath=\
+"{range ..containers[?(@.name == "CONTAINER_NAME")]\
+.volumeMounts[*]}.{.name}{"\t"}{.mountPath}{"\n"}" \
+|sort|column -t
+\end{verbatim}
+\end{codetemplate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.35]{pictures/image23.png}
+    \caption{Get all volumeMounts in a container parsing a Deployment JSON}
+    \label{parsing json 5}
+\end{figure}
+
 \subsection{Ubuntu vs RH7}
 Ubuntu es una distribución de Linux que se basa en un kernel Debian, lo que significa que no funciona exactamente igual que otras distribuciones con otros kernel. RH7 al igual que Centos (Open Source) trabajan con un kernel diferente y por tanto los comandos son diferentes. Por ejemplo el gestor de paquetes de Debian es apt-get y el de RH7 es yum.
 
@@ -2971,7 +3280,7 @@ Vagrant is a tool for building and managing virtual machine environments in a si
 
 \subsection{Red Had Package Installer}
 \subsubsection{RPM}
-\textbf{RPM (Red Hat Package Manager)} is a free open and \textbf{powerful package management system}. The name refers to file format \textbf{.rpm} and the package manager program itself. An RPM package can contain an arbitrary set of files. Most RPM files are “binary RPMs” (or BRPMs) containing the compiled version of some software. There are also “source RPMs” (or SRPMs) containing the source code used to build a binary package.
+\textbf{RPM (Red Hat Package Manager)} is a free open and \textbf{powerful package management system}. The name refers to file format \textbf{.rpm} and the package manager program itself. An RPM package can contain an arbitrary set of files. Most RPM files are “binary RPMs" (or BRPMs) containing the compiled version of some software. There are also “source RPMs" (or SRPMs) containing the source code used to build a binary package.
 
 It is capable of:
 

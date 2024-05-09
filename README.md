@@ -13,7 +13,6 @@ pdflatex linux_administrator.tex
 ```
 
 ## TODO
-- Systemctl
 - SSH how to configure the key with agent
 - SSH where is the config file from ssh and different configurations
 - Ping
