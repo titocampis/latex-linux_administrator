@@ -13,9 +13,6 @@ pdflatex linux_administrator.tex
 ```
 
 ## TODO
-- SSH how to configure the key with agent
-- SSH where is the config file from ssh and different configurations
-- Ping
 - Nmap
 - Netcat
 - Telnet
@@ -27,5 +24,5 @@ pdflatex linux_administrator.tex
 - Talk about Certificates
 - Talk about vim
 - Talk about Nano
-- Finish the tmux part
+- Finish the tmux part and gather with ctrl+r and other terminal shortcurts
 - Ohmyzsh

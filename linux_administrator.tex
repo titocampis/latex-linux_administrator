@@ -2276,7 +2276,7 @@ To see all the configurable parameters in the \verb|/etc/ssh/sshd_config| you ca
 \end{itemize}
 
 
-\paragraph{Use the Asimetric Key authentication method}
+\paragraph{Use the Asimetric Key authentication method using -i}
 
 By default, when you try to stablish ssh connection, if the host server enables PubkeyAuthentication, your ssh service will try to authenticate with all this pub keys:
 \begin{itemize}
@@ -2300,6 +2300,37 @@ $ ssh -p <Port_Number> -i /path/to/the/priv_key
 \begin{blocktemplate}{NOTE}
 You should have both keys on the same folder, public and private, if not, it will fail.
 \end{blocktemplate}
+
+\paragraph{Use the ssh-agent for Asimetric Key}
+
+SSH agent is program which runs in the background and stores your decrypted private keys for SSH authentication. It helps you manage your SSH keys securely without having to enter their passphrase every time you use them.
+
+So in order to use to store your ssh private keys you should
+
+\begin{enumerate}
+    \item Check if it is running (it is not enabled when Boot by default so if you dont do it manually when boot the terminal it won't be running)
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ps waux | grep -e "ssh-agent"
+\end{verbatim}
+\end{codetemplate}
+
+    \item If it is not running (you dont have any process with ssh-agent), initiate it:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ssh-agent
+\end{verbatim}
+\end{codetemplate}
+
+    \item Add your private keys to the agent
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ssh-add /path/to/the/priv/key
+\end{verbatim}
+\end{codetemplate}
+
+    \item Run your ssh normally (without specifing private key -i)
+\end{enumerate}
 
 \subsubsection{SSH Extra Arguments}
 
@@ -2348,6 +2379,7 @@ $ ssh -o ProxyCommand="ssh -p <Proxy_Port_Number> -W %h:%p \
 
 \subsubsection{SFTP}
 
+\subsubsection{Introduction}
 FTP, or "File Transfer Protocol" was a popular unencrypted method of trans-
 ferring files between two remote systems.
 
@@ -2381,6 +2413,138 @@ You will be asked to insert the password if the sshd service is configured with 
 \begin{codetemplate}{}
 \begin{verbatim}
 $ sshpass -p "your_password" sftp -P ...
+\end{verbatim}
+\end{codetemplate}
+
+\subsubsection{Commands inside the SFTP}
+
+Once you are inside the sftp you can execute the follogin commands:
+
+\paragraph{Navigate}
+
+\textbf{Ask for help}
+\begin{codetemplate}{}
+\begin{verbatim}
+sftp> help
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Navigate through directories}
+\begin{codetemplate}{}
+\begin{verbatim}
+sftp> pwd
+\end{verbatim}
+\end{codetemplate}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+sftp> ls -la
+\end{verbatim}
+\end{codetemplate}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+sftp> cd /the/path/you/want
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Displays a folder/file disk space usage inside host server}
+\begin{codetemplate}{}
+\begin{verbatim}
+sftp> df -h folder_name
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Execute commands in your local machine (client server)}
+
+If you include "!" before your command, you will execute this command on your local linux machine
+\begin{codetemplate}{}
+\begin{verbatim}
+sftp> !ls
+\end{verbatim}
+\end{codetemplate}
+
+\paragraph{Get}
+
+\textbf{Get file from host server to client server}
+\begin{codetemplate}{}
+\begin{verbatim}
+sftp> get /path/to/the/remote/file /path/to/the/local/file
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Get directory from host server to client server}
+\begin{codetemplate}{}
+\begin{verbatim}
+sftp> get -Pr /path/to/the/remote/directory /path/to/the/local/directory
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplateI}{NOTE}
+The \verb|-P| is to maintain the appropriate permissions and access times
+\end{blocktemplateI}
+
+\paragraph{Put}
+
+\textbf{Upload client server file to host server}
+\begin{codetemplate}{}
+\begin{verbatim}
+sftp> put /path/to/the/local/file /path/to/the/remote/file
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Upload directory from cliient server to host server}
+\begin{codetemplate}{}
+\begin{verbatim}
+sftp> put -Pr /path/to/the/local/directory /path/to/the/remote/directory
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplateI}{NOTE}
+The \verb|-P| is to maintain the appropriate permissions and access times
+\end{blocktemplateI}
+
+\paragraph{Exit}
+\begin{codetemplate}{}
+\begin{verbatim}
+sftp> bye
+\end{verbatim}
+\end{codetemplate}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+sftp> exit
+\end{verbatim}
+\end{codetemplate}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+sftp> !
+\end{verbatim}
+\end{codetemplate}
+
+\subsubsection{Being sudo with SFTP?}
+
+
+In general, the sudo command is not directly applicable to SFTP (SSH File Transfer Protocol) because SFTP is a protocol specifically designed for transferring files securely over SSH (Secure Shell). However, if you want to perform administrative tasks on a remote server using SFTP, you typically need to have the appropriate permissions granted to your SSH user account.
+
+If you need to perform administrative tasks on files through SFTP, you would typically ensure that the user account you're logging in with has the necessary permissions to read, write, and modify those files. 
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ssh ... username@remote_server
+\end{verbatim}
+\end{codetemplate}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo command_to_execute
+\end{verbatim}
+\end{codetemplate}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sftp ... username@remote_server
 \end{verbatim}
 \end{codetemplate}
 
@@ -2481,35 +2645,114 @@ $ ifconfig
 \newpage
 %-------------------------------------------------------------------------------------------------
 \section{Network Tools}
-\subsection{Ping}
-\subsection{Curl}
-curl is a tool for transferring data from or to a server. It supports these protocols: DICT, FILE, FTP, FTPS, GOPHER, GOPHERS, HTTP, HTTPS, IMAP, IMAPS, LDAP, LDAPS, MQTT, POP3, POP3S, RTMP, RTMPS, RTSP, ... TELNET or TFTP. The command is designed to work without user interaction.
 
-\textbf{Without using proxy}
+\subsection{Ping}
+
+Ping is a network utility used to test the reachability of a host on an Internet Protocol (IP) network and measure the round-trip time for packets sent from the source to the destination host and back. It works by sending Internet Control Message Protocol (ICMP) echo request packets to the target host and waiting for ICMP echo reply packets in response.
+
+\textbf{Basic Usage}
 \begin{codetemplate}{}
 \begin{verbatim}
-$ curl --noproxy "*" 
+$ ping <hostname_or_ip>
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Sned specific number of packages}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ping -c <number_of_packages> ...
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Set interval between sending ping requests in seconds}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ping -i <interval_seconds> ...
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Set timeout for packages}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ping -t <timeout_seconds> ...
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Set timeout for ping (deadline in seconds)}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ping -W <timeout_seconds> ...
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Stopping ping}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ Ctrl+C
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplateIII}{WARNING}
+Use ping to "ping" an IP address doesn't necessarily mean that you can access services like SSH, HTTP, database, HTTPS, or others on that IP. Ping operates at the ICMP (Internet Control Message Protocol) level, which is a lower level than the protocols used by services like SSH (Secure Shell), HTTP or database (TCP), HTTPS (HTTP over SSL/TLS), or others.
+\\\\
+So ping is not a good method to check the connection to an specific service running on a host. You can use it to check if you can resolve / reach a host, but not to check if you can reach a database inside this host. Because the network and firewall rules are usually deffined by protocol, they use to allow ICMP echo requests (which is what ping uses) for diagnostic purposes, but blocks other types of traffic such as SSH, TCP, HTTP, HTTPS... for security reasons. 
+\end{blocktemplateIII}
+
+\subsection{Curl}
+
+Curl (Client for URL's) is a command-line tool and library for transferring data with URLs. It is mainly intended for testing HTTP and HTTPS connections, but it supports various protocols more: FTP, FTPS, SCP, SFTP, LDAP, TELNET, and more. 
+
+Curl is widely used for testing web services, downloading / uploading files, and automating data transfers in scripts and applications. 
+
+It is a powerful tool for accessing and transferring data over networks, with support for multiple protocols and versatile capabilities. But for network connectivity, it is not so suitable tool, because there are many protocols not supported by curl. 
+
+It can happen that with curl we get a connection error and it is not because the connection itself is not open, but because we are not using the correct protocol.
+
+\textbf{Basic Usage}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ curl <url> 
 \end{verbatim}
 \end{codetemplate}
 
 \textbf{Using proxy}
 \begin{codetemplate}{}
 \begin{verbatim}
-$ curl -x proxy_url conn_url 
+$ curl -x <proxy_url> <url> 
 \end{verbatim}
 \end{codetemplate}
+
+\textbf{Forcing no proxy}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ curl --noproxy "*" <url>
+\end{verbatim}
+\end{codetemplate}
+
 
 \textbf{With specific timeout in seconds}
 \begin{codetemplate}{}
 \begin{verbatim}
-$ curl --connect-timeout 5
+$ curl --connect-timeout 5 ...
 \end{verbatim}
 \end{codetemplate}
 
 \textbf{Not show content, only info}
 \begin{codetemplate}{}
 \begin{verbatim}
-$ curl -I
+$ curl -I ...
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Follow redirects}
+
+To have more context, when you make an HTTP request to a server, it might respond with a redirect status code (such as 301 Moved Permanently or 302 Found) along with the new URL to which the request should be redirected. By default, tools like curl won't automatically follow these redirects; instead, they'll stop and return the redirect response to the user.
+
+When you use the -L option with curl, it instructs curl to follow HTTP redirects automatically. So, when curl encounters a redirect response (e.g., a 301 or 302 status code), it will automatically make a new request to the URL specified in the redirect response.
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$ curl -L ...
 \end{verbatim}
 \end{codetemplate}
 
@@ -2521,6 +2764,34 @@ $ -0,       --http1.0            Use HTTP 1.0
             --http2              Use HTTP 2
             --http2-prior-knowledge Use HTTP 2 without HTTP/1.1 Upgrade
             --http3              Use HTTP v3
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Download a file via https}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ curl -0 https://url/paht/to/file
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Download a file to specific path}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ curl -o /path/to/the/filename https://url/paht/to/file
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Upload a file using https protocol}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ curl -F "file=@/path/to/local/file.txt" https://example.com/upload
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Upload a file using ftp protocol}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ curl -T /path/to/local/file.txt ftp://ftp.example.com/upload/
 \end{verbatim}
 \end{codetemplate}
 
@@ -2538,10 +2809,15 @@ $ curl -v
 \end{verbatim}
 \end{codetemplate}
 
-\textbf{HTTPS Protocol}
+\textbf{HTTPS Protocol (port 443)}
 \begin{codetemplate}{}
 \begin{verbatim}
 $ curl https://hostname
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ curl hostname:443
 \end{verbatim}
 \end{codetemplate}
 

@@ -111,37 +111,45 @@
 \contentsline {paragraph}{\numberline {7.2.3.1}Generate public and private keys on the client server side}{46}{paragraph.7.2.3.1}%
 \contentsline {paragraph}{\numberline {7.2.3.2}Upload the Public Key into the authorized\_keys of the host server}{47}{paragraph.7.2.3.2}%
 \contentsline {paragraph}{\numberline {7.2.3.3}Configure the ssh service into the host server}{48}{paragraph.7.2.3.3}%
-\contentsline {paragraph}{\numberline {7.2.3.4}Use the Asimetric Key authentication method}{48}{paragraph.7.2.3.4}%
+\contentsline {paragraph}{\numberline {7.2.3.4}Use the Asimetric Key authentication method using -i}{48}{paragraph.7.2.3.4}%
+\contentsline {paragraph}{\numberline {7.2.3.5}Use the ssh-agent for Asimetric Key}{49}{paragraph.7.2.3.5}%
 \contentsline {subsubsection}{\numberline {7.2.4}SSH Extra Arguments}{49}{subsubsection.7.2.4}%
-\contentsline {subsubsection}{\numberline {7.2.5}SFTP}{49}{subsubsection.7.2.5}%
-\contentsline {subsection}{\numberline {7.3}Localhost Networking}{50}{subsection.7.3}%
-\contentsline {subsubsection}{\numberline {7.3.1}Ports Exposed}{50}{subsubsection.7.3.1}%
-\contentsline {subsubsection}{\numberline {7.3.2}Localhost Adresses}{51}{subsubsection.7.3.2}%
-\contentsline {subsection}{\numberline {7.4}Certificates}{52}{subsection.7.4}%
-\contentsline {section}{\numberline {8}Network Tools}{53}{section.8}%
-\contentsline {subsection}{\numberline {8.1}Ping}{53}{subsection.8.1}%
-\contentsline {subsection}{\numberline {8.2}Curl}{53}{subsection.8.2}%
-\contentsline {subsection}{\numberline {8.3}Nmap}{54}{subsection.8.3}%
-\contentsline {subsection}{\numberline {8.4}Netcat}{54}{subsection.8.4}%
-\contentsline {subsection}{\numberline {8.5}Telnet}{54}{subsection.8.5}%
-\contentsline {subsection}{\numberline {8.6}Proxy variables definition for binaries}{54}{subsection.8.6}%
-\contentsline {section}{\numberline {9}Tmux}{56}{section.9}%
-\contentsline {subsection}{\numberline {9.1}Arguments}{56}{subsection.9.1}%
-\contentsline {subsection}{\numberline {9.2}Commands Inside tmux}{57}{subsection.9.2}%
-\contentsline {section}{\numberline {10}Others}{58}{section.10}%
-\contentsline {subsection}{\numberline {10.1}Docker Desktop}{58}{subsection.10.1}%
-\contentsline {subsection}{\numberline {10.2}Helm}{59}{subsection.10.2}%
-\contentsline {subsection}{\numberline {10.3}JSONPath}{59}{subsection.10.3}%
-\contentsline {subsubsection}{\numberline {10.3.1}Basic Usage}{59}{subsubsection.10.3.1}%
-\contentsline {subsubsection}{\numberline {10.3.2}Filters}{60}{subsubsection.10.3.2}%
-\contentsline {subsubsection}{\numberline {10.3.3}Example}{61}{subsubsection.10.3.3}%
-\contentsline {subsubsection}{\numberline {10.3.4}JSONPath K8s}{65}{subsubsection.10.3.4}%
-\contentsline {subsection}{\numberline {10.4}Ubuntu vs RH7}{66}{subsection.10.4}%
-\contentsline {subsection}{\numberline {10.5}Vagrant}{66}{subsection.10.5}%
-\contentsline {subsection}{\numberline {10.6}Red Had Package Installer}{67}{subsection.10.6}%
-\contentsline {subsubsection}{\numberline {10.6.1}RPM}{67}{subsubsection.10.6.1}%
-\contentsline {subsubsection}{\numberline {10.6.2}YUM}{67}{subsubsection.10.6.2}%
-\contentsline {subsection}{\numberline {10.7}Timeshift to Backup and Restore Your Linux System}{67}{subsection.10.7}%
-\contentsline {subsubsection}{\numberline {10.7.1}Introduction}{67}{subsubsection.10.7.1}%
-\contentsline {subsubsection}{\numberline {10.7.2}Timeshift Installation}{67}{subsubsection.10.7.2}%
-\contentsline {subsubsection}{\numberline {10.7.3}Create a Snapshot}{67}{subsubsection.10.7.3}%
+\contentsline {subsubsection}{\numberline {7.2.5}SFTP}{50}{subsubsection.7.2.5}%
+\contentsline {subsubsection}{\numberline {7.2.6}Introduction}{50}{subsubsection.7.2.6}%
+\contentsline {subsubsection}{\numberline {7.2.7}Commands inside the SFTP}{50}{subsubsection.7.2.7}%
+\contentsline {paragraph}{\numberline {7.2.7.1}Navigate}{51}{paragraph.7.2.7.1}%
+\contentsline {paragraph}{\numberline {7.2.7.2}Get}{51}{paragraph.7.2.7.2}%
+\contentsline {paragraph}{\numberline {7.2.7.3}Put}{51}{paragraph.7.2.7.3}%
+\contentsline {paragraph}{\numberline {7.2.7.4}Exit}{52}{paragraph.7.2.7.4}%
+\contentsline {subsubsection}{\numberline {7.2.8}Being sudo with SFTP?}{52}{subsubsection.7.2.8}%
+\contentsline {subsection}{\numberline {7.3}Localhost Networking}{52}{subsection.7.3}%
+\contentsline {subsubsection}{\numberline {7.3.1}Ports Exposed}{52}{subsubsection.7.3.1}%
+\contentsline {subsubsection}{\numberline {7.3.2}Localhost Adresses}{53}{subsubsection.7.3.2}%
+\contentsline {subsection}{\numberline {7.4}Certificates}{54}{subsection.7.4}%
+\contentsline {section}{\numberline {8}Network Tools}{55}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Ping}{55}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Curl}{55}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}Nmap}{58}{subsection.8.3}%
+\contentsline {subsection}{\numberline {8.4}Netcat}{58}{subsection.8.4}%
+\contentsline {subsection}{\numberline {8.5}Telnet}{58}{subsection.8.5}%
+\contentsline {subsection}{\numberline {8.6}Proxy variables definition for binaries}{58}{subsection.8.6}%
+\contentsline {section}{\numberline {9}Tmux}{59}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Arguments}{59}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}Commands Inside tmux}{60}{subsection.9.2}%
+\contentsline {section}{\numberline {10}Others}{61}{section.10}%
+\contentsline {subsection}{\numberline {10.1}Docker Desktop}{61}{subsection.10.1}%
+\contentsline {subsection}{\numberline {10.2}Helm}{62}{subsection.10.2}%
+\contentsline {subsection}{\numberline {10.3}JSONPath}{62}{subsection.10.3}%
+\contentsline {subsubsection}{\numberline {10.3.1}Basic Usage}{62}{subsubsection.10.3.1}%
+\contentsline {subsubsection}{\numberline {10.3.2}Filters}{63}{subsubsection.10.3.2}%
+\contentsline {subsubsection}{\numberline {10.3.3}Example}{64}{subsubsection.10.3.3}%
+\contentsline {subsubsection}{\numberline {10.3.4}JSONPath K8s}{68}{subsubsection.10.3.4}%
+\contentsline {subsection}{\numberline {10.4}Ubuntu vs RH7}{69}{subsection.10.4}%
+\contentsline {subsection}{\numberline {10.5}Vagrant}{69}{subsection.10.5}%
+\contentsline {subsection}{\numberline {10.6}Red Had Package Installer}{70}{subsection.10.6}%
+\contentsline {subsubsection}{\numberline {10.6.1}RPM}{70}{subsubsection.10.6.1}%
+\contentsline {subsubsection}{\numberline {10.6.2}YUM}{70}{subsubsection.10.6.2}%
+\contentsline {subsection}{\numberline {10.7}Timeshift to Backup and Restore Your Linux System}{70}{subsection.10.7}%
+\contentsline {subsubsection}{\numberline {10.7.1}Introduction}{70}{subsubsection.10.7.1}%
+\contentsline {subsubsection}{\numberline {10.7.2}Timeshift Installation}{70}{subsubsection.10.7.2}%
+\contentsline {subsubsection}{\numberline {10.7.3}Create a Snapshot}{70}{subsubsection.10.7.3}%
