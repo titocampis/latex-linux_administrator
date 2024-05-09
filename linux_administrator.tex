@@ -1210,58 +1210,6 @@ If we want those changes to remain, we can use the Bash command source. This com
 
 More information: \url{Source in Bash}
 
-\textbf{Example:}
-\newline
-\begin{codetemplate}{script.sh}
-\begin{verbatim}
-#!/bin/bash
-
-export RHT_OCP4_DEV_USER="nwmwsv"
-export RHT_OCP4_DEV_PASSWORD="1ecc25feca97466e81c5"
-export RHT_OCP4_MASTER_API="https://api.eu410.prod.nextcle.com:6443"
-export Console_Web_Application=\
-"https://console-openshift-console.apps.eu410.prod.nextcle.com"
-export Cluster_Id="5650752a-edc7-4546-a1ff-8900d7e8e35b"
-\end{verbatim}
-\end{codetemplate}
-
-\begin{enumerate}
-    \item If we execute it with \verb|./|
-    \begin{itemize}
-        \item First, we need to give it permissions.
-    \begin{figure}[H]
-        \centering
-        \includegraphics[scale=0.45]{pictures/image13.PNG}
-        \label{./bash}
-    \end{figure}
-        \item Secondly, as we anticipated, the changes are not saved in the terminal, since a subprocess is executed in the background which never merges system-level changes into the parent process.    \begin{figure}[H]
-        \centering
-        \includegraphics[scale=0.6]{pictures/image12.PNG}
-        \label{./bash 2}
-    \end{figure}
-    \end{itemize}
-    \item If we execute it with \verb|bash/sh|
-        \begin{itemize}
-            \item In this case, permissions are not necessary, as it is passed as an argument to the bash executable.
-            \item Secondly, as we anticipated, the same thing happens as with `./`, the changes are not saved in the terminal (parent process).
-    \begin{figure}[H]
-        \centering
-        \includegraphics[scale=0.45]{pictures/image14.PNG}
-        \label{bash scrip.sh}
-    \end{figure}
-    \end{itemize}
-    \item \textbf{If we execute it with source}
-        \begin{itemize}
-            \item In this case, permissions are not necessary, as it is passed as an argument to the source executable.
-            \item Secondly, as we anticipated, the changes are transmitted to the parent process! And therefore they are saved in our terminal.
-    \begin{figure}[H]
-        \centering
-        \includegraphics[scale=0.45]{pictures/image15.PNG}
-        \label{source scrip.sh}
-    \end{figure}
-    \end{itemize}
-\end{enumerate}
-
 \subsection{Shutdown machines or terminals}
 \begin{itemize}
     \item Shutdown the linux machine now
@@ -2872,23 +2820,170 @@ $ curl -XDELETE hostname
 
 \subsection{Nmap}
 
+Nmap, short for Network Mapper, is a powerful open-source tool primarily used for network discovery and security auditing. It's designed to provide a comprehensive overview of the devices and services running on a network.
+
+It helps in identifying hosts, devices, and services running on a network. It provides essential information such as IP addresses, MAC addresses, and open ports. One of its core functionalities is port scanning, which involves probing a target host to determine which ports are open, closed, or filtered. This information is crucial for understanding the network's security posture and potential vulnerabilities.
+
+Nmap can detect the version and type of services running on open ports. This capability allows administrators to assess the software stack of networked devices and identify outdated or vulnerable services. Nmap can often determine the operating system (OS) running on a target host based on subtle differences in network stack implementations and responses to specific probes. This feature aids in network mapping and security assessment.
+
+\textbf{Basic TCP port scan on a specific host}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ nmap <hostname_or_ip>
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Discover a host on a network}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ nmap -sn <hostname_or_ip>
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Scan specific ports}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ nmap -p <port_name> <hostname_or_ip>
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ nmap -p 80,443,... <hostname_or_ip>
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Scan range of ports}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ nmap -p 80-443 <hostname_or_ip>
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Scan all ports}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ nmap -p- <hostname_or_ip>
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Scan the 100 more used ports}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ nmap -F <hostname_or_ip>
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Detect the operating system of the target host}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ nmap -O <hostname_or_ip>
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Scan all the ports opened of the target host}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ nmap -sT -T Aggressive <hostname_or_ip>
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplateII}{NOTE}
+The services shown in the output of nmap are not exact, it is what is commonly exposed on the port, but it cannot know what is exactly exposed on the ports.
+\end{blocktemplateII}
+
 \subsection{Netcat}
 
+Netcat, often referred to as the "Swiss Army Knife" of networking tools, is a versatile utility for reading from and writing to network connections using TCP/IP protocols. It can act both as a client and a server. It can establish connections, listen for connections, and transfer data in various ways.
+
+\textbf{Check if a port is open on a remote server}
+\begin{codetemplate}
+\begin{verbatim}
+$ nc -zv <hostname_or_ip> <port_number>
+\end{verbatim}
+\end{codetemplate}
+
+\begin{codetemplate}
+\begin{verbatim}
+$ nc -zv <hostname_or_ip> 80,443,...
+\end{verbatim}
+\end{codetemplate}
+
+
+\textbf{Check range of ports}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ nc -zv <hostname_or_ip> 80-443
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Send a file}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ nc <hostname_or_ip> <port> > filename
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Receive a file}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ nc <hostname_or_ip> <port> < filename
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Starts a netcat process that listens for incoming connections on a port}
+
+Listen mode (-l)
+\begin{codetemplate}{}
+\begin{verbatim}
+$ nc -l <port>
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Attempt to establish a TCP connection to the specified hostname and port}
+
+If successful, it will provide a channel for communication between the two machines
+\begin{codetemplate}{}
+\begin{verbatim}
+$ nc <hostname_or_ip> <port>
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Starts a netcat listener that listens for incoming connections and executes /bin/bash (a Bash shell) upon connection, providing the connecting client with an interactive shell.}
+
+Listen mode (-l). It can pose serious security risks if not properly secured, as it allows arbitrary command execution on the system. 
+\begin{codetemplate}{}
+\begin{verbatim}
+$ nc -lp <port> -e /bin/bash
+\end{verbatim}
+\end{codetemplate}
+
 \subsection{Telnet}
-\textbf{Netcat}
+
+Telnet stands for "teletype network," and it's a network protocol used to access and manage devices remotely over a network. It's one of the oldest protocols used on the internet, dating back to the late 1960s.
+
+Telnet operates by establishing a connection between a local computer (the client) and a remote computer (the server). Once the connection is established, users can interact with the remote system as if they were physically present at the terminal of that system.
+
+\textbf{Check port on a host}
 \begin{codetemplate}
 \begin{verbatim}
-$ nc -zv hostname port
+$ telnet <hostname_or_ip> <port>
 \end{verbatim}
 \end{codetemplate}
 
+If the server is running and accepting connections, Telnet will establish a connection, and you'll see a blank screen. You can then manually send an HTTP request to the server and observe the response:
 
-\textbf{Telnet}
 \begin{codetemplate}
 \begin{verbatim}
-$ telnet hostname port
+GET / HTTP/1.1
+Host: example.com
 \end{verbatim}
 \end{codetemplate}
+
+After sending the request, the server should respond with the appropriate HTTP response, indicating whether the server is working correctly.
+
+\begin{blocktemplateIII}{WARNING}
+Remember that Telnet transmits data in plain text, so it's not secure for transmitting sensitive information like passwords. For secure remote access, it's recommended to use protocols like SSH instead.
+\end{blocktemplateIII}
 
 \subsection{Proxy variables definition for binaries}
 Configuring the proxy in the system environment variables with a specific naming convention will cause many system binaries to use them to establish their connections. For example: docker, curl, nslookup...

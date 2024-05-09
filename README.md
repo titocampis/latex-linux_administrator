@@ -13,9 +13,6 @@ pdflatex linux_administrator.tex
 ```
 
 ## TODO
-- Nmap
-- Netcat
-- Telnet
 - Network talk about:
     - ip a
     - netconfig

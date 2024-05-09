@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2024.5.8)  9 MAY 2024 17:36
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2024.5.8)  10 MAY 2024 00:00
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -750,192 +750,166 @@ File: pictures/image2.PNG Graphic file (type png)
 <use pictures/image2.PNG>
 Package pdftex.def Info: pictures/image2.PNG  used on input line 1193.
 (pdftex.def)             Requested size: 349.3077pt x 61.42996pt.
- [28 <./pictures/image45.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 1213--1226
-
- []
-
-<pictures/image13.PNG, id=905, 456.70625pt x 138.5175pt>
-File: pictures/image13.PNG Graphic file (type png)
-<use pictures/image13.PNG>
-Package pdftex.def Info: pictures/image13.PNG  used on input line 1234.
-(pdftex.def)             Requested size: 205.5159pt x 62.33229pt.
-<pictures/image12.PNG, id=906, 361.35pt x 67.0003pt>
-File: pictures/image12.PNG Graphic file (type png)
-<use pictures/image12.PNG>
-Package pdftex.def Info: pictures/image12.PNG  used on input line 1239.
-(pdftex.def)             Requested size: 216.81168pt x 40.20047pt.
-[29 <./pictures/image2.png> <./pictures/image13.png> <./pictures/image12.png>]
-<pictures/image14.PNG, id=918, 490.83376pt x 147.55125pt>
-File: pictures/image14.PNG Graphic file (type png)
-<use pictures/image14.PNG>
-Package pdftex.def Info: pictures/image14.PNG  used on input line 1249.
-(pdftex.def)             Requested size: 220.87314pt x 66.39743pt.
-<pictures/image15.PNG, id=919, 527.9725pt x 156.585pt>
-File: pictures/image15.PNG Graphic file (type png)
-<use pictures/image15.PNG>
-Package pdftex.def Info: pictures/image15.PNG  used on input line 1259.
-(pdftex.def)             Requested size: 237.58542pt x 70.46259pt.
- [30 <./pictures/image14.png> <./pictures/image15.png>] [31]
-<pictures/image1.png, id=933, 547.2947pt x 185.94469pt>
+ [28 <./pictures/image45.png>] [29 <./pictures/image2.png>] [30]
+<pictures/image1.png, id=917, 547.2947pt x 185.94469pt>
 File: pictures/image1.png Graphic file (type png)
 <use pictures/image1.png>
-Package pdftex.def Info: pictures/image1.png  used on input line 1410.
+Package pdftex.def Info: pictures/image1.png  used on input line 1358.
 (pdftex.def)             Requested size: 383.10367pt x 130.16037pt.
- [32 <./pictures/image1.png>] [33] [34] [35]
-<pictures/image3.png, id=954, 597.73312pt x 146.79843pt>
+ [31 <./pictures/image1.png>] [32] [33] [34]
+<pictures/image3.png, id=939, 597.73312pt x 146.79843pt>
 File: pictures/image3.png Graphic file (type png)
 <use pictures/image3.png>
-Package pdftex.def Info: pictures/image3.png  used on input line 1682.
+Package pdftex.def Info: pictures/image3.png  used on input line 1630.
 (pdftex.def)             Requested size: 418.41032pt x 102.7582pt.
- [36 <./pictures/image3.png>]
-<pictures/sed.png, id=961, 748.59676pt x 38.544pt>
+ [35 <./pictures/image3.png>]
+<pictures/sed.png, id=946, 748.59676pt x 38.544pt>
 File: pictures/sed.png Graphic file (type png)
 <use pictures/sed.png>
-Package pdftex.def Info: pictures/sed.png  used on input line 1742.
+Package pdftex.def Info: pictures/sed.png  used on input line 1690.
 (pdftex.def)             Requested size: 426.79141pt x 21.97441pt.
- [37 <./pictures/sed.png>] [38]
-<pictures/base64.png, id=974, 406.51875pt x 126.4725pt>
+ [36 <./pictures/sed.png>] [37]
+<pictures/base64.png, id=959, 406.51875pt x 126.4725pt>
 File: pictures/base64.png Graphic file (type png)
 <use pictures/base64.png>
-Package pdftex.def Info: pictures/base64.png  used on input line 1880.
+Package pdftex.def Info: pictures/base64.png  used on input line 1828.
 (pdftex.def)             Requested size: 455.24411pt x 141.63664pt.
- [39 <./pictures/base64.png>]
-Overfull \hbox (37.94104pt too wide) in paragraph at lines 1913--1913
+ [38 <./pictures/base64.png>]
+Overfull \hbox (37.94104pt too wide) in paragraph at lines 1861--1861
 []\T1/cmtt/m/n/10 " Enable type file detection. Vim will be able to try to detect the type of file in use.[] 
  []
 
 
-Overfull \hbox (37.94104pt too wide) in paragraph at lines 1949--1949
+Overfull \hbox (37.94104pt too wide) in paragraph at lines 1897--1897
 []\T1/cmtt/m/n/10 " While searching though a file incrementally highlight matching characters as you type.[] 
  []
 
-[40]
+[39]
 Overfull \vbox (33.46976pt too high) has occurred while \output is active []
 
- [41]
-Underfull \hbox (badness 10000) in paragraph at lines 2025--2034
+ [40]
+Underfull \hbox (badness 10000) in paragraph at lines 1973--1982
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2025--2034
+Underfull \hbox (badness 10000) in paragraph at lines 1973--1982
 
  []
 
-[42] [43]
-<pictures/image11.PNG, id=997, 800.9925pt x 338.76563pt>
+[41] [42]
+<pictures/image11.PNG, id=981, 800.9925pt x 338.76563pt>
 File: pictures/image11.PNG Graphic file (type png)
 <use pictures/image11.PNG>
-Package pdftex.def Info: pictures/image11.PNG  used on input line 2050.
+Package pdftex.def Info: pictures/image11.PNG  used on input line 1998.
 (pdftex.def)             Requested size: 320.39133pt x 135.50385pt.
- [44 <./pictures/image11.png>]
-<pictures/ssh1.png, id=1010, 1144.275pt x 250.536pt>
+ [43 <./pictures/image11.png>]
+<pictures/ssh1.png, id=995, 1144.275pt x 250.536pt>
 File: pictures/ssh1.png Graphic file (type png)
 <use pictures/ssh1.png>
-Package pdftex.def Info: pictures/ssh1.png  used on input line 2126.
+Package pdftex.def Info: pictures/ssh1.png  used on input line 2074.
 (pdftex.def)             Requested size: 455.24411pt x 99.67358pt.
- [45 <./pictures/ssh1.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 2136--2139
+ [44 <./pictures/ssh1.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 2084--2087
 
  []
 
-[46]
-<pictures/ssh2.png, id=1022, 747.9945pt x 122.25674pt>
+[45]
+<pictures/ssh2.png, id=1007, 747.9945pt x 122.25674pt>
 File: pictures/ssh2.png Graphic file (type png)
 <use pictures/ssh2.png>
-Package pdftex.def Info: pictures/ssh2.png  used on input line 2190.
+Package pdftex.def Info: pictures/ssh2.png  used on input line 2138.
 (pdftex.def)             Requested size: 426.79141pt x 69.75795pt.
- [47 <./pictures/ssh2.png>] [48] [49] [50] [51] [52]
-<pictures/image35.PNG, id=1066, 656.4525pt x 299.1175pt>
+ [46 <./pictures/ssh2.png>] [47] [48] [49] [50] [51]
+<pictures/image35.PNG, id=1051, 656.4525pt x 299.1175pt>
 File: pictures/image35.PNG Graphic file (type png)
 <use pictures/image35.PNG>
-Package pdftex.def Info: pictures/image35.PNG  used on input line 2616.
+Package pdftex.def Info: pictures/image35.PNG  used on input line 2564.
 (pdftex.def)             Requested size: 295.4009pt x 134.60162pt.
-<pictures/image36.PNG, id=1067, 643.40375pt x 138.5175pt>
+<pictures/image36.PNG, id=1052, 643.40375pt x 138.5175pt>
 File: pictures/image36.PNG Graphic file (type png)
 <use pictures/image36.PNG>
-Package pdftex.def Info: pictures/image36.PNG  used on input line 2623.
+Package pdftex.def Info: pictures/image36.PNG  used on input line 2571.
 (pdftex.def)             Requested size: 289.529pt x 62.33229pt.
- [53 <./pictures/image35.png> <./pictures/image36.png>] [54]
-Underfull \hbox (badness 10000) in paragraph at lines 2696--2699
+ [52 <./pictures/image35.png> <./pictures/image36.png>] [53]
+Underfull \hbox (badness 10000) in paragraph at lines 2644--2647
 
  []
 
-[55] [56] [57] [58] [59] [60]
-Overfull \hbox (26.1167pt too wide) in paragraph at lines 3032--3048
+[54] [55] [56] [57] [58] [59] [60] [61]
+Overfull \hbox (26.1167pt too wide) in paragraph at lines 3127--3143
 []\T1/cmr/m/n/10 Desde un ter-mi-nal rel-len-amos el con-tenido del fichero de con-fig-u-ración de docker [][]\T1/cmtt/m/n/10 ~/.docker/config.json[]\T1/cmr/m/n/10 : 
  []
 
-[61]
-Underfull \hbox (badness 10000) in paragraph at lines 3115--3121
-
- []
-
 [62]
-Underfull \hbox (badness 10000) in paragraph at lines 3169--3173
+Underfull \hbox (badness 10000) in paragraph at lines 3210--3216
 
  []
 
-[63] [64] [65] [66] [67]
-Underfull \hbox (badness 10000) in paragraph at lines 3463--3473
+[63]
+Underfull \hbox (badness 10000) in paragraph at lines 3264--3268
 
  []
 
-<pictures/image18.png, id=1140, 772.38562pt x 111.41624pt>
+[64] [65] [66] [67] [68]
+Underfull \hbox (badness 10000) in paragraph at lines 3558--3568
+
+ []
+
+<pictures/image18.png, id=1133, 772.38562pt x 111.41624pt>
 File: pictures/image18.png Graphic file (type png)
 <use pictures/image18.png>
-Package pdftex.def Info: pictures/image18.png  used on input line 3485.
+Package pdftex.def Info: pictures/image18.png  used on input line 3580.
 (pdftex.def)             Requested size: 386.19186pt x 55.70798pt.
-<pictures/image19.png, id=1141, 615.80063pt x 79.04532pt>
+<pictures/image19.png, id=1134, 615.80063pt x 79.04532pt>
 File: pictures/image19.png Graphic file (type png)
 <use pictures/image19.png>
-Package pdftex.def Info: pictures/image19.png  used on input line 3491.
+Package pdftex.def Info: pictures/image19.png  used on input line 3586.
 (pdftex.def)             Requested size: 332.52737pt x 42.68382pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 3496--3506
+Underfull \hbox (badness 10000) in paragraph at lines 3591--3601
 
  []
 
-<pictures/image20.png, id=1142, 928.97063pt x 105.39375pt>
+<pictures/image20.png, id=1135, 928.97063pt x 105.39375pt>
 File: pictures/image20.png Graphic file (type png)
 <use pictures/image20.png>
-Package pdftex.def Info: pictures/image20.png  used on input line 3509.
+Package pdftex.def Info: pictures/image20.png  used on input line 3604.
 (pdftex.def)             Requested size: 371.58167pt x 42.15674pt.
-<pictures/image21.png, id=1143, 936.49875pt x 106.89937pt>
+<pictures/image21.png, id=1136, 936.49875pt x 106.89937pt>
 File: pictures/image21.png Graphic file (type png)
 <use pictures/image21.png>
-Package pdftex.def Info: pictures/image21.png  used on input line 3515.
+Package pdftex.def Info: pictures/image21.png  used on input line 3610.
 (pdftex.def)             Requested size: 374.59286pt x 42.75897pt.
-[68 <./pictures/image18.png> <./pictures/image19.png> <./pictures/image20.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 3520--3531
+[69 <./pictures/image18.png> <./pictures/image19.png> <./pictures/image20.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 3615--3626
 
  []
 
-<pictures/image23.png, id=1156, 1138.2525pt x 246.9225pt>
+<pictures/image23.png, id=1149, 1138.2525pt x 246.9225pt>
 File: pictures/image23.png Graphic file (type png)
 <use pictures/image23.png>
-Package pdftex.def Info: pictures/image23.png  used on input line 3535.
+Package pdftex.def Info: pictures/image23.png  used on input line 3630.
 (pdftex.def)             Requested size: 398.39435pt x 86.42415pt.
 LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 3548.
-[69 <./pictures/image21.png> <./pictures/image23.png>] [70] (./linux_administrator.aux)
+(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 3643.
+[70 <./pictures/image21.png> <./pictures/image23.png>] [71] (./linux_administrator.aux)
 Package rerunfilecheck Info: File `linux_administrator.out' has not changed.
 (rerunfilecheck)             Checksum: B35168F580394530E91C84470774447E;22552.
  ) 
 Here is how much of TeX's memory you used:
- 28065 strings out of 480247
- 542026 string characters out of 5896152
- 938306 words of memory out of 5000000
- 45278 multiletter control sequences out of 15000+600000
+ 28049 strings out of 480247
+ 541620 string characters out of 5896152
+ 937972 words of memory out of 5000000
+ 45268 multiletter control sequences out of 15000+600000
  483805 words of font info for 66 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  83i,10n,92p,719b,1039s stack positions out of 5000i,500n,10000p,200000b,80000s
  </home/acampos/.texlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbi1000.600pk> </home/acampos/.texlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/ecti1000.600pk> </home/acampos/.texlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1000.600pk> </home/acampos/.texlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1000.600pk> </home/acampos/.texlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1200.600pk> </home/acampos/.texlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1000.600pk> </home/acampos/.texlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1440.600pk> </home/acampos/.texlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1000.600pk> </home/acampos/.texlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1200.600pk> </home/acampos/.texlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1728.600pk>
-Output written on linux_administrator.pdf (70 pages, 1071162 bytes).
+Output written on linux_administrator.pdf (71 pages, 1048870 bytes).
 PDF statistics:
- 1734 PDF objects out of 2073 (max. 8388607)
+ 1726 PDF objects out of 1728 (max. 8388607)
  1098 compressed objects within 11 object streams
- 258 named destinations out of 1000 (max. 500000)
- 1401 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 256 named destinations out of 1000 (max. 500000)
+ 1381 words of extra memory for PDF output out of 10000 (max. 10000000)
 

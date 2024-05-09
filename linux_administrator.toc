@@ -70,86 +70,86 @@
 \contentsline {subsubsection}{\numberline {3.12.1}Ephimeral Aliases}{28}{subsubsection.3.12.1}%
 \contentsline {subsubsection}{\numberline {3.12.2}Permanent Aliases}{28}{subsubsection.3.12.2}%
 \contentsline {subsection}{\numberline {3.13}Source}{29}{subsection.3.13}%
-\contentsline {subsection}{\numberline {3.14}Shutdown machines or terminals}{30}{subsection.3.14}%
-\contentsline {subsection}{\numberline {3.15}Others}{30}{subsection.3.15}%
-\contentsline {section}{\numberline {4}.bashrc, .bash\_profile, /etc/bashrc \& path}{31}{section.4}%
-\contentsline {subsection}{\numberline {4.1}.bashrc vs .bash\_profile}{31}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}PATH}{31}{subsection.4.2}%
-\contentsline {subsection}{\numberline {4.3}Set your PATH}{31}{subsection.4.3}%
-\contentsline {subsubsection}{\numberline {4.3.1}For current terminal}{31}{subsubsection.4.3.1}%
-\contentsline {subsubsection}{\numberline {4.3.2}Permanently for interactive sessions}{31}{subsubsection.4.3.2}%
-\contentsline {section}{\numberline {5}Useful Tools}{32}{section.5}%
-\contentsline {subsection}{\numberline {5.1}Cat}{32}{subsection.5.1}%
-\contentsline {subsection}{\numberline {5.2}Head \& Tail}{32}{subsection.5.2}%
-\contentsline {subsection}{\numberline {5.3}Diff (File comparator)}{33}{subsection.5.3}%
-\contentsline {subsection}{\numberline {5.4}Grep (Global search for Regular Expressions and Print out)}{34}{subsection.5.4}%
-\contentsline {subsubsection}{\numberline {5.4.1}Two flavors of grep usage}{34}{subsubsection.5.4.1}%
-\contentsline {subsubsection}{\numberline {5.4.2}Useful Flags}{34}{subsubsection.5.4.2}%
-\contentsline {subsection}{\numberline {5.5}Find}{35}{subsection.5.5}%
-\contentsline {subsection}{\numberline {5.6}Sed (Stream Editor)}{36}{subsection.5.6}%
-\contentsline {subsection}{\numberline {5.7}AWK}{37}{subsection.5.7}%
-\contentsline {subsection}{\numberline {5.8}Tar Command}{38}{subsection.5.8}%
-\contentsline {subsubsection}{\numberline {5.8.1}Compress}{38}{subsubsection.5.8.1}%
-\contentsline {subsubsection}{\numberline {5.8.2}Extract}{38}{subsubsection.5.8.2}%
-\contentsline {subsubsection}{\numberline {5.8.3}More flags}{39}{subsubsection.5.8.3}%
-\contentsline {subsection}{\numberline {5.9}Base64 Encoding}{39}{subsection.5.9}%
-\contentsline {subsection}{\numberline {5.10}JQ}{39}{subsection.5.10}%
-\contentsline {section}{\numberline {6}Linux Default Text Editors}{40}{section.6}%
-\contentsline {subsection}{\numberline {6.1}Vi}{40}{subsection.6.1}%
-\contentsline {subsection}{\numberline {6.2}Vim}{40}{subsection.6.2}%
-\contentsline {subsubsection}{\numberline {6.2.1}Vim Config}{40}{subsubsection.6.2.1}%
-\contentsline {subsubsection}{\numberline {6.2.2}Hacer y deshacer}{42}{subsubsection.6.2.2}%
-\contentsline {subsubsection}{\numberline {6.2.3}Borrar lineas enteras}{42}{subsubsection.6.2.3}%
-\contentsline {subsubsection}{\numberline {6.2.4}Buscar Ocurrencias}{42}{subsubsection.6.2.4}%
-\contentsline {subsection}{\numberline {6.3}Nano}{43}{subsection.6.3}%
-\contentsline {section}{\numberline {7}Network}{44}{section.7}%
-\contentsline {subsection}{\numberline {7.1}FQDN}{44}{subsection.7.1}%
-\contentsline {subsection}{\numberline {7.2}SSH}{45}{subsection.7.2}%
-\contentsline {subsubsection}{\numberline {7.2.1}What is SSH?}{45}{subsubsection.7.2.1}%
-\contentsline {subsubsection}{\numberline {7.2.2}Authenticate SSH connections using user-password}{46}{subsubsection.7.2.2}%
-\contentsline {subsubsection}{\numberline {7.2.3}Authenticate SSH connections using Asimetric Key authentication method}{46}{subsubsection.7.2.3}%
-\contentsline {paragraph}{\numberline {7.2.3.1}Generate public and private keys on the client server side}{46}{paragraph.7.2.3.1}%
-\contentsline {paragraph}{\numberline {7.2.3.2}Upload the Public Key into the authorized\_keys of the host server}{47}{paragraph.7.2.3.2}%
-\contentsline {paragraph}{\numberline {7.2.3.3}Configure the ssh service into the host server}{48}{paragraph.7.2.3.3}%
-\contentsline {paragraph}{\numberline {7.2.3.4}Use the Asimetric Key authentication method using -i}{48}{paragraph.7.2.3.4}%
-\contentsline {paragraph}{\numberline {7.2.3.5}Use the ssh-agent for Asimetric Key}{49}{paragraph.7.2.3.5}%
-\contentsline {subsubsection}{\numberline {7.2.4}SSH Extra Arguments}{49}{subsubsection.7.2.4}%
-\contentsline {subsubsection}{\numberline {7.2.5}SFTP}{50}{subsubsection.7.2.5}%
-\contentsline {subsubsection}{\numberline {7.2.6}Introduction}{50}{subsubsection.7.2.6}%
-\contentsline {subsubsection}{\numberline {7.2.7}Commands inside the SFTP}{50}{subsubsection.7.2.7}%
-\contentsline {paragraph}{\numberline {7.2.7.1}Navigate}{51}{paragraph.7.2.7.1}%
-\contentsline {paragraph}{\numberline {7.2.7.2}Get}{51}{paragraph.7.2.7.2}%
-\contentsline {paragraph}{\numberline {7.2.7.3}Put}{51}{paragraph.7.2.7.3}%
-\contentsline {paragraph}{\numberline {7.2.7.4}Exit}{52}{paragraph.7.2.7.4}%
-\contentsline {subsubsection}{\numberline {7.2.8}Being sudo with SFTP?}{52}{subsubsection.7.2.8}%
-\contentsline {subsection}{\numberline {7.3}Localhost Networking}{52}{subsection.7.3}%
-\contentsline {subsubsection}{\numberline {7.3.1}Ports Exposed}{52}{subsubsection.7.3.1}%
-\contentsline {subsubsection}{\numberline {7.3.2}Localhost Adresses}{53}{subsubsection.7.3.2}%
-\contentsline {subsection}{\numberline {7.4}Certificates}{54}{subsection.7.4}%
-\contentsline {section}{\numberline {8}Network Tools}{55}{section.8}%
-\contentsline {subsection}{\numberline {8.1}Ping}{55}{subsection.8.1}%
-\contentsline {subsection}{\numberline {8.2}Curl}{55}{subsection.8.2}%
-\contentsline {subsection}{\numberline {8.3}Nmap}{58}{subsection.8.3}%
+\contentsline {subsection}{\numberline {3.14}Shutdown machines or terminals}{29}{subsection.3.14}%
+\contentsline {subsection}{\numberline {3.15}Others}{29}{subsection.3.15}%
+\contentsline {section}{\numberline {4}.bashrc, .bash\_profile, /etc/bashrc \& path}{30}{section.4}%
+\contentsline {subsection}{\numberline {4.1}.bashrc vs .bash\_profile}{30}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}PATH}{30}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Set your PATH}{30}{subsection.4.3}%
+\contentsline {subsubsection}{\numberline {4.3.1}For current terminal}{30}{subsubsection.4.3.1}%
+\contentsline {subsubsection}{\numberline {4.3.2}Permanently for interactive sessions}{30}{subsubsection.4.3.2}%
+\contentsline {section}{\numberline {5}Useful Tools}{31}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Cat}{31}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Head \& Tail}{31}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Diff (File comparator)}{32}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}Grep (Global search for Regular Expressions and Print out)}{33}{subsection.5.4}%
+\contentsline {subsubsection}{\numberline {5.4.1}Two flavors of grep usage}{33}{subsubsection.5.4.1}%
+\contentsline {subsubsection}{\numberline {5.4.2}Useful Flags}{33}{subsubsection.5.4.2}%
+\contentsline {subsection}{\numberline {5.5}Find}{34}{subsection.5.5}%
+\contentsline {subsection}{\numberline {5.6}Sed (Stream Editor)}{35}{subsection.5.6}%
+\contentsline {subsection}{\numberline {5.7}AWK}{36}{subsection.5.7}%
+\contentsline {subsection}{\numberline {5.8}Tar Command}{37}{subsection.5.8}%
+\contentsline {subsubsection}{\numberline {5.8.1}Compress}{37}{subsubsection.5.8.1}%
+\contentsline {subsubsection}{\numberline {5.8.2}Extract}{37}{subsubsection.5.8.2}%
+\contentsline {subsubsection}{\numberline {5.8.3}More flags}{38}{subsubsection.5.8.3}%
+\contentsline {subsection}{\numberline {5.9}Base64 Encoding}{38}{subsection.5.9}%
+\contentsline {subsection}{\numberline {5.10}JQ}{38}{subsection.5.10}%
+\contentsline {section}{\numberline {6}Linux Default Text Editors}{39}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Vi}{39}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Vim}{39}{subsection.6.2}%
+\contentsline {subsubsection}{\numberline {6.2.1}Vim Config}{39}{subsubsection.6.2.1}%
+\contentsline {subsubsection}{\numberline {6.2.2}Hacer y deshacer}{41}{subsubsection.6.2.2}%
+\contentsline {subsubsection}{\numberline {6.2.3}Borrar lineas enteras}{41}{subsubsection.6.2.3}%
+\contentsline {subsubsection}{\numberline {6.2.4}Buscar Ocurrencias}{41}{subsubsection.6.2.4}%
+\contentsline {subsection}{\numberline {6.3}Nano}{42}{subsection.6.3}%
+\contentsline {section}{\numberline {7}Network}{43}{section.7}%
+\contentsline {subsection}{\numberline {7.1}FQDN}{43}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}SSH}{44}{subsection.7.2}%
+\contentsline {subsubsection}{\numberline {7.2.1}What is SSH?}{44}{subsubsection.7.2.1}%
+\contentsline {subsubsection}{\numberline {7.2.2}Authenticate SSH connections using user-password}{45}{subsubsection.7.2.2}%
+\contentsline {subsubsection}{\numberline {7.2.3}Authenticate SSH connections using Asimetric Key authentication method}{45}{subsubsection.7.2.3}%
+\contentsline {paragraph}{\numberline {7.2.3.1}Generate public and private keys on the client server side}{45}{paragraph.7.2.3.1}%
+\contentsline {paragraph}{\numberline {7.2.3.2}Upload the Public Key into the authorized\_keys of the host server}{46}{paragraph.7.2.3.2}%
+\contentsline {paragraph}{\numberline {7.2.3.3}Configure the ssh service into the host server}{47}{paragraph.7.2.3.3}%
+\contentsline {paragraph}{\numberline {7.2.3.4}Use the Asimetric Key authentication method using -i}{47}{paragraph.7.2.3.4}%
+\contentsline {paragraph}{\numberline {7.2.3.5}Use the ssh-agent for Asimetric Key}{48}{paragraph.7.2.3.5}%
+\contentsline {subsubsection}{\numberline {7.2.4}SSH Extra Arguments}{48}{subsubsection.7.2.4}%
+\contentsline {subsubsection}{\numberline {7.2.5}SFTP}{49}{subsubsection.7.2.5}%
+\contentsline {subsubsection}{\numberline {7.2.6}Introduction}{49}{subsubsection.7.2.6}%
+\contentsline {subsubsection}{\numberline {7.2.7}Commands inside the SFTP}{49}{subsubsection.7.2.7}%
+\contentsline {paragraph}{\numberline {7.2.7.1}Navigate}{50}{paragraph.7.2.7.1}%
+\contentsline {paragraph}{\numberline {7.2.7.2}Get}{50}{paragraph.7.2.7.2}%
+\contentsline {paragraph}{\numberline {7.2.7.3}Put}{50}{paragraph.7.2.7.3}%
+\contentsline {paragraph}{\numberline {7.2.7.4}Exit}{51}{paragraph.7.2.7.4}%
+\contentsline {subsubsection}{\numberline {7.2.8}Being sudo with SFTP?}{51}{subsubsection.7.2.8}%
+\contentsline {subsection}{\numberline {7.3}Localhost Networking}{51}{subsection.7.3}%
+\contentsline {subsubsection}{\numberline {7.3.1}Ports Exposed}{51}{subsubsection.7.3.1}%
+\contentsline {subsubsection}{\numberline {7.3.2}Localhost Adresses}{52}{subsubsection.7.3.2}%
+\contentsline {subsection}{\numberline {7.4}Certificates}{53}{subsection.7.4}%
+\contentsline {section}{\numberline {8}Network Tools}{54}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Ping}{54}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Curl}{54}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}Nmap}{57}{subsection.8.3}%
 \contentsline {subsection}{\numberline {8.4}Netcat}{58}{subsection.8.4}%
-\contentsline {subsection}{\numberline {8.5}Telnet}{58}{subsection.8.5}%
-\contentsline {subsection}{\numberline {8.6}Proxy variables definition for binaries}{58}{subsection.8.6}%
-\contentsline {section}{\numberline {9}Tmux}{59}{section.9}%
-\contentsline {subsection}{\numberline {9.1}Arguments}{59}{subsection.9.1}%
-\contentsline {subsection}{\numberline {9.2}Commands Inside tmux}{60}{subsection.9.2}%
-\contentsline {section}{\numberline {10}Others}{61}{section.10}%
-\contentsline {subsection}{\numberline {10.1}Docker Desktop}{61}{subsection.10.1}%
-\contentsline {subsection}{\numberline {10.2}Helm}{62}{subsection.10.2}%
-\contentsline {subsection}{\numberline {10.3}JSONPath}{62}{subsection.10.3}%
-\contentsline {subsubsection}{\numberline {10.3.1}Basic Usage}{62}{subsubsection.10.3.1}%
-\contentsline {subsubsection}{\numberline {10.3.2}Filters}{63}{subsubsection.10.3.2}%
-\contentsline {subsubsection}{\numberline {10.3.3}Example}{64}{subsubsection.10.3.3}%
-\contentsline {subsubsection}{\numberline {10.3.4}JSONPath K8s}{68}{subsubsection.10.3.4}%
-\contentsline {subsection}{\numberline {10.4}Ubuntu vs RH7}{69}{subsection.10.4}%
-\contentsline {subsection}{\numberline {10.5}Vagrant}{69}{subsection.10.5}%
-\contentsline {subsection}{\numberline {10.6}Red Had Package Installer}{70}{subsection.10.6}%
-\contentsline {subsubsection}{\numberline {10.6.1}RPM}{70}{subsubsection.10.6.1}%
-\contentsline {subsubsection}{\numberline {10.6.2}YUM}{70}{subsubsection.10.6.2}%
-\contentsline {subsection}{\numberline {10.7}Timeshift to Backup and Restore Your Linux System}{70}{subsection.10.7}%
-\contentsline {subsubsection}{\numberline {10.7.1}Introduction}{70}{subsubsection.10.7.1}%
-\contentsline {subsubsection}{\numberline {10.7.2}Timeshift Installation}{70}{subsubsection.10.7.2}%
-\contentsline {subsubsection}{\numberline {10.7.3}Create a Snapshot}{70}{subsubsection.10.7.3}%
+\contentsline {subsection}{\numberline {8.5}Telnet}{59}{subsection.8.5}%
+\contentsline {subsection}{\numberline {8.6}Proxy variables definition for binaries}{59}{subsection.8.6}%
+\contentsline {section}{\numberline {9}Tmux}{60}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Arguments}{60}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}Commands Inside tmux}{61}{subsection.9.2}%
+\contentsline {section}{\numberline {10}Others}{62}{section.10}%
+\contentsline {subsection}{\numberline {10.1}Docker Desktop}{62}{subsection.10.1}%
+\contentsline {subsection}{\numberline {10.2}Helm}{63}{subsection.10.2}%
+\contentsline {subsection}{\numberline {10.3}JSONPath}{63}{subsection.10.3}%
+\contentsline {subsubsection}{\numberline {10.3.1}Basic Usage}{63}{subsubsection.10.3.1}%
+\contentsline {subsubsection}{\numberline {10.3.2}Filters}{64}{subsubsection.10.3.2}%
+\contentsline {subsubsection}{\numberline {10.3.3}Example}{65}{subsubsection.10.3.3}%
+\contentsline {subsubsection}{\numberline {10.3.4}JSONPath K8s}{69}{subsubsection.10.3.4}%
+\contentsline {subsection}{\numberline {10.4}Ubuntu vs RH7}{70}{subsection.10.4}%
+\contentsline {subsection}{\numberline {10.5}Vagrant}{70}{subsection.10.5}%
+\contentsline {subsection}{\numberline {10.6}Red Had Package Installer}{71}{subsection.10.6}%
+\contentsline {subsubsection}{\numberline {10.6.1}RPM}{71}{subsubsection.10.6.1}%
+\contentsline {subsubsection}{\numberline {10.6.2}YUM}{71}{subsubsection.10.6.2}%
+\contentsline {subsection}{\numberline {10.7}Timeshift to Backup and Restore Your Linux System}{71}{subsection.10.7}%
+\contentsline {subsubsection}{\numberline {10.7.1}Introduction}{71}{subsubsection.10.7.1}%
+\contentsline {subsubsection}{\numberline {10.7.2}Timeshift Installation}{71}{subsubsection.10.7.2}%
+\contentsline {subsubsection}{\numberline {10.7.3}Create a Snapshot}{71}{subsubsection.10.7.3}%
