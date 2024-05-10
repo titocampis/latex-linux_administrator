@@ -2880,6 +2880,15 @@ $ nmap -O <hostname_or_ip>
 \end{verbatim}
 \end{codetemplate}
 
+\textbf{Do not check using ping if the host is up, just try the connection to ports}
+
+It is really useful when the host blocking our pings
+\begin{codetemplate}{}
+\begin{verbatim}
+$ nmap -O <hostname_or_ip>
+\end{verbatim}
+\end{codetemplate}
+
 \textbf{Scan all the ports opened of the target host}
 \begin{codetemplate}{}
 \begin{verbatim}
