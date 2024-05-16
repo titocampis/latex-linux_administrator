@@ -1106,6 +1106,11 @@ INPUT ./pictures/base64.png
 INPUT pictures/base64.png
 INPUT ./pictures/base64.png
 INPUT ./pictures/base64.png
+INPUT ./pictures/OSI-7-layers.jpg
+INPUT ./pictures/OSI-7-layers.jpg
+INPUT pictures/OSI-7-layers.jpg
+INPUT ./pictures/OSI-7-layers.jpg
+INPUT ./pictures/OSI-7-layers.jpg
 INPUT ./pictures/mac.png
 INPUT ./pictures/mac.png
 INPUT pictures/mac.png
