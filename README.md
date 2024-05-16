@@ -18,8 +18,11 @@ pdflatex linux_administrator.tex
     - netconfig
     - resolv.conf
     - dnsmasq
+    - dhcp
+    - dig @
 - Talk about Certificates
-- Talk about vim
+- strace
+- quad9 --> DNS resolution
 - Talk about Nano
 - Finish the tmux part and gather with ctrl+r and other terminal shortcurts
 - Ohmyzsh

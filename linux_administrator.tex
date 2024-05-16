@@ -821,6 +821,8 @@ $ hostnamectl
 $ top
 \end{verbatim}
 \end{codetemplate}
+
+Do the same but with some colorfull graphics
 \begin{codetemplate}{}
 \begin{verbatim}
 $ htop
@@ -1830,20 +1832,148 @@ $ echo -n $PASSWORD_CODED | base64 -d
 
 
 \subsection{JQ}
-To parse into a beatufiul json format:
 
+To parse into a beatufiul json format:
 \begin{codetemplate}{}
 \begin{verbatim}
 $ cat file.json | jq "."
 \end{verbatim}
 \end{codetemplate}
 
+To show the content inside field in a beatufiul json format:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ cat file.json | jq ".field"
+\end{verbatim}
+\end{codetemplate}
+
+\subsection{YQ}
+
+Is the same as \textbf{jq} but to parse YAML files.
+
+For more information, check \url{https://github.com/mikefarah/yq}
+
 \newpage
 %-------------------------------------------------------------------------------------------------
 \section{Linux Default Text Editors}
 \subsection{Vi}
+Vi (VIsual editor) is the default editor that comes with the UNIX operating system. It is is a full screen editor and has two modes of operation:
+
+\begin{itemize}
+    \item \textbf{Command mode:} mode to write shortcurts which cause action to be taken on the file, as remove line, save, undo, redo, etc.
+    \item \textbf{Insert mode:} mode which entered text is directly inserted into the file.
+\end{itemize}
+
+We are not going to dedicate more time to \textbf{vi}, because it is actually not used. Instead of \textbf{vi}, \textbf{vim} is used (Vi IMproved). Which we are going to analize in the next section.
 
 \subsection{Vim}
+
+\subsubsection{Introduction}
+
+Vim (Vi IMproved) is an enhanced version of the original Vi editor, it builds upon the features of Vi while adding numerous enhancements and improvements. These enhancements include syntax highlighting, built-in support for scripting, extensive customizability, plugin support, portability and many additional commands and options.
+
+While Vi is still used and appreciated for its simplicity and efficiency, Vim has become the de facto standard for many developers and system administrators due to its enhanced features and flexibility.
+
+As well as vi, it has two modes of operation:
+
+\begin{itemize}
+    \item \textbf{Command mode:} mode to write shortcurts which cause action to be taken on the file, as remove line, save, undo, redo, etc.
+    \item \textbf{Insert mode:} mode which entered text is directly inserted into the file.
+\end{itemize}
+
+When you enter vim, you enter in the \textbf{command mode}, so to change to the \textbf{insert mode}:
+
+\begin{codetemplate}{}
+\begin{verbatim}
+i
+\end{verbatim}
+\end{codetemplate}
+
+To go from \textbf{insert mode} to the \textbf{command mode}:
+\begin{codetemplate}{}
+\begin{verbatim}
+:
+\end{verbatim}
+\end{codetemplate}
+
+\subsubsection{Command Mode Shortcuts}
+
+\textbf{Exit:}
+
+\begin{itemize}
+    \item Without save the changes
+\begin{codetemplate}{}
+\begin{verbatim}
+:q!
+\end{verbatim}
+\end{codetemplate}
+    \item Saving the changes
+\begin{codetemplate}{}
+\begin{verbatim}
+:q
+\end{verbatim}
+\end{codetemplate}
+
+    \item Forcing to save the changes
+\begin{codetemplate}{}
+\begin{verbatim}
+:wq
+\end{verbatim}
+\end{codetemplate}
+\end{itemize}
+
+
+\textbf{Undo:}
+\begin{codetemplate}{}
+\begin{verbatim}
+:u
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Redo:}
+\begin{codetemplate}{}
+\begin{verbatim}
+:r
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}{}
+\begin{verbatim}
+Ctrl+r
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Remove a full line:}
+\begin{codetemplate}{}
+\begin{verbatim}
+:d
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Find occurrences:}
+\begin{codetemplate}
+\begin{verbatim}{vim editor - Normal Mode}
+/<words>
+\end{verbatim}
+\end{codetemplate}
+\textbf{To start finding the occurrences:} Intro
+\\\\
+\textbf{To go to the next occurrence:} n
+\\\\
+\textbf{By dafault it is case sensitive, to make it insensitive:} before search, execute.
+\begin{codetemplate}
+\begin{verbatim}{vim editor - Normal Mode}
+:set ignorecase
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{To configure the colors of the terminal:}
+
+
+\begin{codetemplate}
+\begin{verbatim}{vim editor - Normal Mode}
+:scolorscheme <name_of_scheme>
+\end{verbatim}
+\end{codetemplate}
 
 \subsubsection{Vim Config}
 
@@ -1935,57 +2065,222 @@ $ svim <file>
 \end{codetemplate}
 \end{itemize}
 
-\subsubsection{Hacer y deshacer}
-\textbf{undo:} para deshacer acciones
-\begin{codetemplate}{vim editor - Command Mode}
-\begin{verbatim}
-:u
-\end{verbatim}
-\end{codetemplate}
-
-\textbf{redo:} para volver a hacer acciones
-\begin{codetemplate}{vim editor - Normal Mode}
-\begin{verbatim}
-Ctrl + r
-\end{verbatim}
-\end{codetemplate}
-\begin{codetemplate}{vim editor - Normal Mode}
-\begin{verbatim}
-:r
-\end{verbatim}
-\end{codetemplate}
-
-\subsubsection{Borrar lineas enteras}
-\begin{codetemplate}
-\begin{verbatim}{vim editor - Normal Mode}
-dd + intro
-\end{verbatim}
-\end{codetemplate}
-
-
-\subsubsection{Buscar Ocurrencias}
-\textbf{Para buscar}
-\begin{codetemplate}
-\begin{verbatim}{vim editor - Normal Mode}
-/<palabra>
-\end{verbatim}
-\end{codetemplate}
-\textbf{Para ir a cualquier ocurrencia:} Intro
-\\\\
-\textbf{Para pasar entre ocurrencias:} n
-\\\\
-\textbf{Si queremos hacerlo insensible a minusculas y mayusculas:} antes de buscar, ejecutar lo siguiente.
-\begin{codetemplate}
-\begin{verbatim}{vim editor - Normal Mode}
-:set ignorecase
-\end{verbatim}
-\end{codetemplate}
-
 \subsection{Nano}
 
 \newpage
 %-------------------------------------------------------------------------------------------------
 \section{Network}
+
+\subsection{OSI Model}
+
+The Open Systems Interconnection (OSI) model is a reference model from the International Organization for Standardization (ISO) that "provides a common basis for the coordination of standards development for the purpose of systems interconnection. In the OSI reference model, the communications between systems are split into seven different abstraction layers: Physical, Data Link, Network, Transport, Session, Presentation, and Application.
+
+\subsection{MAC Adress vs IP Address}
+
+\subsubsection{Introduction}
+
+Suppose someone has to deliver a package to someone else. To effectively send the courier, the sender must provide two details about the recipient. The two items are the receiver's name and address, which may include a house number, street, city, state, and pin code (to identify the right person to deliver the courier specifically). If we apply this example to networking, the MAC address will be the address of the particular node where we want to send the data, and the IP address will be the address of the network connection where several devices may be present.
+
+A MAC address and an IP address both help identify a device specifically on the internet. The IP address is generated by the ISP (Internet Service Provider), whereas the MAC address is provided by the Network Interface Controller (NIC)manufacturer. There are significant differences between a MAC address and an IP address. The IP address of a device is crucial for determining a network's connection (using which the device is connecting to the network). On the other hand, the MAC address guarantees the computer device's precise location. It enables us to uniquely identify a certain device on the access network.
+
+Every device connected to a network has a Media Access Control (MAC) address that uniquely identifies it, much like every house has a unique postal address. Meanwhile IP addresses are just as significant as a person's identification number or card. 
+
+\subsubsection{MAC Address (Media Control Address)}
+
+A MAC address, which is also known as a hardware or physical address, is an unique alphanumeric identifier consisting of 12 characters. MAC address is allocated to a network interface controller (NIC) and functions as a network address when communications occur within a network segment. Ethernet, Wi-Fi, and Bluetooth are just a few of the IEEE 802 networking technologies that frequently employ this application. Six groups of two hexadecimal digits between 00 and FF (48 bits in length) constitute MAC addresses. They can be separated by ":", "-", ",", " " or not separated at all. An example of MAC address:
+\begin{itemize}
+    \item 02:AB:6D:9C:EF:42
+    \item 02-AB-6D-9C-EF-42
+    \item 02 AB 6D 9C EF 42
+\end{itemize}
+
+The first 24 bits of the MAC address, the first 3 octets (first 3 hexadecimal groups) are the ID number of the adapter manufacturer, here we have examples of OUIs (Organisationally Unique Identifier):
+
+\begin{itemize}
+    \item \textbf{Cisco:} CC:46:D
+    \item \textbf{Google:} 3C:5A:B4 
+    \item \textbf{HP:} 3C:D9:2B
+    \item \textbf{Intel:} 00:A0:C9
+\end{itemize}
+
+The serial number that the manufacturer assigned to the adapter is represented by the second half of a MAC address (24 more bits)
+
+\begin{figure}[H]
+    \includegraphics[width=\textwidth]{pictures/mac.png}
+    \centering
+\end{figure}
+
+MAC address  operate at the Data Link Layer (Layer 2) of the OSI model. They are used to identify devices within a local network (LAN). It is unique: every network interface card (NIC) is assigned a unique MAC address by the manufacturer, ensuring that no two devices on the same network have the same MAC address.
+
+Within a local network, devices communicate with each other using MAC addresses. For instance, when a device wants to send data to another device on the same network, it uses the destination device's MAC address. As it is operating at OSI Layer 2, data is encapsulated into Ethernet frames, which include the source and destination MAC addresses.
+
+\textbf{How to know my MAC address?}
+
+
+Windows (powershell): execute the following command and look for the "Physical Address" under the network adapter you're using. 
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ipconfig /all
+\end{verbatim}
+\end{codetemplate}
+
+Linux: execute the following command and check for ethX for Ethernet or wlanX for Wi-Fi
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ip a
+\end{verbatim}
+\end{codetemplate}
+
+Router, Mobile, Windows (without terminal), Linux (without terminal): check the device configuration.
+
+\subsubsection{IP Address}
+
+The term "Internet Protocol", for which the abbreviation IP stands, is a set of guidelines that control the format of data exchanged via a local or public network.
+
+An IP address is an identification tool for network connections. A link in a network receives what is known as a "logical address" from the network. IP addresses define how internet routers behave and allow you to regulate how devices communicate over the Internet.
+
+An internet protocol address (IP address) is a numerical representation of a network interface that serves as its sole means of identification such as 192.97.23.57.
+
+The two IP versions that are now in use are IPv4 and IPv6. The original IPv4 protocol is still in use today on the internet and in many corporate networks. On the other hand, the IPv4 protocol was limited to $2^{32}$ addresses. Due to the way addresses were assigned, there would be a situation where there wouldn't be enough unique addresses for all internet-connected devices. That's why the most recent version is Internet Protocol version 6 (IPv6). To accommodate the demand for more Internet addresses, this new IP address version is being used. It was developed to overcome IPv4 issues. With a 128-bit address space, it supports 340 billion distinct address spaces. IPng (Internet Protocol next generation) is another name for IPv6.
+
+An IP address is used to manage the connection between gadgets that send and receive data over a network. Without an IP address, it is impossible to communicate with any device connected to the internet. IP addresses allow computing devices (such PCs and tablets) to communicate with websites and streaming services, as well as information websites of the identity of the connecting user.
+
+IP Address works operate at the Network Layer (Layer 3) of the OSI model. They are used for logical addressing and routing of packets across different networks, including the global internet, so data is encapsulated into IP packets, which include the source and destination IP addresses.
+
+\subsubsection{Why Both MAC and IP Addresses Are Needed}
+
+Having both MAC and IP addresses allows for the separation of physical hardware identification (MAC) from logical network addressing (IP). This separation simplifies network management, mobility, and security. 
+
+Devices can move between networks and retain their unique MAC address, while their IP address can change based on the network they are connected to. This flexibility supports mobile devices and scalable network architectures.
+
+\textbf{Local vs Global Scope:}
+\begin{itemize}
+    \item \textbf{MAC Address:} Used for communication within a local network segment (Layer 2). It is essential for Ethernet communication and ensures that data reaches the correct device on the same network.
+    \item \textbf{IP Address:} Used for communication between different networks (Layer 3). It enables data to be routed across the internet and large networks.
+\end{itemize}
+
+\textbf{Routing and Address Resolution:}
+
+\begin{itemize}
+    \item \textbf{Routing:} IP addresses are used by routers to make forwarding decisions and route data across multiple networks to its final destination.
+    \item \textbf{Address Resolution Protocol (ARP):} When a device wants to communicate with another device on the same local network, it uses ARP to map the destination IP address to the corresponding MAC address. This mapping is necessary because data frames on Ethernet networks require MAC addresses.
+\end{itemize}
+
+\subsection{Public IP}
+
+\subsubsection{Introduction}
+A public IP address uniquely identifies your network on the internet. It allows other networks and devices on the internet to locate and communicate with your network. When you send data over the internet (e.g., browsing websites, streaming videos), it needs a destination and return path. The public IP address serves as the return address for the data requested by devices within your local network.
+
+The Public IP is set at router level, not at device level, and any time you access a website, your request is sent from your device to your router, which then uses the public IP address to send the request out to the internet. The response from the website is sent back to your router's public IP address, which then routes the response back to your device and vice versa.
+
+The router uses NAT to translate private IP addresses (used within your local network) into the public IP address. This allows multiple devices on your local network to share a single public IP address for accessing the internet.
+
+So if you host a service (e.g., a web server) on a device on your network, you will need to define a NAT route in your router in order to other devices on the internet use your public IP to connect to your server.
+
+\subsubsection{How to get my public ip?}
+
+I can do it with different methods:
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$ curl ifconfig.me
+\end{verbatim}
+\end{codetemplate}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$ dig +short myip.opendns.com @resolver1.opendns.com
+\end{verbatim}
+\end{codetemplate}
+
+Each of these commands contacts an external service that echoes back your public IP address. This IP address is what others on the internet see as your point of contact.
+
+\subsubsection{Who assign me this IP?}
+
+Your router's public IP address is assigned by your Internet Service Provider (ISP). Usually, if your IP is not for bussiness or point to point specific connection, in which case the assignment of the IP is static. The assignment of the IP is dynamic using DHCP.
+
+The dynamic IP Address Assignment using DHCP works like folowing:
+
+\begin{enumerate} 
+    \item Your ISP uses Dynamic Host Configuration Protocol (DHCP) to assign IP addresses. This means that your router is given a dynamic public IP address from a pool of available addresses.
+    \item The IP address is typically leased to your router for a certain period. Once the lease expires, the ISP can assign the same IP address or a different one.
+\end{enumerate}
+
+\subsection{DHCP}
+
+\subsubsection{Introduction}
+
+DHCP (Dynamic Host Configuration Protocol) is a network management protocol used to dynamically assign an IP address to any device, or node, on a network so it can communicate using IP. DHCP automates and centrally manages these configurations rather than requiring network administrators to manually assign IP addresses to all network devices. DHCP can be implemented on small local networks, as well as large enterprise networks.
+
+DHCP assigns new IP addresses in each location when devices are moved from place to place, which means network administrators do not have to manually configure each device with a valid IP address or reconfigure the device with a new IP address if it moves to a new location on the network.
+
+Versions of DHCP are available for use in IP version 4 (IPv4) and IP version 6 (IPv6).
+
+It is a client-server protocol in which servers manage a pool of unique IP addresses, as well as information about client configuration parameters.  It dynamically assigns IP addresses to DHCP clients and allocates TCP/IP configuration information to DHCP clients. This information includes subnet mask information, default gateway IP addresses and domain name system (DNS) addresses. DHCP-enabled clients send a request to the DHCP server whenever they connect to a network.
+
+\subsubsection{How IP's are assigned?}
+
+\begin{enumerate}
+    \item \textbf{DHCP Request:} when a device (e.g., a computer or smartphone) connects to your network, it sends out a DHCP request asking for an IP address.
+    \item \textbf{DHCP Offer:} the DHCP server responds with a DHCP offer, which includes an available IP address, subnet mask, gateway address, and DNS server information.
+    \item \textbf{DHCP Acknowledgment:} the device acknowledges the offer, and the DHCP server finalizes the lease, assigning the IP address to the device for a specified period.
+\end{enumerate}
+
+
+\subsection{Private IP}
+
+\subsubsection{Introduction}
+
+We have seen that the router is your device gateway to the internet, but how your router knows to which device redirect the requests? This is because all your devices: phone, tablet, smart tv, laptop... Have private IP addresses inside your local network, assigned directly by your router.
+
+Your router is the responsible for assigning private IP addresses to devices on your local network. It does this using the DHCP service, which is typically built into your router making it the DHCP server on your private network. When a device connects to the network, it requests an IP address from the DHCP server (the router), which then assigns an available address from a predefined range.
+
+The private network (subnet) created by your router is typically not random. Most routers come with a default subnet configuration, often something like 192.168.0.0/24 or 192.168.1.0/24. These default subnets are predefined by the manufacturer to ensure ease of setup and compatibility with most home networking needs.
+
+\subsubsection{Advantages of have Private IP adresses}
+
+\begin{itemize}
+    \item \textbf{Address Space Conservation:} private IP addresses allow multiple devices to share a single public IP address (the one in the router), conserving the limited number of available public IP addresses.
+    \item \textbf{Network Segmentation:} private IP addresses enable you to create a local network that can communicate internally without directly exposing each device to the internet.
+    \item \textbf{Security:} : by using private IP addresses, devices within your local network are protected from direct access by external users on the internet.
+\end{itemize}
+
+\subsubsection{Can the private subnet be changed?}
+
+Yes, you can change the subnet configuration of your router. This is useful if you have specific networking requirements or to avoid conflicts with other networks (e.g., when setting up a VPN or connecting to another network with the same default subnet).
+\\\\
+\textbf{How to Change It}
+\begin{enumerate}
+    \item \textbf{Access Router Settings:} open a web browser and enter the router's IP address (commonly 192.168.1.1 or 192.168.0.1) to access the router’s administration interface.
+    \item \textbf{Login:} enter the admin username and password (default credentials are often found on the router or in the manual).
+    \item \textbf{Navigate to Network Settings:} look for sections like "LAN Setup," "Network Configuration," or similar.
+    \item \textbf{Change Subnet:} you can change the IP address range, such as changing from 192.168.1.0/24 to 192.168.2.0/24 or any other valid private IP range.
+    \item \textbf{Save and Reboot:} save the changes and reboot the router for the new settings to take effect.
+\end{enumerate}
+
+\begin{blocktemplate}{NOTE}
+You can change a lo of things in the router configuration following these instructions, the IP's assigned to some devices, static IP assignment instead of using DHCP, NAT rules, etc.
+\end{blocktemplate}
+
+\subsubsection{Private IP Address Ranges}
+
+Private IP addresses are defined by the Internet Engineering Task Force (IETF) in RFC 1918. They are reserved for use within private networks and are not routable on the public internet. The commonly used private IP address ranges are:
+
+\begin{itemize}
+    \item 10.0.0.0 to 10.255.255.255
+    \item 172.16.0.0 to 172.31.255.255
+    \item 192.168.0.0 to 192.168.255.255
+\end{itemize}
+
+\subsubsection{Example of Private IP Assignment}
+\begin{enumerate}
+    \item \textbf{Router Configuration:} Your router might be configured to use the range 192.168.1.2 to 192.168.1.254 for DHCP.
+    \item \textbf{Device Connection:} when your smartphone, laptop, tablet connects to the Wi-Fi, it sends a DHCP request asking for an IP address.
+    \item Then the router's DHCP server assigns it 192.168.1.10 (for example) along with other network information.
+\end{enumerate}
+
+
+
 \subsection{FQDN} \label{FQDN}
 El término Fully Qualified Domain Name (FQDN) se refiere a la dirección completa y única necesaria para tener presencia en Internet. Está compuesta por el nombre de host y el de dominio y se utiliza para localizar hosts específicos en Internet y acceder a ellos mediante la resolución de nombres. Este nombre de dominio único que contiene toda la información necesaria para poder acceder a una máquina a través de una red pública, como puede ser internet. A través de un FQDN un equipo es capaz de conectarse con cualquier otro.
 
