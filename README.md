@@ -13,16 +13,8 @@ pdflatex linux_administrator.tex
 ```
 
 ## TODO
-- Network talk about:
-    - ip a
-    - netconfig
-    - resolv.conf
-    - dnsmasq
-    - dhcp
-    - dig @
-- Talk about Certificates
-- strace
-- quad9 --> DNS resolution
-- Talk about Nano
-- Finish the tmux part and gather with ctrl+r and other terminal shortcurts
-- Ohmyzsh
+| Status | Task |
+|----------|----------|
+| :hourglass_flowing_sand: | Linux Network Interfaces |
+| :hourglass_flowing_sand: | Certificates |
+| :hourglass_flowing_sand: | strace |

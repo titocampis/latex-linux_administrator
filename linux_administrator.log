@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2024.5.8)  4 JUN 2024 18:10
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2024.5.8)  4 JUN 2024 20:46
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -661,7 +661,7 @@ LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 11
  (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 2019/12/16 v2.5j Standard LaTeX font definitions
 ) [7] [8] [9]
-<pictures/defsbig.png, id=877, 629.35126pt x 301.125pt>
+<pictures/defsbig.png, id=967, 629.35126pt x 301.125pt>
 File: pictures/defsbig.png Graphic file (type png)
 <use pictures/defsbig.png>
 Package pdftex.def Info: pictures/defsbig.png  used on input line 212.
@@ -672,29 +672,29 @@ Overfull \hbox (13.75146pt too wide) in paragraph at lines 212--214
  []
 
 [10] [11 <./pictures/defsbig.png>]
-<pictures/etcskel.png, id=894, 504.08325pt x 120.45pt>
+<pictures/etcskel.png, id=985, 504.08325pt x 120.45pt>
 File: pictures/etcskel.png Graphic file (type png)
 <use pictures/etcskel.png>
 Package pdftex.def Info: pictures/etcskel.png  used on input line 301.
 (pdftex.def)             Requested size: 352.85587pt x 84.3144pt.
  [12 <./pictures/etcskel.png>]
-<pictures/loginsfile.png, id=902, 618.51076pt x 136.1085pt>
+<pictures/loginsfile.png, id=993, 618.51076pt x 136.1085pt>
 File: pictures/loginsfile.png Graphic file (type png)
 <use pictures/loginsfile.png>
 Package pdftex.def Info: pictures/loginsfile.png  used on input line 328.
 (pdftex.def)             Requested size: 432.95456pt x 95.27528pt.
  [13 <./pictures/loginsfile.png>] [14] [15] [16] [17]
-<pictures/sudoers.png, id=933, 492.03825pt x 205.9695pt>
+<pictures/sudoers.png, id=1024, 492.03825pt x 205.9695pt>
 File: pictures/sudoers.png Graphic file (type png)
 <use pictures/sudoers.png>
 Package pdftex.def Info: pictures/sudoers.png  used on input line 604.
 (pdftex.def)             Requested size: 455.24411pt x 190.56908pt.
-<pictures/jiminy.png, id=934, 543.2295pt x 159.59625pt>
+<pictures/jiminy.png, id=1025, 543.2295pt x 159.59625pt>
 File: pictures/jiminy.png Graphic file (type png)
 <use pictures/jiminy.png>
 Package pdftex.def Info: pictures/jiminy.png  used on input line 612.
 (pdftex.def)             Requested size: 455.24411pt x 133.7482pt.
-<pictures/voliajiminy.png, id=935, 553.46774pt x 181.27725pt>
+<pictures/voliajiminy.png, id=1026, 553.46774pt x 181.27725pt>
 File: pictures/voliajiminy.png Graphic file (type png)
 <use pictures/voliajiminy.png>
 Package pdftex.def Info: pictures/voliajiminy.png  used on input line 618.
@@ -709,24 +709,24 @@ Underfull \hbox (badness 10000) in paragraph at lines 670--673
 
  []
 
-<pictures/jiminyboss.png, id=949, 330.033pt x 147.55125pt>
+<pictures/jiminyboss.png, id=1040, 330.033pt x 147.55125pt>
 File: pictures/jiminyboss.png Graphic file (type png)
 <use pictures/jiminyboss.png>
 Package pdftex.def Info: pictures/jiminyboss.png  used on input line 696.
 (pdftex.def)             Requested size: 264.02675pt x 118.04114pt.
 [20 <./pictures/jiminyboss.png>]
-<pictures/su.png, id=956, 352.9185pt x 34.9305pt>
+<pictures/su.png, id=1046, 352.9185pt x 34.9305pt>
 File: pictures/su.png Graphic file (type png)
 <use pictures/su.png>
 Package pdftex.def Info: pictures/su.png  used on input line 759.
 (pdftex.def)             Requested size: 282.33517pt x 27.94443pt.
-<pictures/nopwdsu.png, id=957, 401.70074pt x 71.66776pt>
+<pictures/nopwdsu.png, id=1047, 401.70074pt x 71.66776pt>
 File: pictures/nopwdsu.png Graphic file (type png)
 <use pictures/nopwdsu.png>
 Package pdftex.def Info: pictures/nopwdsu.png  used on input line 771.
 (pdftex.def)             Requested size: 281.1886pt x 50.16707pt.
  [21 <./pictures/su.png>] [22 <./pictures/nopwdsu.png>] [23] [24] [25]
-<pictures/chmod.PNG, id=981, 648.17157pt x 366.61969pt>
+<pictures/chmod.PNG, id=1071, 648.17157pt x 366.61969pt>
 File: pictures/chmod.PNG Graphic file (type png)
 <use pictures/chmod.PNG>
 Package pdftex.def Info: pictures/chmod.PNG  used on input line 1025.
@@ -737,36 +737,36 @@ Overfull \hbox (22.19489pt too wide) in paragraph at lines 1134--1134
  []
 
 [28]
-<pictures/image45.PNG, id=996, 488.57532pt x 159.59625pt>
+<pictures/image45.PNG, id=1087, 488.57532pt x 159.59625pt>
 File: pictures/image45.PNG Graphic file (type png)
 <use pictures/image45.PNG>
 Package pdftex.def Info: pictures/image45.PNG  used on input line 1160.
 (pdftex.def)             Requested size: 293.14745pt x 95.75847pt.
-<pictures/image2.PNG, id=997, 582.175pt x 102.3825pt>
+<pictures/image2.PNG, id=1088, 582.175pt x 102.3825pt>
 File: pictures/image2.PNG Graphic file (type png)
 <use pictures/image2.PNG>
 Package pdftex.def Info: pictures/image2.PNG  used on input line 1195.
 (pdftex.def)             Requested size: 349.3077pt x 61.42996pt.
  [29 <./pictures/image45.png>] [30 <./pictures/image2.png>] [31]
-<pictures/image1.png, id=1017, 547.2947pt x 185.94469pt>
+<pictures/image1.png, id=1108, 547.2947pt x 185.94469pt>
 File: pictures/image1.png Graphic file (type png)
 <use pictures/image1.png>
 Package pdftex.def Info: pictures/image1.png  used on input line 1360.
 (pdftex.def)             Requested size: 383.10367pt x 130.16037pt.
  [32 <./pictures/image1.png>] [33] [34] [35]
-<pictures/image3.png, id=1038, 597.73312pt x 146.79843pt>
+<pictures/image3.png, id=1129, 597.73312pt x 146.79843pt>
 File: pictures/image3.png Graphic file (type png)
 <use pictures/image3.png>
 Package pdftex.def Info: pictures/image3.png  used on input line 1632.
 (pdftex.def)             Requested size: 418.41032pt x 102.7582pt.
  [36 <./pictures/image3.png>]
-<pictures/sed.png, id=1045, 748.59676pt x 38.544pt>
+<pictures/sed.png, id=1136, 748.59676pt x 38.544pt>
 File: pictures/sed.png Graphic file (type png)
 <use pictures/sed.png>
 Package pdftex.def Info: pictures/sed.png  used on input line 1692.
 (pdftex.def)             Requested size: 426.79141pt x 21.97441pt.
  [37 <./pictures/sed.png>] [38]
-<pictures/base64.png, id=1059, 406.51875pt x 126.4725pt>
+<pictures/base64.png, id=1149, 406.51875pt x 126.4725pt>
 File: pictures/base64.png Graphic file (type png)
 <use pictures/base64.png>
 Package pdftex.def Info: pictures/base64.png  used on input line 1830.
@@ -785,19 +785,19 @@ Overfull \hbox (37.94104pt too wide) in paragraph at lines 2088--2088
 Overfull \vbox (33.46976pt too high) has occurred while \output is active []
 
  [44] [45] [46]
-<pictures/OSI-7-layers.jpg, id=1095, 562.1pt x 457.71pt>
+<pictures/OSI-7-layers.jpg, id=1186, 562.1pt x 457.71pt>
 File: pictures/OSI-7-layers.jpg Graphic file (type jpg)
 <use pictures/OSI-7-layers.jpg>
 Package pdftex.def Info: pictures/OSI-7-layers.jpg  used on input line 2233.
 (pdftex.def)             Requested size: 337.2626pt x 274.62813pt.
  [47 <./pictures/OSI-7-layers.jpg>]
-<pictures/mac.png, id=1100, 533.74406pt x 76.03406pt>
+<pictures/mac.png, id=1191, 533.74406pt x 76.03406pt>
 File: pictures/mac.png Graphic file (type png)
 <use pictures/mac.png>
 Package pdftex.def Info: pictures/mac.png  used on input line 2268.
 (pdftex.def)             Requested size: 455.24411pt x 64.85315pt.
  [48 <./pictures/mac.png>] [49] [50] [51]
-<pictures/network.png, id=1126, 1039.63406pt x 621.82312pt>
+<pictures/network.png, id=1217, 1039.63406pt x 621.82312pt>
 File: pictures/network.png Graphic file (type png)
 <use pictures/network.png>
 Package pdftex.def Info: pictures/network.png  used on input line 2400.
@@ -813,118 +813,148 @@ Overfull \hbox (12.7172pt too wide) in paragraph at lines 2441--2442
  []
 
 [53]
-<pictures/image11.PNG, id=1145, 800.9925pt x 338.76563pt>
+<pictures/image11.PNG, id=1235, 800.9925pt x 338.76563pt>
 File: pictures/image11.PNG Graphic file (type png)
 <use pictures/image11.PNG>
 Package pdftex.def Info: pictures/image11.PNG  used on input line 2457.
 (pdftex.def)             Requested size: 320.39133pt x 135.50385pt.
- [54 <./pictures/image11.png>]
-<pictures/ssh1.png, id=1158, 1144.275pt x 250.536pt>
+<pictures/resolved.png, id=1238, 1094.58937pt x 44.41594pt>
+File: pictures/resolved.png Graphic file (type png)
+<use pictures/resolved.png>
+Package pdftex.def Info: pictures/resolved.png  used on input line 2488.
+(pdftex.def)             Requested size: 455.24411pt x 18.47292pt.
+ [54 <./pictures/image11.png> <./pictures/resolved.png>]
+Overfull \hbox (10.28pt too wide) in paragraph at lines 2510--2511
+\T1/cmr/m/n/10 If the fqdn is not found in the [][]\T1/cmtt/m/n/10 /etc/hosts []\T1/cmr/m/n/10 file, the sys-tem uses DNS servers de-fined in the [][]\T1/cmtt/m/n/10 /etc/resolv.conf
+ []
+
+[55] [56] [57] [58]
+<pictures/ssh1.png, id=1267, 1144.275pt x 250.536pt>
 File: pictures/ssh1.png Graphic file (type png)
 <use pictures/ssh1.png>
-Package pdftex.def Info: pictures/ssh1.png  used on input line 2533.
+Package pdftex.def Info: pictures/ssh1.png  used on input line 2725.
 (pdftex.def)             Requested size: 455.24411pt x 99.67358pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 2543--2546
+Underfull \hbox (badness 10000) in paragraph at lines 2735--2738
 
  []
 
-[55 <./pictures/ssh1.png>]
-<pictures/ssh2.png, id=1165, 747.9945pt x 122.25674pt>
+[59 <./pictures/ssh1.png>]
+<pictures/ssh2.png, id=1273, 747.9945pt x 122.25674pt>
 File: pictures/ssh2.png Graphic file (type png)
 <use pictures/ssh2.png>
-Package pdftex.def Info: pictures/ssh2.png  used on input line 2597.
+Package pdftex.def Info: pictures/ssh2.png  used on input line 2789.
 (pdftex.def)             Requested size: 426.79141pt x 69.75795pt.
- [56] [57 <./pictures/ssh2.png>] [58] [59] [60] [61] [62]
-<pictures/image35.PNG, id=1214, 656.4525pt x 299.1175pt>
+ [60 <./pictures/ssh2.png>] [61] [62] [63] [64] [65] [66]
+<pictures/image35.PNG, id=1324, 656.4525pt x 299.1175pt>
 File: pictures/image35.PNG Graphic file (type png)
 <use pictures/image35.PNG>
-Package pdftex.def Info: pictures/image35.PNG  used on input line 3034.
+Package pdftex.def Info: pictures/image35.PNG  used on input line 3226.
 (pdftex.def)             Requested size: 295.4009pt x 134.60162pt.
-<pictures/image36.PNG, id=1215, 643.40375pt x 138.5175pt>
+<pictures/image36.PNG, id=1325, 643.40375pt x 138.5175pt>
 File: pictures/image36.PNG Graphic file (type png)
 <use pictures/image36.PNG>
-Package pdftex.def Info: pictures/image36.PNG  used on input line 3041.
+Package pdftex.def Info: pictures/image36.PNG  used on input line 3233.
 (pdftex.def)             Requested size: 289.529pt x 62.33229pt.
- [63 <./pictures/image35.png> <./pictures/image36.png>] [64]
-Underfull \hbox (badness 10000) in paragraph at lines 3114--3117
+ [67 <./pictures/image35.png> <./pictures/image36.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 3306--3309
 
  []
 
-[65] [66] [67] [68] [69] [70] [71] [72]
-Overfull \hbox (26.1167pt too wide) in paragraph at lines 3615--3631
+[68] [69] [70] [71] [72] [73] [74] [75]
+Underfull \hbox (badness 10000) in paragraph at lines 3849--3856
+
+ []
+
+[76]
+Overfull \hbox (74.68207pt too wide) in paragraph at lines 3879--3879
+[]\T1/cmtt/m/n/10 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3874--3881
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3889--3896
+
+ []
+
+[77]
+Overfull \hbox (26.1167pt too wide) in paragraph at lines 3936--3952
 []\T1/cmr/m/n/10 Desde un ter-mi-nal rel-len-amos el con-tenido del fichero de con-fig-u-ración de docker [][]\T1/cmtt/m/n/10 ~/.docker/config.json[]\T1/cmr/m/n/10 : 
  []
 
-[73]
-Underfull \hbox (badness 10000) in paragraph at lines 3698--3704
+[78]
+Underfull \hbox (badness 10000) in paragraph at lines 4019--4025
 
  []
 
-[74]
-Underfull \hbox (badness 10000) in paragraph at lines 3752--3756
+[79]
+Underfull \hbox (badness 10000) in paragraph at lines 4073--4077
 
  []
 
-[75] [76] [77] [78] [79]
-Underfull \hbox (badness 10000) in paragraph at lines 4046--4056
+[80] [81] [82] [83] [84]
+Underfull \hbox (badness 10000) in paragraph at lines 4367--4377
 
  []
 
-<pictures/image18.png, id=1296, 772.38562pt x 111.41624pt>
+<pictures/image18.png, id=1409, 772.38562pt x 111.41624pt>
 File: pictures/image18.png Graphic file (type png)
 <use pictures/image18.png>
-Package pdftex.def Info: pictures/image18.png  used on input line 4068.
+Package pdftex.def Info: pictures/image18.png  used on input line 4389.
 (pdftex.def)             Requested size: 386.19186pt x 55.70798pt.
-<pictures/image19.png, id=1297, 615.80063pt x 79.04532pt>
+<pictures/image19.png, id=1410, 615.80063pt x 79.04532pt>
 File: pictures/image19.png Graphic file (type png)
 <use pictures/image19.png>
-Package pdftex.def Info: pictures/image19.png  used on input line 4074.
+Package pdftex.def Info: pictures/image19.png  used on input line 4395.
 (pdftex.def)             Requested size: 332.52737pt x 42.68382pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 4079--4089
+Underfull \hbox (badness 10000) in paragraph at lines 4400--4410
 
  []
 
-<pictures/image20.png, id=1298, 928.97063pt x 105.39375pt>
+<pictures/image20.png, id=1411, 928.97063pt x 105.39375pt>
 File: pictures/image20.png Graphic file (type png)
 <use pictures/image20.png>
-Package pdftex.def Info: pictures/image20.png  used on input line 4092.
+Package pdftex.def Info: pictures/image20.png  used on input line 4413.
 (pdftex.def)             Requested size: 371.58167pt x 42.15674pt.
-<pictures/image21.png, id=1299, 936.49875pt x 106.89937pt>
+<pictures/image21.png, id=1412, 936.49875pt x 106.89937pt>
 File: pictures/image21.png Graphic file (type png)
 <use pictures/image21.png>
-Package pdftex.def Info: pictures/image21.png  used on input line 4098.
+Package pdftex.def Info: pictures/image21.png  used on input line 4419.
 (pdftex.def)             Requested size: 374.59286pt x 42.75897pt.
-[80 <./pictures/image18.png> <./pictures/image19.png> <./pictures/image20.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 4103--4114
+[85 <./pictures/image18.png> <./pictures/image19.png> <./pictures/image20.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 4424--4435
 
  []
 
-<pictures/image23.png, id=1312, 1138.2525pt x 246.9225pt>
+<pictures/image23.png, id=1426, 1138.2525pt x 246.9225pt>
 File: pictures/image23.png Graphic file (type png)
 <use pictures/image23.png>
-Package pdftex.def Info: pictures/image23.png  used on input line 4118.
+Package pdftex.def Info: pictures/image23.png  used on input line 4439.
 (pdftex.def)             Requested size: 398.39435pt x 86.42415pt.
 LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 4131.
-[81 <./pictures/image21.png> <./pictures/image23.png>] [82] (./linux_administrator.aux)
+(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 4452.
+[86 <./pictures/image21.png> <./pictures/image23.png>] [87] (./linux_administrator.aux)
 Package rerunfilecheck Info: File `linux_administrator.out' has not changed.
-(rerunfilecheck)             Checksum: 2DEF682BE8A208A5494DEC047389C7B5;25826.
+(rerunfilecheck)             Checksum: 72679562C487BACD73CD5890044DFAC6;28535.
  ) 
 Here is how much of TeX's memory you used:
- 28171 strings out of 480247
- 543633 string characters out of 5896152
- 937792 words of memory out of 5000000
- 45343 multiletter control sequences out of 15000+600000
+ 28247 strings out of 480247
+ 545028 string characters out of 5896152
+ 942313 words of memory out of 5000000
+ 45395 multiletter control sequences out of 15000+600000
  483805 words of font info for 66 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  83i,10n,92p,838b,1039s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc}{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-ts1.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbi1000.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1000.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1440.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1728.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1000.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfti1000.pfb></usr/share/texmf/fonts/type1/public/cm-super/sftt1000.pfb>
-Output written on linux_administrator.pdf (82 pages, 1395993 bytes).
+Output written on linux_administrator.pdf (87 pages, 1424530 bytes).
 PDF statistics:
- 1446 PDF objects out of 1728 (max. 8388607)
- 1248 compressed objects within 13 object streams
- 299 named destinations out of 1000 (max. 500000)
- 1548 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1564 PDF objects out of 1728 (max. 8388607)
+ 1358 compressed objects within 14 object streams
+ 322 named destinations out of 1000 (max. 500000)
+ 1697 words of extra memory for PDF output out of 10000 (max. 10000000)
 

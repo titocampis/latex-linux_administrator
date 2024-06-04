@@ -1126,6 +1126,11 @@ INPUT ./pictures/image11.png
 INPUT pictures/image11.png
 INPUT ./pictures/image11.png
 INPUT ./pictures/image11.png
+INPUT ./pictures/resolved.png
+INPUT ./pictures/resolved.png
+INPUT pictures/resolved.png
+INPUT ./pictures/resolved.png
+INPUT ./pictures/resolved.png
 INPUT ./pictures/ssh1.png
 INPUT ./pictures/ssh1.png
 INPUT pictures/ssh1.png

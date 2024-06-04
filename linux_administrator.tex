@@ -2286,7 +2286,7 @@ $ ipconfig /all
 Linux: execute the following command and check for ethX for Ethernet or wlanX for Wi-Fi
 \begin{codetemplate}{}
 \begin{verbatim}
-$ ip a
+$ ip addr
 \end{verbatim}
 \end{codetemplate}
 
@@ -2461,7 +2461,7 @@ El Fully Qualified Domain Name consta como mínimo de tres etiquetas: el dominio
 
 \textbf{Ejemplo de un FQDN}
 \begin{verbatim}
-[Nombre de host].[Dominio].[TLD].[Raíz]
+[Nombre de host].[Dominio].[TLD]
 \end{verbatim}
 \begin{verbatim}
 hosting.ionos.es
@@ -2471,7 +2471,6 @@ hosting.ionos.es
     \item El \textbf{dominio de primer nivel:} en nuestro ejemplo es "\textit{.es}", dominio de nivel superior geográfico, también conocido por las siglas ccTLD (country code-top level domain). Frente a ellos se encuentran losTLD genéricos como .com o .org, también designados gTLD (generic top-level domain).
     \item El \textbf{dominio de segundo nivel}, también conocido como nombre de dominio.  En el ejemplo se corresponde con "\textit{ionos}".
     \item El \textbf{domino de tercer nivel}, en el extremo izquierdo, tenemos el nombre del host, en nuestro ejemplo "\textit{hosting}".
-    
 \end{enumerate}
 
 Los FQDN se suelen utilizar en cualquier interacción en Internet, ya que son más fáciles de recordar que las direcciones IP. Otro ejemplo www.wordpress.com
@@ -2479,6 +2478,199 @@ Los FQDN se suelen utilizar en cualquier interacción en Internet, ya que son m�
 
 Para más información consultad: \href{https://www.ionos.es/digitalguide/dominios/gestion-de-dominios/fully-qualified-domain-name/}{FQDN}
 / \href{https://www.hostinger.es/tutoriales/fqdn}{FQDN 2}
+
+\subsection{DNS Resolution Process}
+
+\subsubsection{Checking the Local Cache}
+When you try to access an fqdn (like www.google.com), your machine first checks its local DNS cache to see if it already knows the IP address. This cache is typically managed by a service such as systemd-resolved, dnsmasq, or nscd.
+
+\begin{figure}[H]
+    \includegraphics[width=\textwidth]{pictures/resolved.png}
+    \centering
+\end{figure}
+
+\subsubsection{Hosts File}
+If the address is not found in the cache, it then checks the \verb|/etc/hosts| file, which can have static mappings of hostnames to IP addresses.
+
+\begin{codetemplate}{/etc/hosts}
+\begin{verbatim}
+127.0.0.1       localhost
+8.8.8.8         www.dns-google.com
+8.8.4.4         www.dns-google-2.com
+9.9.9.9         quad9-dns.net
+89.163.78.34    my.webpage.com
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplate}{Note}
+In windows this file is in \verb|C:\Windows\System32\drivers\etc\hosts|
+\end{blocktemplate}
+
+\subsubsection{DNS Resolver Configuration}
+If the fqdn is not found in the \verb+/etc/hosts+ file, the system uses DNS servers defined in the \verb+/etc/resolv.conf+ file. This file contains the IP addresses of the DNS servers that the system will query to resolve the domain name.
+
+A typical \verb+/etc/resolv.conf+ might look like this:
+\begin{codetemplate}{/etc/resolv.conf}
+\begin{verbatim}
+nameserver 9.9.9.9
+nameserver 8.8.8.8
+nameserver 8.8.4.4
+\end{verbatim}
+\end{codetemplate}
+
+So the system sends a DNS query to one of the DNS servers listed in /etc/resolv.conf. The query asks for the IP address associated to the fqdn.
+\begin{blocktemplateII}{Note}
+The IP addresses 8.8.8.8, 8.8.4.4, and 9.9.9.9 are addresses for public DNS servers provided by different organizations. 8.8.8.8 and 8.8.4.4 are public DNS servers operated by Google. They are part of the Google Public DNS service, which was launched in December 2009. The service aims to make the web faster and more secure by providing a reliable and fast DNS resolution service.
+\begin{itemize}
+    \item 8.8.8.8: Primary DNS server
+    \item 8.8.4.4: Secondary DNS server
+\end{itemize}
+
+9.9.9.9  is a public DNS server operated by Quad9, a nonprofit organization. Quad9 was launched in 2017 with the goal of improving internet security and privacy.
+
+You also have the CloudFlare one in 1.1.1.1.
+\end{blocktemplateII}
+
+\subsubsection{Recursive DNS Resolution inside the DNS Server}
+The DNS server might not know the answer immediately and may perform a recursive resolution process:
+
+\begin{itemize}
+    \item \textbf{Root DNS Servers:} The DNS server first contacts a root DNS server (one of the root name servers).
+    \item \textbf{Top-Level Domain (TLD) Servers:} The root server responds with a referral to a TLD server (for .com domains, it would be a .com TLD server).
+    \item \textbf{Authoritative DNS Servers:} The TLD server then provides a referral to the authoritative DNS server for google.com.
+    \item \textbf{Final Resolution:} The authoritative DNS server for the fqdn responds with the IP address for the fqdn    
+\end{itemize}
+
+\subsubsection{Caching the Result}
+Once the IP address is retrieved, it is sent back to your machine, which can now connect to the fqdn. This result is also cached locally to speed up future requests.
+
+\subsection{DNS check Tools}
+
+\subsubsection{nslookup}
+
+nslookup (Name Server LOOKUP) is a network utility used for querying the Domain Name System (DNS) to obtain domain name or IP address mapping information. It is a command-line tool available on many operating systems, including Windows, macOS, and Linux. nslookup helps troubleshoot DNS-related issues by allowing users to query DNS servers and view the details of DNS records.
+
+Basic usage
+\begin{codetemplate}{}
+\begin{verbatim}
+$ nslookup example.com
+\end{verbatim}
+\end{codetemplate}
+
+Specify a DNS Server to resolv the fqdn
+\begin{codetemplate}{}
+\begin{verbatim}
+$ nslookup example.com 9.9.9.9
+\end{verbatim}
+\end{codetemplate}
+
+Reverse Lookup: find the domain name associated with an IP address
+\begin{codetemplate}{}
+\begin{verbatim}
+$ nslookup 8.8.4.4
+\end{verbatim}
+\end{codetemplate}
+
+\subsubsection{dig}
+
+dig (Domain Information Groper) is a network administration command-line tool for querying the Domain Name System (DNS). It is commonly used to retrieve information about DNS records, troubleshoot DNS issues, and verify DNS configurations. dig is widely used on Unix-like operating systems such as Linux and macOS, and it can also be installed on Windows.
+
+Basic usage
+\begin{codetemplate}{}
+\begin{verbatim}
+$ dig example.com
+\end{verbatim}
+\end{codetemplate}
+
+Specify a DNS Server to resolv the fqdn
+\begin{codetemplate}{}
+\begin{verbatim}
+$ dig @9.9.9.9 example.com
+\end{verbatim}
+\end{codetemplate}
+
+Reverse Lookup: find the domain name associated with an IP address
+\begin{codetemplate}{}
+\begin{verbatim}
+$ dig -x 8.8.4.4
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Analysing the dig ouput}
+\begin{itemize}
+    \item \textbf{QUESTION SECTION:} The query you made.
+    \item \textbf{ANSWER SECTION:} The resolved IP address(es) for www.google.com.
+    \item \textbf{SERVER:} The DNS servers that are authoritative for the domain.
+    \item \textbf{ADDITIONAL SECTION:} Any additional information provided by the DNS server.
+\end{itemize}
+
+Short answer
+\begin{codetemplate}{}
+\begin{verbatim}
+$ dig +short example.com
+\end{verbatim}
+\end{codetemplate}
+
+Verbose answer
+\begin{codetemplate}{}
+\begin{verbatim}
+$ dig +trace example.com
+\end{verbatim}
+\end{codetemplate}
+
+\subsection{Local Cache Services}
+
+\subsubsection{systemd-resolved}
+
+\verb+systemd-resolved+ is a system service provided by the systemd suite of system and service management tools for Linux operating systems. It is responsible for network name resolution, which means converting human-friendly domain names (like "example.com") into IP addresses that computers can use to communicate over a network. It is in charge of Caching and split DNS support for faster DNS resolution and optimized network usage.
+
+The configuration files for \verb+systemd-resolved+:
+
+\begin{itemize}
+    \item \verb+/etc/systemd/resolved.conf+: Main configuration file for systemd-resolved. It contains settings for DNS servers, domains, and other options.
+    \item \verb+/etc/resolv.conf+: typically, if you are using \verb+systemd-resolved+, it is a symbolic link pointing to    \verb+/run/systemd/resolve/resolv.conf+ or \verb+/run/systemd/resolve/stub-resolv.conf+. This file is what applications traditionally read to find DNS settings when they are not cached.
+\end{itemize}
+
+Check if \verb|systemd-resolved| is running
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ps waux | grep -i 'systemd-resolved'
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo systemctl status systemd-resolved
+\end{verbatim}
+\end{codetemplate}
+
+\subsubsection{dnsmasq}
+
+dnsmasq is a lightweight, easy-to-configure DNS forwarder and DHCP server. It is designed to provide DNS, DHCP, TFTP, and PXE services for small networks. Here's a detailed look at dnsmasq:
+
+Functions and features:
+
+\begin{itemize}
+    \item \textbf{DNS Forwarding:} forwards DNS queries to upstream DNS servers and caches the responses locally to speed up subsequent queries.
+    \item \textbf{DNS Caching:} Caches DNS responses to improve performance and reduce load on upstream DNS servers.
+    \item \textbf{DNS Masquerading:} Can provide custom DNS responses for local network addresses, which is useful for internal name resolution.
+    \item \textbf{DHCP Server:} acts as a DHCP server, dynamically assigning IP addresses to devices on a local network. It supports DHCPv4 and DHCPv6.
+    \item \textbf{TFTP Server:} provides Trivial File Transfer Protocol (TFTP) services, which are often used for network booting.
+    \item \textbf{PXE Boot:} Supports network booting using PXE (Preboot Execution Environment), which is useful for diskless workstations or automated OS installations.
+\end{itemize}
+
+Main configuration file from \verb+dnsmasq+, it includes settings for DNS servers, DHCP ranges, TFTP options, and more: \verb|/etc/dnsmasq.conf|
+
+Check if \verb|systemd-resolved| is running
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ps waux | grep -i 'dnsmasq'
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo systemctl status dnsmasq
+\end{verbatim}
+\end{codetemplate}
 
 \subsection{SSH}
 
@@ -2508,7 +2700,7 @@ $ ssh user_name@SSHserve.example.com
 
 The SSH key command instructs your system that you want to open an encrypted Secure Shell Connection. \verb|user_name| represents the account you want to access. For example, you may want to access the \verb|root| user or \verb|acampos| user.
 
-\begin{blocktemplate}{NOTE}
+\begin{blocktemplate}{Note}
 To connect via ssh using a user, it is needed to have this user created in the host server.
 
 \begin{itemize}
@@ -2538,7 +2730,7 @@ Present in all data centers, SSH ships by default with every Unix, Linux and Mac
 
 Secure Shell is used to connect to servers, make changes, perform uploads and exit, either using tools or directly through the terminal. SSH keys can be employed to automate access to servers and often are used in scripts, backup systems and configuration management tools.
 
-\begin{blocktemplateI}{NOTE}
+\begin{blocktemplateI}{Note}
 
 SSH operates on \textbf{TCP port 22} by default (though SSH port can be changed if needed). The host server listens on port 22 (or any other SSH assigned port) for incoming connections. It organizes the secure connection by authenticating the client and opening the correct shell environment if the verification is successful.
 \\\\
@@ -2555,7 +2747,7 @@ $ ssh -p custom_port linux_username@hostname_or_ip
 \end{verbatim}
 \end{codetemplate}
 
-\begin{blocktemplate}{NOTE}
+\begin{blocktemplate}{Note}
  If you run the command without specifying user, ssh will take the client server Linux current \verb|username|.
 \end{blocktemplate}
 
@@ -2625,7 +2817,7 @@ The authorized keys to enable an specific user accessing the server through ssh 
     
 So you can copy your public key directly to this directory inside the server.
 
-\begin{blocktemplateII}{NOTE}
+\begin{blocktemplateII}{Note}
 For git you should do it different, just adding your public ssh key in the GUI, accessing to your profile settings. You can follow the \href{https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account}{Official Documentation}
 \end{blocktemplateII}
 
@@ -3481,7 +3673,43 @@ export no_proxy=localhost
 
 \newpage
 %-------------------------------------------------------------------------------------------------
-\section{Tmux}
+\section{Terminal}
+
+\subsection{Ctrl+r}
+
+\verb|Ctrl+r| initiates a reverse search through your command history. This allows you to quickly find and execute a previously used command without having to retype it completely.
+
+Press \verb|Ctrl+r| repeatedly to cycle backward through the matching commands.
+
+If you overshoot and want to go forward, you can use \verb|Ctrl+s|
+
+To edit the command: \verb|right arrow|
+
+To execute the command:
+\begin{codetemplate}
+\begin{verbatim}
+Enter
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}
+\begin{verbatim}
+Ctrl+j
+\end{verbatim}
+\end{codetemplate}
+
+To exit the search:
+\begin{codetemplate}
+\begin{verbatim}
+Esc
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}
+\begin{verbatim}
+Ctrl+g
+\end{verbatim}
+\end{codetemplate}
+
+\subsection{Tmux}
 
 Tmux, short for "Terminal Multiplexer," is a powerful command-line tool that enhances the capabilities of your terminal sessions. It allows you to organize multiple terminal windows or sessions within a single terminal window, effectively turning your terminal into a multi-pane workspace.
 
@@ -3489,7 +3717,7 @@ With Tmux, you can create multiple independent terminal sessions within a single
 
 As well tmux enable separate the execution from terminal, so if you lose the connection, what you launched continues executing.
 
-\subsection{Arguments}
+\subsubsection{Arguments}
 
 \textbf{Configuration File}
 
@@ -3565,7 +3793,7 @@ $ tmux -f /path/to/file -2 -L attach <session_name> -d
 \end{verbatim}
 \end{codetemplate}
 
-\subsection{Commands Inside tmux}
+\subsubsection{Commands Inside tmux}
 \textbf{General}
 \begin{table}[H]
 \begin{tabular}{| c  |c  |}
@@ -3603,6 +3831,99 @@ CTRL-a space \verb|&| & Destroy current tab \\
 \hline
 \end{tabular}
 \end{table}
+
+\subsection{Ohmyzsh}
+
+\subsubsection{Introduction}
+
+Oh My Zsh is an open-source, community-driven framework for managing your Zsh (Z shell) configuration. Zsh is a powerful and highly customizable shell, and Oh My Zsh simplifies the process of configuring and maintaining it. Oh My Zsh provides a robust set of features including:
+
+\begin{itemize}
+    \item Themes: A wide variety of themes to personalize your terminal prompt.
+    \item Plugins: An extensive collection of plugins that enhance functionality, such as Git integration, syntax highlighting, auto-suggestions, and more.
+    \item Customization: Easy to customize with your own functions, aliases, and plugins to suit your workflow.
+\end{itemize}
+
+\subsubsection{How to install it?}
+
+\textbf{zsh installed}
+\\\\
+Ensure you have Zsh installed on your system. You can check by running:
+\begin{codetemplate}
+\begin{verbatim}
+zsh --version
+\end{verbatim}
+\end{codetemplate}
+
+If Zsh is not installed, you can install it using your package manager. For example:
+\begin{itemize}
+    \item On Debian-based systems (like Ubuntu)
+\begin{codetemplate}
+\begin{verbatim}
+sudo apt install zsh
+\end{verbatim}
+\end{codetemplate}
+    \item On Red Hat-based systems (like Fedora)
+\begin{codetemplate}
+\begin{verbatim}
+sudo dnf install zsh
+\end{verbatim}
+\end{codetemplate}
+\end{itemize}
+
+\textbf{Install ohmyzsh}
+\\\\
+The simplest way to install Oh My Zsh is by using the installation script. Open your terminal and run the following command:
+\begin{codetemplate}
+\begin{verbatim}
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+\end{verbatim}
+\end{codetemplate}
+
+The installation script will clone the Oh My Zsh repository into your home directory (\verb|~/.oh-my-zsh|), set Zsh as your default shell, and create a new Zsh configuration file (\verb|~/.zshrc|).
+
+\textbf{Follow the on-screen prompts to complete the installation and restart your terminal}
+
+\subsubsection{Post-Installation}
+
+\textbf{Selecting a Theme}
+\\\\
+You can change your theme by editing the \verb|ZSH_THEME| variable in your \verb|~/.zshrc| file. For example:
+\begin{codetemplate}
+\begin{verbatim}
+ZSH_THEME="agnoster"
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Set colors for LS\_COLORS}
+\begin{codetemplate}
+\begin{verbatim}
+eval `dircolors ~/.dircolors`
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Plugins}
+Which plugins would you like to load? Standard plugins can be found in \verb|$ZSH/plugins/|
+Custom plugins may be added to \verb|$ZSH_CUSTOM/plugins/|
+
+\begin{blocktemplate}{NOTE}
+Choose wisely, as too many plugins slow down shell startup.
+\end{blocktemplate}
+
+\begin{codetemplate}
+\begin{verbatim}
+plugins=(
+    git
+    zsh-autosuggestions
+    zsh-syntax-highlighting
+    history
+        sudo
+        web-search
+        copypath
+        copyfile
+)
+\end{verbatim}
+\end{codetemplate}
 
 \newpage
 %-------------------------------------------------------------------------------------------------
