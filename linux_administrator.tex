@@ -1892,7 +1892,7 @@ i
 To go from \textbf{insert mode} to the \textbf{command mode}:
 \begin{codetemplate}{}
 \begin{verbatim}
-:
+Esc
 \end{verbatim}
 \end{codetemplate}
 
@@ -1923,54 +1923,115 @@ To go from \textbf{insert mode} to the \textbf{command mode}:
 \end{itemize}
 
 
-\textbf{Undo:}
+Undo
 \begin{codetemplate}{}
 \begin{verbatim}
-:u
+u
 \end{verbatim}
 \end{codetemplate}
 
-\textbf{Redo:}
+Redo
 \begin{codetemplate}{}
 \begin{verbatim}
-:r
+r
 \end{verbatim}
 \end{codetemplate}
 \begin{codetemplate}{}
 \begin{verbatim}
-Ctrl+r
-\end{verbatim}
-\end{codetemplate}
-
-\textbf{Remove a full line:}
-\begin{codetemplate}{}
-\begin{verbatim}
-:d
+Ctrl+r # On INSERT mode
 \end{verbatim}
 \end{codetemplate}
 
-\textbf{Find occurrences:}
+Remove a full line
+\begin{codetemplate}{}
+\begin{verbatim}
+dd
+\end{verbatim}
+\end{codetemplate}
+
+To remove the current word
+\begin{itemize}
+    \item With the spaces:
 \begin{codetemplate}
-\begin{verbatim}{vim editor - Normal Mode}
+\begin{verbatim}
+daw
+\end{verbatim}
+\end{codetemplate}
+    \item Without the spaces:
+\begin{codetemplate}
+\begin{verbatim}
+diw
+\end{verbatim}
+\end{codetemplate}
+\end{itemize}
+
+
+Find occurrences
+\begin{codetemplate}
+\begin{verbatim}
 /<words>
 \end{verbatim}
 \end{codetemplate}
-\textbf{To start finding the occurrences:} Intro
-\\\\
-\textbf{To go to the next occurrence:} n
-\\\\
-\textbf{By dafault it is case sensitive, to make it insensitive:} before search, execute.
+\begin{itemize}
+    \item To start finding the occurrences: Intro
+    \item To go to the next occurrence: n
+    \item \textbf{By dafault it is case sensitive, to make it insensitive:} before search, execute.
 \begin{codetemplate}
-\begin{verbatim}{vim editor - Normal Mode}
+\begin{verbatim}
 :set ignorecase
 \end{verbatim}
 \end{codetemplate}
-
-\textbf{To configure the colors of the terminal:}
-
-
+    \item To replace the first occurrence of a word
 \begin{codetemplate}
-\begin{verbatim}{vim editor - Normal Mode}
+\begin{verbatim}
+:s/search/replace/
+\end{verbatim}
+\end{codetemplate}
+    \item To replace all the occurrences of a word in the full file
+\begin{codetemplate}
+\begin{verbatim}
+:%s/search/replace/g
+\end{verbatim}
+\end{codetemplate}
+    item To replace all the occurrences of a word in the full file (with confirmation before each replacement)
+\begin{codetemplate}
+\begin{verbatim}
+:%s/search/replace/gc
+\end{verbatim}
+\end{codetemplate}
+\end{itemize}
+
+Go to the start of the current line
+\begin{codetemplate}
+\begin{verbatim}
+0
+\end{verbatim}
+\end{codetemplate}
+
+Go to the end of the current line
+\begin{codetemplate}
+\begin{verbatim}
+$
+\end{verbatim}
+\end{codetemplate}
+
+Go to the beginning of the current line
+\begin{codetemplate}
+\begin{verbatim}
+gg
+\end{verbatim}
+\end{codetemplate}
+
+Go to the end of the current line
+\begin{codetemplate}
+\begin{verbatim}
+G
+\end{verbatim}
+\end{codetemplate}
+
+To configure the colors of the terminal
+\begin{codetemplate}
+\begin{verbatim}
 :scolorscheme <name_of_scheme>
 \end{verbatim}
 \end{codetemplate}
@@ -2066,6 +2127,99 @@ $ svim <file>
 \end{itemize}
 
 \subsection{Nano}
+Nano is a simple and easy-to-use text editor for Unix-like operating systems. It's especially popular among beginners due to its straightforward interface and command set. Unlike more complex editors like Vim or Emacs, Nano provides an intuitive environment where users can create and edit files without a steep learning curve. It features on-screen command reminders, which make it accessible for those who are new to command-line text editing.
+
+Save the file
+\begin{codetemplate}{}
+\begin{verbatim}
+Ctrl + O
+\end{verbatim}
+\end{codetemplate}
+
+Exit Nano
+\begin{codetemplate}{}
+\begin{verbatim}
+Ctrl + X
+\end{verbatim}
+\end{codetemplate}
+
+Undo the last operation
+\begin{codetemplate}{}
+\begin{verbatim}
+Alt + U
+\end{verbatim}
+\end{codetemplate}
+
+Redo the last operation
+\begin{codetemplate}{}
+\begin{verbatim}
+Alt + E
+\end{verbatim}
+\end{codetemplate}
+
+Search within the file
+\begin{codetemplate}{}
+\begin{verbatim}
+Ctrl + W
+\end{verbatim}
+\end{codetemplate}
+
+Search and replace within the file
+\begin{codetemplate}{}
+\begin{verbatim}
+Ctrl + \
+\end{verbatim}
+\end{codetemplate}
+
+Cut the current line
+\begin{codetemplate}{}
+\begin{verbatim}
+Ctrl + K
+\end{verbatim}
+\end{codetemplate}
+
+Paste the current line
+\begin{codetemplate}{}
+\begin{verbatim}
+Ctrl + U
+\end{verbatim}
+\end{codetemplate}
+
+Move to the begining of the current line
+\begin{codetemplate}{}
+\begin{verbatim}
+Ctrl + A
+\end{verbatim}
+\end{codetemplate}
+
+Move to the end of the current line
+\begin{codetemplate}{}
+\begin{verbatim}
+Ctrl + E
+\end{verbatim}
+\end{codetemplate}
+
+Move to the begining of the file
+\begin{codetemplate}{}
+\begin{verbatim}
+Alt + ^
+\end{verbatim}
+\end{codetemplate}
+
+Move to the end of the file
+\begin{codetemplate}{}
+\begin{verbatim}
+Alt + $
+\end{verbatim}
+\end{codetemplate}
+
+Delete the current word
+\begin{codetemplate}{}
+\begin{verbatim}
+Alt + D
+\end{verbatim}
+\end{codetemplate}
+
 
 \newpage
 %-------------------------------------------------------------------------------------------------
@@ -2200,7 +2354,7 @@ $ dig +short myip.opendns.com @resolver1.opendns.com
 
 Each of these commands contacts an external service that echoes back your public IP address. This IP address is what others on the internet see as your point of contact.
 
-\subsubsection{Who assign me this IP?}
+\subsubsection{Who is this IP assigned to me?}
 
 Your router's public IP address is assigned by your Internet Service Provider (ISP). Usually, if your IP is not for bussiness or point to point specific connection, in which case the assignment of the IP is static. The assignment of the IP is dynamic using DHCP.
 
@@ -2231,7 +2385,7 @@ It is a client-server protocol in which servers manage a pool of unique IP addre
     \item \textbf{DHCP Acknowledgment:} the device acknowledges the offer, and the DHCP server finalizes the lease, assigning the IP address to the device for a specified period.
 \end{enumerate}
 
-
+\newpage
 \subsection{Private IP}
 
 \subsubsection{Introduction}
@@ -2241,6 +2395,11 @@ We have seen that the router is your device gateway to the internet, but how you
 Your router is the responsible for assigning private IP addresses to devices on your local network. It does this using the DHCP service, which is typically built into your router making it the DHCP server on your private network. When a device connects to the network, it requests an IP address from the DHCP server (the router), which then assigns an available address from a predefined range.
 
 The private network (subnet) created by your router is typically not random. Most routers come with a default subnet configuration, often something like 192.168.0.0/24 or 192.168.1.0/24. These default subnets are predefined by the manufacturer to ensure ease of setup and compatibility with most home networking needs.
+
+\begin{figure}[H]
+    \includegraphics[width=\textwidth]{pictures/network.png}
+    \centering
+\end{figure}
 
 \subsubsection{Advantages of have Private IP adresses}
 
@@ -2695,6 +2854,17 @@ sftp> ls -la
 sftp> cd /the/path/you/want
 \end{verbatim}
 \end{codetemplate}
+
+Create a directory
+\begin{codetemplate}{}
+\begin{verbatim}
+sftp> mkdir folder
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplateI}{NOTE}
+You wont be able to remove it from sftp, you need to access the server via ssh and remove it
+\end{blocktemplateI}
 
 \textbf{Displays a folder/file disk space usage inside host server}
 \begin{codetemplate}{}
@@ -3373,7 +3543,7 @@ Sets the name of the socket used by the tmux server. The socket is a communicati
 
 \begin{codetemplate}
 \begin{verbatim}
-$ tmux -f /path/to/file -2 -L test-tmux
+$ tmux -f /path/to/file -2 -L <session_name>
 \end{verbatim}
 \end{codetemplate}
 
@@ -3383,7 +3553,15 @@ Attach to tmux session X, it is used when you want to join an already created tm
 
 \begin{codetemplate}
 \begin{verbatim}
-$ tmux -f /path/to/file -2 -L attach
+$ tmux -f /path/to/file -2 -L attach <session_name>
+\end{verbatim}
+\end{codetemplate}
+
+If you want to deattach the other sessions:
+
+\begin{codetemplate}
+\begin{verbatim}
+$ tmux -f /path/to/file -2 -L attach <session_name> -d
 \end{verbatim}
 \end{codetemplate}
 
@@ -3397,6 +3575,7 @@ CTRL-a c & New tmux "tab"/session \\
 CTRL-a n & Next "tab" \\
 CTRL-a p & Prev "tab" \\
 CTRL-a \verb|#N| & Next "tab" \\
+CTRL-a repag & Go up into the logs \\
 exit & exit current tab \\
 CTRL-d & exit current tab \\
 CTRL-a , & change current tab name \\

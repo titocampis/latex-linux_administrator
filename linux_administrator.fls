@@ -1116,6 +1116,11 @@ INPUT ./pictures/mac.png
 INPUT pictures/mac.png
 INPUT ./pictures/mac.png
 INPUT ./pictures/mac.png
+INPUT ./pictures/network.png
+INPUT ./pictures/network.png
+INPUT pictures/network.png
+INPUT ./pictures/network.png
+INPUT ./pictures/network.png
 INPUT ./pictures/image11.png
 INPUT ./pictures/image11.png
 INPUT pictures/image11.png
