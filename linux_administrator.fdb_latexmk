@@ -1,8 +1,8 @@
 # Fdb version 3
-["pdflatex"] 1717767950 "/home/acampos/personal/latex/latex-linux_administrator/linux_administrator.tex" "linux_administrator.pdf" "linux_administrator" 1717767957
+["pdflatex"] 1717768758 "/home/acampos/personal/latex/latex-linux_administrator/linux_administrator.tex" "linux_administrator.pdf" "linux_administrator" 1717768765
   "/etc/texmf/web2c/texmf.cnf" 1715176516 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/home/acampos/.texlive2021/texmf-var/web2c/pdftex/pdflatex.fmt" 1715177970 1405644 5ce2ec070a754fe4022ef622d92b2063 ""
-  "/home/acampos/personal/latex/latex-linux_administrator/linux_administrator.tex" 1717767950 162796 2ecf2e4cc80d223ff8ff7d3e2ca5fe41 ""
+  "/home/acampos/personal/latex/latex-linux_administrator/linux_administrator.tex" 1717768762 163708 99133733924dddf0a943b4fdc69f8938 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecbi1000.tfm" 1136768653 3072 e6fe53b666f9cbd66cb135c6fdea66d3 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecbx1000.tfm" 1136768653 3584 2d666ecf6d466d8b007246bc2f94d9da ""
@@ -198,10 +198,10 @@
   "/usr/share/texmf/fonts/type1/public/cm-super/sftt1000.pfb" 1636152094 169201 9ebf99020dde51a5086e186761a34e8f ""
   "/usr/share/texmf/web2c/texmf.cnf" 1644012257 39432 7155514e09a3d69036fac785183a21c2 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1715292255 4379155 98693266ff65f58d9f98aff394de12d2 ""
-  "linux_administrator.aux" 1717767957 28942 ebc199b5bdfd2694bb49881ea7288ff6 "pdflatex"
-  "linux_administrator.out" 1717767957 28535 72679562c487bacd73cd5890044dfac6 "pdflatex"
-  "linux_administrator.tex" 1717767950 162796 2ecf2e4cc80d223ff8ff7d3e2ca5fe41 ""
-  "linux_administrator.toc" 1717767957 17660 4e14b9bb61a45edd51394e15da946702 "pdflatex"
+  "linux_administrator.aux" 1717768765 28942 5594dcf6f80644a920f2d906236eb3ae "pdflatex"
+  "linux_administrator.out" 1717768765 28535 72679562c487bacd73cd5890044dfac6 "pdflatex"
+  "linux_administrator.tex" 1717768762 163708 99133733924dddf0a943b4fdc69f8938 ""
+  "linux_administrator.toc" 1717768765 17660 1f8b979f066f623efb39b261e1787033 "pdflatex"
   "pictures/OSI-7-layers.jpg" 1715898562 40042 fa2f58ffb1322eb372d7060ab32d446a ""
   "pictures/base64.png" 1715175813 16499 0a5d22f3625a9aaf22e89672b026a928 ""
   "pictures/chmod.PNG" 1715175813 26495 23bf6a6b9d1ca9266108d81fb13842a7 ""

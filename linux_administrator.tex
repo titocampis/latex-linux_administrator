@@ -2778,6 +2778,18 @@ $ ssh-keygen -t ed25519 -f ~/.ssh/key_name -C "your_email@example.com"
 \end{codetemplate}
 \end{itemize}
 
+\begin{blocktemplateI}{Note}
+Main differences between RSA and Ed25519:
+\begin{itemize}
+    \item \textbf{Algorithm Type:} RSA is based on the difficulty of factoring large numbers, while Ed25519 uses elliptic curve cryptography.
+    \item \textbf{Key Size:} RSA typically uses 2048 or 4096-bit keys; Ed25519 uses a fixed 256-bit key.
+    \item \textbf{Security Level:} Ed25519 offers similar security to a 3072-bit RSA key with a smaller key size.
+    \item \textbf{Performance:} Ed25519 is much faster in signing, verification, and key generation compared to RSA.
+    \item \textbf{Adoption:} RSA is widely adopted and compatible with many systems; Ed25519 is gaining popularity, especially in modern protocols.
+    \item \textbf{Use Cases:} RSA is common in SSL/TLS and email encryption, while Ed25519 is favored in SSH, DNSSEC, and other performance-critical applications.
+\end{itemize}
+\end{blocktemplateI}
+
 They will ask your for passphrase, depending on your security needs you can put one or not. If you introduce one, it will ask for them each time the keys are used.
 
 \begin{blocktemplateIII}{WARNING}
