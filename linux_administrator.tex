@@ -2767,16 +2767,30 @@ Depending on the technology of the host you want to connect, you need to create 
     \item \textbf{rsa:} an old algorithm based on the difficulty of factoring large numbers. A key size of at least 2048 bits is recommended for RSA; 4096 bits is better. All SSH clients support this algorithm.
 \begin{codetemplate}{}
 \begin{verbatim}
-$ ssh-keygen -t rsa -b 4096 -C "your_email@example.com" 
+$ ssh-keygen -t rsa -b 4096 -f ~/.ssh/key_name -C "your_email@example.com" 
 \end{verbatim}
 \end{codetemplate}
     \item \textbf{ed25519:} this is a new algorithm added in OpenSSH. Support for it in clients is not yet universal.
 \begin{codetemplate}{}
 \begin{verbatim}
-$ ssh-keygen -t ed25519 -C "your_email@example.com"
+$ ssh-keygen -t ed25519 -f ~/.ssh/key_name -C "your_email@example.com"
 \end{verbatim}
 \end{codetemplate}
 \end{itemize}
+
+\begin{blocktemplateI}{Note}
+Main differences between RSA and Ed25519:
+\begin{itemize}
+    \item \textbf{Algorithm Type:} RSA is based on the difficulty of factoring large numbers, while Ed25519 uses elliptic curve cryptography.
+    \item \textbf{Key Size:} RSA typically uses 2048 or 4096-bit keys; Ed25519 uses a fixed 256-bit key.
+    \item \textbf{Security Level:} Ed25519 offers similar security to a 3072-bit RSA key with a smaller key size.
+    \item \textbf{Performance:} Ed25519 is much faster in signing, verification, and key generation compared to RSA.
+    \item \textbf{Adoption:} RSA is widely adopted and compatible with many systems; Ed25519 is gaining popularity, especially in modern protocols.
+    \item \textbf{Use Cases:} RSA is common in SSL/TLS and email encryption, while Ed25519 is favored in SSH, DNSSEC, and other performance-critical applications.
+\end{itemize}
+\end{blocktemplateI}
+
+They will ask your for passphrase, depending on your security needs you can put one or not. If you introduce one, it will ask for them each time the keys are used.
 
 \begin{blocktemplateIII}{WARNING}
 For SSH to recognize the SSH keys they should be stored in:
@@ -2792,7 +2806,61 @@ For SSH to recognize the SSH keys they should be stored in:
 Also, \textbf{rsa keys} should have the \textbf{permissions} you see in the image above, if not, it will not be valid to authenticate in any server. If you have generated the keys, they are generated with the correct permissions, but if you have copied, it can be wrong.
 \end{blocktemplateIII}
 
+\begin{blocktemplateII}{Note}
+If you have multiple rsa keys, it is hardly recommended to create a \verb+known_hosts+ file for each account you have because it makes diagnosing issues easier when you have multiple keys. Ideally the name of this file is similar enough to the key name that you aren't confused later.
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$ touch known_hosts_keyname
+\end{verbatim}
+\end{codetemplate}
+\end{blocktemplateII}
+
 For more information, check the documentation of \href{https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent}{how to do if for github servers}.
+
+\paragraph{Optional - Set up the ssh config file}
+
+The \verb+~/.ssh/config+ can contain specific configuration for each host. For example:
+
+\begin{codetemplate}{~/.ssh/config}
+\begin{verbatim}
+# Github
+Host github.com
+  Hostname github.com
+  User git
+  AddKeysToAgent yes
+  UseKeychain yes
+  IdentityFile ~/.ssh/github_key
+  UserKnownHostsFile ~/.ssh/konwn_hosts_github
+  IdentitiesOnly yes
+
+# Bitbucket
+Host bitbucket.org
+  HostName bitbucket.org
+  User git
+  AddKeysToAgent yes
+  UseKeychain yes
+  IdentityFile ~/.ssh/bitbucket_key
+  UserKnownHostsFiles ~/.ssh/known_hosts_bitbucket
+  IdentitiesOnly yes
+\end{verbatim}
+\end{codetemplate}
+
+Here is the breakdown of what each line means:
+
+\begin{itemize}
+    \item \textbf{Host} is a pattern matcher that is used to differentiate between these sets of configurations. Keep it the same as the HostName so it matches hosts in connections correctly without additional specification.
+    \item Host The URL on the \textbf{HostName} line is the base URL where the repository resides. For example, if you have a personal account on github with personal projects, the URL will be github.com.
+    \item \textbf{User} for git based systems will be git. The value of User will be different if you connect to something else (i.e. ec2-user for connecting to an Amazon AWS EC2 instance)
+    \item \textbf{IdentityFile} asks for the location of the identity key we made. Type in the respective path here.
+    \item \textbf{AddKeysToAgent} allows a private key that is used during authentication to be added to ssh-agent if it is running
+    \item \textbf{UseKeychain} (macOS only) allows the computer to remember the password each time it restarts
+    \item \textbf{UserKnownHostsFile} specifies an exact location to store all hosts you connect to when you're using that profile. Provide the respective paths here and choose a unique known hosts file name (see step 2 above) so that troubleshooting and key maintenance over time is easier.
+    \item \textbf{IdentitiesOnly} specifies that only the keys provided must be used to connect to a host, even if another service like the ssh-agent offers a key for use.
+\end{itemize}
+
+
+
 
 \paragraph{Upload the Public Key into the authorized\_keys of the host server}
 To use public key authentication, the public key must be \textbf{installed in the} \verb|authorized_keys| file of the server. This can be conveniently done using the \verb|ssh-copy-id tool|. Like this:
@@ -2902,9 +2970,9 @@ You should have both keys on the same folder, public and private, if not, it wil
 
 \paragraph{Use the ssh-agent for Asimetric Key}
 
-SSH agent is program which runs in the background and stores your decrypted private keys for SSH authentication. It helps you manage your SSH keys securely without having to enter their passphrase every time you use them.
+SSH agent is program which runs in the background and stores your decrypted private keys for SSH authentication. It helps you manage your SSH keys securely without having to enter their passphrase every time you use them. It is very useful as well when your keys have passphrase.
 
-So in order to use to store your ssh private keys you should
+So in order to use to store your ssh private keys you should:
 
 \begin{enumerate}
     \item Check if it is running (it is not enabled when Boot by default so if you dont do it manually when boot the terminal it won't be running)
@@ -2917,7 +2985,7 @@ $ ps waux | grep -e "ssh-agent"
     \item If it is not running (you dont have any process with ssh-agent), initiate it:
 \begin{codetemplate}{}
 \begin{verbatim}
-$ ssh-agent
+$ eval "$(ssh-agent -s)"
 \end{verbatim}
 \end{codetemplate}
 
