@@ -1975,63 +1975,70 @@ Command to compare FILES line by line.
 \textbf{Basic usage}
 \begin{codetemplate}{}
 \begin{verbatim}
-$ diff main.py main_old.py
-\end{verbatim}
-\end{codetemplate}
-
-\textbf{Report only when files differ}
-\begin{codetemplate}{}
-\begin{verbatim}
-$ diff -q ...
-\end{verbatim}
-\end{codetemplate}
-
-\textbf{Report when two files are the same}
-\begin{codetemplate}{}
-\begin{verbatim}
-$ diff -s ...
-\end{verbatim}
-\end{codetemplate}
-
-\textbf{Ignore case}
-\begin{codetemplate}{}
-\begin{verbatim}
-$ diff -i ...
-\end{verbatim}
-\end{codetemplate}
-
-\textbf{Ignore changes in the amount of white space}
-\begin{codetemplate}{}
-\begin{verbatim}
-$ diff -b ...
-\end{verbatim}
-\end{codetemplate}
-
-\textbf{Ignore all white space}
-\begin{codetemplate}{}
-\begin{verbatim}
-$ diff -w ...
-\end{verbatim}
-\end{codetemplate}
-
-\textbf{Ignore changes where lines are all blank}
-\begin{codetemplate}{}
-\begin{verbatim}
-$ diff -B ...
-\end{verbatim}
-\end{codetemplate}
-
-\textbf{Output NUM (default 3) lines of copied contex}
-\begin{codetemplate}{}
-\begin{verbatim}
-$ diff -c ...
+$ diff /path/to/file1 /path/to/file2
 \end{verbatim}
 \end{codetemplate}
 
 \textbf{Output side by side (2 columns)}
 \begin{codetemplate}{}
 \begin{verbatim}
-$ diff -y ...
+$ diff -y /path/to/file1 /path/to/file2
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Recursively}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ diff -r /path/to/directory1 /path/to/directory2
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Report only when files differ}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ diff -q /path/to/directory1 /path/to/directory2
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Report when two files are the same}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ diff -s /path/to/directory1 /path/to/directory2
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Ignore case}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ diff -i /path/to/directory1 /path/to/directory2
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Ignore changes in the amount of white space}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ diff -b /path/to/directory1 /path/to/directory2
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Ignore all white space}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ diff -w /path/to/directory1 /path/to/directory2
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Ignore changes where lines are all blank}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ diff -B /path/to/directory1 /path/to/directory2
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Output NUM (default 3) lines of copied contex}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ diff -c /path/to/directory1 /path/to/directory2
 \end{verbatim}
 \end{codetemplate}
 
@@ -4481,6 +4488,7 @@ set -g status-right "#[bg=colour99, fg=colour230]#(uptime)"
 #set -g status-right-fg red
 #set -g status-right "#(uptime | awk -F\: '{print $5}') ; #(date)"
 
+
 ###########################################
 # PANES
 ###########################################
@@ -4493,7 +4501,6 @@ set-option -g display-panes-time 1000
 #set-option -g pane-border-format "Pane #D Index #P"
 set -g display-panes-time 800 # slightly longer pane indicators display time
 set -g display-time 1000      # slightly longer status messages display time
-
 
 
 ###########################################
@@ -4584,6 +4591,18 @@ CTRL-a CTRL-\verb|<arrow-keys>| & Resize tabs \\
 \hline
 \end{tabular}
 \end{table}
+
+\textbf{Config Mode (Ctrl-a :)}
+
+Basically you can configure the same as in the config file
+
+Syncronize stdin on all tmux tabs:
+\begin{codetemplate}
+\begin{verbatim}
+setw synchronize-panes on / off
+\end{verbatim}
+\end{codetemplate}
+
 
 \subsection{Ohmyzsh}
 
