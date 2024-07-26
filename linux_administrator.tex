@@ -4381,7 +4381,6 @@ When you run \verb|tmux -L session_name| tmux will create a new socked named \ve
 Without creating a session in a different socket from default, configuring the tmux session it is not possible. 
 \end{blocktemplateII}
 
-    
 
 \subsubsection{Arguments}
 
@@ -4547,7 +4546,11 @@ Kill just a custom session:
 $ tmux -L mycustomsocket kill-session
 \end{verbatim}
 \end{codetemplate}
-    
+
+\begin{blocktemplateIII}{Warning}
+Tmux does not syncronize the history with the main process in \verb|bash|, so if the socket is ended you will lose all your history. History is syncronized if you use \verb|zsh|.
+\end{blocktemplateIII}
+
 \subsubsection{Commands Inside tmux}
 \textbf{General}
 \begin{table}[H]
