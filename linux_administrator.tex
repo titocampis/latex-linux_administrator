@@ -46,6 +46,11 @@
     urlcolor=blue,
 }
 
+% Table config
+% \setlength{\arrayrulewidth}{1mm} % Thickness of the lines
+\setlength{\tabcolsep}{18pt} % Space between columns
+\renewcommand{\arraystretch}{1.5} % Space between rows
+
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
@@ -1866,6 +1871,72 @@ $ cat > filename
     \includegraphics[scale=0.7]{pictures/image1.png}
     \caption{amazing cat}
 \end{figure}
+
+\subsubsection{EOF}
+
+The best way to add multi-line content with cat is using \textbf{EOF}:
+
+Directly from the terminal and replace old content:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ cat > filename << EOF
+$ heredoc > insert here
+$ heredoc > any line of content
+$ heredoc > you want
+$ heredoc > EOF
+\end{verbatim}
+\end{codetemplate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.8]{pictures/eof.png}
+\end{figure}
+
+Directly from the terminal and append content:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ cat >> filename << EOF
+$ heredoc > insert here
+$ heredoc > any line of content
+$ heredoc > you want
+$ heredoc > EOF
+\end{verbatim}
+\end{codetemplate}
+
+From copy paste:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ cat > filename << EOF
+insert here
+any line of content
+you want and copy this
+into your terminal
+EOF
+\end{verbatim}
+\end{codetemplate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.8]{pictures/eof2.png}
+\end{figure}
+
+One good example of usage:
+\begin{codetemplate}{}
+\begin{verbatim}
+export LINK_INTERFACE="enp1s0f1"
+export VLAN_ID="2002"
+sed -i '$d' /etc/netplan/00-installer-config.yaml # To remove the last line of the file
+cat >> /etc/netplan/00-installer-config.yaml << EOF
+    ${LINK_INTERFACE}: {}
+    vlans:
+    vlan${VLAN_ID}:
+        dhcp4: yes
+        id: ${VLAN_ID}
+        link: ${LINK_INTERFACE}
+    version: 2
+EOF
+\end{verbatim}
+\end{codetemplate}
 
 \subsection{Head \& Tail}
 
@@ -4285,7 +4356,7 @@ Ctrl+g
 
 \subsection{Tmux}
 
-Tmux, short for "Terminal Multiplexer," is a powerful command-line tool that enhances the capabilities of your terminal sessions. It allows you to organize multiple terminal windows or sessions within a single terminal window, effectively turning your terminal into a multi-pane workspace.
+Tmux, short for "Terminal Multiplexer", is a powerful command-line tool that enhances the capabilities of your terminal sessions. It allows you to organize multiple terminal windows or sessions within a single terminal window, effectively turning your terminal into a multi-pane workspace.
 
 With Tmux, you can create multiple independent terminal sessions within a single window. This means you can work on different tasks or projects simultaneously without cluttering your desktop with multiple terminal windows.
 
@@ -4483,16 +4554,17 @@ $ tmux -L mycustomsocket kill-session
 \begin{tabular}{| c  |c  |}
 \hline
 \textbf{Command} & \textbf{What it does?} \\ \hline
-CTRL-a c & New tmux "tab"/session \\
-CTRL-a n & Next "tab" \\
-CTRL-a p & Prev "tab" \\
-CTRL-a \verb|#N| & Next "tab" \\
+CTRL-a c & New tmux tab \\
+CTRL-a n & Next tab \\
+CTRL-a p & Prev tab \\
+CTRL-a n & Next tab \\
 CTRL-a repag & Go up into the logs \\
-exit & exit current tab \\
-CTRL-d & exit current tab \\
+CTRL-d (or exit) & exit current tab \\
+CTRL-a \verb|&| & Destroy current tab \\
+CTRL-a x & Destroy current tab \\
+ctrl-a : & Access tmux config mode (with auto-complete) \\
 CTRL-a , & change current tab name \\
 CRTL-a d & de-attach tmux \\
-CTRL-a \verb|&| & Destroy current tab \\
 \hline
 \end{tabular}
 \end{table}
@@ -4502,16 +4574,10 @@ CTRL-a \verb|&| & Destroy current tab \\
 \begin{tabular}{| c  |c  |}
 \hline
 \textbf{Command} & \textbf{What it does?} \\ \hline
-CTRL-a “ & New tmux "tab"/session \\
-CTRL-a \% & Next "tab" \\
-CTRL-a \verb|<arrow-keys>| & Prev "tab" \\
-CTRL-a CTRL-\verb|<arrow-keys>| & Resize "tabs" \\
-exit & exit current tab \\
-CTRL-a x & exit current tab \\
-CTRL-a CTRL-o & change current tab name \\
-CTRL-a q & de-attach tmux \\
-CTRL-a META-o & de-attach tmux \\
-CTRL-a space \verb|&| & Destroy current tab \\
+CTRL-a “ & Split horizontal \\
+CTRL-a \% & Split vertical \\
+CTRL-a \verb|<arrow-keys>| & Move between tabs \\
+CTRL-a CTRL-\verb|<arrow-keys>| & Resize tabs \\
 \hline
 \end{tabular}
 \end{table}
