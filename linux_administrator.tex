@@ -1470,21 +1470,21 @@ Apt (Advanced Package Tool) package management system is built on top of the dpk
 Update the local package index with the latest changes in the repositories:
 \begin{codetemplate}
 \begin{verbatim}
-$ apt-get update
+$ apt update
 \end{verbatim}
 \end{codetemplate}
 
 Upgrades all installed packages to the latest versions available in the repositories:
 \begin{codetemplate}
 \begin{verbatim}
-$ apt-get upgrade
+$ apt upgrade
 \end{verbatim}
 \end{codetemplate}
 
 Simulates the upgrade:
 \begin{codetemplate}
 \begin{verbatim}
-$ apt-get upgrade --dry-run
+$ apt upgrade --dry-run
 \end{verbatim}
 \end{codetemplate}
 
@@ -1498,64 +1498,64 @@ $ apt install --only-upgrade <package-name>
 Install the latest available version of a package:
 \begin{codetemplate}
 \begin{verbatim}
-$ apt-get install <package_name>
+$ apt install <package_name>
 \end{verbatim}
 \end{codetemplate}
 
 Install a specific version of a package:
 \begin{codetemplate}
 \begin{verbatim}
-$ apt-get install <package_name>=<version>
+$ apt install <package_name>=<version>
 \end{verbatim}
 \end{codetemplate}
 \begin{codetemplate}
 \begin{verbatim}
-$ apt-get install vim=2:8.1.2269-1ubuntu5
+$ apt install vim=2:8.1.2269-1ubuntu5
 \end{verbatim}
 \end{codetemplate}
 
 List all installed packages and their versions on the system:
 \begin{codetemplate}
 \begin{verbatim}
-$ apt-get list --installed
+$ apt list --installed
 \end{verbatim}
 \end{codetemplate}
 
 Look for specific package installed and its version:
 \begin{codetemplate}
 \begin{verbatim}
-$ apt-get list --installed | grep <package_name>
+$ apt list --installed | grep <package_name>
 \end{verbatim}
 \end{codetemplate}
 
 Remove and purge package:
 \begin{codetemplate}
 \begin{verbatim}
-$ apt-get remove <package_name>
+$ apt remove <package_name>
 \end{verbatim}
 \end{codetemplate}
 \begin{codetemplate}
 \begin{verbatim}
-$ apt-get purge <package_name>
+$ apt purge <package_name>
 \end{verbatim}
 \end{codetemplate}
 
 Remove unnecessary packages:
 \begin{codetemplate}
 \begin{verbatim}
-$ apt-get clean
+$ apt clean
 \end{verbatim}
 \end{codetemplate}
 \begin{codetemplate}
 \begin{verbatim}
-$ apt-get autoremove
+$ apt autoremove
 \end{verbatim}
 \end{codetemplate}
 
 Look for the available versions of a package:
 \begin{codetemplate}
 \begin{verbatim}
-$ apt-get update
+$ apt update
 \end{verbatim}
 \end{codetemplate}
 \begin{codetemplate}
@@ -1581,7 +1581,7 @@ $ apt-cache show <package_name>
 Check for broken dependencies:
 \begin{codetemplate}
 \begin{verbatim}
-$ apt-get check
+$ apt check
 \end{verbatim}
 \end{codetemplate}
 
@@ -1614,14 +1614,14 @@ However they can fuck up your \verb|apt update| because some of the repositories
     \item If the package is smart enough, just:
     \begin{itemize}
         \item \verb|sudo rm /etc/apt/sources.list.d/<package_name>.list|
-        \item \verb|sudo apt-get update|
+        \item \verb|sudo apt update|
     \end{itemize}
 
     \item If not:
     \begin{itemize}
         \item \verb|sudo rm /etc/apt/sources.list.d/<package_name>.list|
         \item Add the new GPG key and install again the repository.
-        \item \verb|sudo apt-get update|
+        \item \verb|sudo apt update|
     \end{itemize}
 \end{itemize} 
 \end{blocktemplateIII}
@@ -5661,7 +5661,7 @@ $  kc get RESOURCE_NAME -o jsonpath=\
 \end{figure}
 
 \subsection{Ubuntu vs RH7}
-Ubuntu es una distribución de Linux que se basa en un kernel Debian, lo que significa que no funciona exactamente igual que otras distribuciones con otros kernel. RH7 al igual que Centos (Open Source) trabajan con un kernel diferente y por tanto los comandos son diferentes. Por ejemplo el gestor de paquetes de Debian es apt-get y el de RH7 es yum.
+Ubuntu es una distribución de Linux que se basa en un kernel Debian, lo que significa que no funciona exactamente igual que otras distribuciones con otros kernel. RH7 al igual que Centos (Open Source) trabajan con un kernel diferente y por tanto los comandos son diferentes. Por ejemplo el gestor de paquetes de Debian es apt y el de RH7 es yum.
 
 \subsection{Vagrant}
 Vagrant is a tool for building and managing virtual machine environments in a single workflow.
