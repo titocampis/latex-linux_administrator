@@ -468,6 +468,22 @@ $ usermod -g  new_gid username
 \end{verbatim}
 \end{codetemplate}
 
+\subsubsection{Switch Users in Linux Terminal}
+Swith to sudo user:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo su
+\end{verbatim}
+\end{codetemplate}
+
+Swith to another user:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ su - <user_name>
+\end{verbatim}
+\end{codetemplate}
+
+
 \subsubsection{SSH Key-Based Authentication}
 Secure Shell (SSH) key-based authentication provides a more secure alternative to password-based authentication. Users generate a public-private key pair, where the public key is stored on the server and the private key is kept securely on the user's device.
 
@@ -2558,7 +2574,8 @@ Find occurrences
 \end{codetemplate}
 \begin{itemize}
     \item To start finding the occurrences: Intro
-    \item To go to the next occurrence: n
+    \item To go to the next occurrence: \verb|n|
+    \item To go to the previous occurrence: \verb|N|
     \item \textbf{By dafault it is case sensitive, to make it insensitive:} before search, execute.
 \begin{codetemplate}
 \begin{verbatim}
@@ -4361,8 +4378,163 @@ Ctrl+g
 \end{verbatim}
 \end{codetemplate}
 
-\subsection{Tmux}
+\subsection{Bash}
 
+\subsubsection{Introduction}
+When a computer boots up, the kernel recognizes all the physical hardware and enables each component to talk with one another and be orchestrated by some basic software. A computer's most basic set of instructions simply keeps it powered on and in a safe state.
+
+Computer scientists developed a shell for Unix computers that operates outside of the kernel (or around the kernel, like a shell in nature) and allows humans to interact with the computer whenever they want to. It was an exciting development at a time when people were feeding punchcards into computers to tell them what to do. Of all the shells available, Bash is one of the most popular, the most powerful, and the most friendly.
+
+When you start a terminal unning the shell, you're greeted with a prompt. A prompt is a symbol, usually a dollar sign (\verb|$|), indicating that the shell is waiting for your input. 
+Bash (Bourne Again SHell) is the default shell on many Linux distributions, it s a powerful and flexible shell that provides users and administrators with the tools to interact with the operating system, automate tasks, and customize their working environment.
+
+Bash is also a command, and it's usually the default command executed when you open a terminal window or log into a text console.
+
+\subsubsection{Configuration .bashrc}
+The \verb|.bashrc| file is a script that Bash runs whenever a new terminal session is started in interactive mode (non-login shells). It is typically located in a user's home directory (e.g., \verb|/home/username/.bashrc|).
+The file itself contains a series of configurations for the terminal session. This includes setting up or enabling: coloring, completion, shell history, command aliases, and more.
+
+\subsubsection{Path}
+On Linux and Unix, most commands are stored by default in system directories like \verb|/usr/bin| and \verb|/bin|. By nature, Bash doesn't know these commands any more than you naturally know Klingonese, but just as you can look up Klingon words, Bash can look up commands. When you issue a command to Bash, it searches specific directories on your system to see whether such a command exists. If the command does exist, then Bash executes it.
+
+\verb|PATH| is an environment variable that specifies a list of directories where the shell looks for executable files when you type a command. This allows users to run programs and scripts without needing to provide the full path to their location.
+
+The PATH variable can be defined and modified in several places, depending on the scope and persistence you desire:
+
+\begin{itemize}
+    \item \textbf{System-wide:} \verb|/etc/profile|, \verb|/etc/environment|, \verb|/etc/bash.bashrc|.
+    \item \textbf{User-specific:} \verb|~/.profile|, \verb|~/.bash_profile|, \verb|~/.bashrc|, \verb|~/.zshrc| (if using Zsh shell).
+\end{itemize}
+
+\begin{blocktemplateIII}{Warning}
+\verb|PATH| environment variable can potentially be modified by some other configuration files, in order to ensure for some binaries that the necessary executables are available for the services or jobs they manage. Any changes made will be scoped to the environment of the scripts or services they are associated with. Here are a list of just some of files where \verb|PATH| can be modified. 
+\begin{itemize}
+    \item \verb|/etc/cron.d/certbot|
+    \item \verb|/etc/cron.weekly/man-db|
+    \item \verb|/etc/init.d/plymouth|
+    \item \verb|/etc/init.d/docker|
+    \item \verb|/etc/init.d/kmod|
+    \item \verb|/etc/init.d/rsync|
+    \item \verb|/etc/init.d/uuidd|
+\end{itemize}
+Just to clarify, it is always extended, they do not remove the previous content.
+\end{blocktemplateIII}
+
+Check the current value of \verb|PATH|:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ echo $PATH
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Temporary} extend \verb|PATH| variable for the \textbf{current session}:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ export PATH=$PATH:/new/directory/path
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Permanently} extend \verb|PATH| variable for the \textbf{current user}, add the following lines to \verb|~/.bashrc| or \verb|~/.zshrc| (if using Zsh shell):
+\begin{codetemplate}{~/.bashrc}
+\begin{verbatim}
+$ export PATH=$PATH:/new/directory/path
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Permanently} extend \verb|PATH| variable for \textbf{all users}, add the following lines to \verb|/etc/profile| or \verb|/etc/zsh/*| (if using Zsh shell):
+\begin{codetemplate}{/etc/profile}
+\begin{verbatim}
+$ export PATH=$PATH:/new/directory/path
+\end{verbatim}
+\end{codetemplate}
+
+\subsection{ZSH, why should it be used instead of bash?}
+
+\subsubsection{What is ZSH?}
+\textbf{ZSH} (Z SHell), is an extended version of the Bourne Shell (sh), with new features and support for plugins and themes. Since it's based on the same shell as Bash, ZSH has many of the same features, and switching over is a breeze.
+It is known for its powerful scripting capabilities, interactive features, and customization options, making it a popular choice for both scripting and daily use.
+
+\textbf{Bash} (Bourne Again SHell) is the default shell for many Linux distributions and macOS but has fewer interactive features compared to Zsh.
+
+\subsubsection{ZSH vs Bash}
+\begin{itemize}
+    \item Zsh has more advanced scripting capabilities, including better handling of arrays and associative arrays.
+    \item Zsh offers features like spell correction, approximate command correction, and shared command history.
+    \item Advanced array handling, extended globbing, and improved scripting syntax make Zsh more powerful for writing scripts.
+    \item Zsh offers an advanced and programmable completion system that is highly customizable.
+    \item Zsh supports themes and plugins via frameworks like Oh My Zsh, making it easy to extend and customize.
+\end{itemize}
+
+\subsubsection{How to install and enable zsh?}
+
+\begin{enumerate}
+    \item Install zsh:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo apt install zsh
+\end{verbatim}
+\end{codetemplate}
+
+    \item Make zsh the Default Shell:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ chsh -s $(which zsh)
+\end{verbatim}
+\end{codetemplate}
+
+    \item Verify the change:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ echo $SHELL
+\end{verbatim}
+\end{codetemplate}
+\end{enumerate}
+
+\subsubsection{Configure ZSH}
+The recomendation is to use an already builtin zsh full configuration, as \textbf{ohmyszh}. Youc can follow the the \href{https://github.com/titocampis/ansible-playbooks-linux-workstation/blob/main/README_ohmyzsh.md}{documentation}.
+
+However, if you want to configure yourself zsh, you need to know that there are different shell configurations, which explains why Zsh supports four different configuration files. Here's how the configuration files are used:
+
+\begin{itemize}
+    \item \verb|~/.zshrc|: Loaded only for interactive shell sessions. It is loaded whenever you open a new terminal window or launch a subshell from a terminal window. This is the configuration file that most developers use.
+    \item \verb|~/.zshenv|: This is loaded universally for all types of shell sessions (interactive or non-interactive, login or non-login). It is the only configuration file that gets loaded for non-interactive and non-login scripts like cron jobs. However, macOS overrides this for PATH settings for interactive shells. universally loaded, so you could use it to configure the shell for automated processes like cron jobs. However, it is best to explicitly set up environmental variables for automated processes in scripts and leave nothing to chance.
+    \item \verb|~/.zprofile|: Loaded for login shells (both interactive and the rare non-interactive sessions). MacOS uses this to set up the shell for any new terminal window. Subshells that start within the terminal window inherit settings but don't load ~/.zprofile again.
+    \item \verb|~/.zlogin|: Only used for login shell configurations, loaded after .zprofile. This is loaded whenever you open a new terminal window.
+\end{itemize}
+\begin{codetemplate}{~/.zshrc}
+\begin{verbatim}
+# Set the prompt
+PROMPT='%n@%m:%~%# '
+
+# Enable command auto-correction
+setopt correct
+
+# Enable extended globbing
+setopt extended_glob
+
+# Set up aliases
+alias ll='ls -l'
+alias la='ls -A'
+alias l='ls -CF'
+
+# Enable syntax highlighting (requires installation of zsh-syntax-highlighting)
+# source /path/to/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# Enable autosuggestions (requires installation of zsh-autosuggestions)
+# source /path/to/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# Load custom scripts or functions (if any)
+# source ~/.zsh_custom
+
+# Add your custom configurations below
+export PATH=$HOME/bin:/usr/local/bin:$PATH    
+\begin{verbatim}
+
+\end{verbatim}
+\end{codetemplate}
+
+
+\subsection{Tmux}
 Tmux, short for "Terminal Multiplexer", is a powerful command-line tool that enhances the capabilities of your terminal sessions. It allows you to organize multiple terminal windows or sessions within a single terminal window, effectively turning your terminal into a multi-pane workspace.
 
 With Tmux, you can create multiple independent terminal sessions within a single window. This means you can work on different tasks or projects simultaneously without cluttering your desktop with multiple terminal windows.
