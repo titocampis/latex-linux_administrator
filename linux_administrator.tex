@@ -46,6 +46,11 @@
     urlcolor=blue,
 }
 
+% Table config
+% \setlength{\arrayrulewidth}{1mm} % Thickness of the lines
+\setlength{\tabcolsep}{18pt} % Space between columns
+\renewcommand{\arraystretch}{1.5} % Space between rows
+
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
@@ -462,6 +467,22 @@ $ usermod -u  new_uid username
 $ usermod -g  new_gid username
 \end{verbatim}
 \end{codetemplate}
+
+\subsubsection{Switch Users in Linux Terminal}
+Swith to sudo user:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo su
+\end{verbatim}
+\end{codetemplate}
+
+Swith to another user:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ su - <user_name>
+\end{verbatim}
+\end{codetemplate}
+
 
 \subsubsection{SSH Key-Based Authentication}
 Secure Shell (SSH) key-based authentication provides a more secure alternative to password-based authentication. Users generate a public-private key pair, where the public key is stored on the server and the private key is kept securely on the user's device.
@@ -897,14 +918,14 @@ $ systemctl status <service_name>
 \end{verbatim}
 \end{codetemplate}
 
-\textbf{Restart a Service}
+\textbf{Restart a Service:} if the service is very critical, check \verb|systemctl reload|
 \begin{codetemplate}{}
 \begin{verbatim}
 $ systemctl restart <service_name>
 \end{verbatim}
 \end{codetemplate}
 
-\textbf{Reload configuration of a Service}
+\textbf{Reload configuration of a Service:} very useful for critical services that cannot be restarted, it is like a soft restart.
 \begin{codetemplate}{}
 \begin{verbatim}
 $ systemctl reload <service_name>
@@ -922,6 +943,13 @@ $ systemctl enable <service_name>
 \begin{codetemplate}{}
 \begin{verbatim}
 $ systemctl disable <service_name>
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Show the running services}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ systemctl --type=service --state=running
 \end{verbatim}
 \end{codetemplate}
 
@@ -944,6 +972,100 @@ $ service <service_name> start
 $ service <service_name> status
 \end{verbatim}
 \end{codetemplate}
+
+\subsection{Journalctl}
+journalctl and systemctl are command-line utilities in Linux systems that are commonly used for managing and monitoring system services and logs. They are part of the systemd suite of tools, which is a system and service manager for Linux operating systems.
+
+\textbf{journalctl} is a command-line tool used to query and display logs from the systemd journal. The systemd journal is a component of systemd that collects and stores log messages from the kernel, services, and other system components in a structured binary format.
+journalctl allows you to view and filter logs collected by the systemd journal. This includes logs from various services, system messages, kernel logs, and more.
+
+\subsubsection{Usage}
+
+Display all available logs:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ journalctl
+\end{verbatim}
+\end{codetemplate}
+
+Display logs from current boot:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ journalctl -b 
+\end{verbatim}
+\end{codetemplate}
+
+Display logs from previous boot:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ journalctl -b -1
+\end{verbatim}
+\end{codetemplate}
+
+Display logs associated to a specific service:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ journalctl -u <service_name>
+\end{verbatim}
+\end{codetemplate}
+
+Display latest logs:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ journalctl -e
+\end{verbatim}
+\end{codetemplate}
+
+Detailed logs:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ journalctl -x
+\end{verbatim}
+\end{codetemplate}
+
+Follow the logs in real time:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ journalctl -f
+\end{verbatim}
+\end{codetemplate}
+
+Show logs since:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ journalctl --since "YYYY-MM-DD HH:MM:SS"
+\end{verbatim}
+\end{codetemplate}
+
+Show logs until:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ journalctl --until "YYYY-MM-DD HH:MM:SS"
+\end{verbatim}
+\end{codetemplate}
+
+Filter logs based on priority
+\begin{codetemplate}{}
+\begin{verbatim}
+$ journalctl -p <priority>
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ journalctl -p err
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplate}{Note}
+Most used:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ journalctl -xeu <service_name>
+\end{verbatim}
+\end{codetemplate}
+
+But remember that most relevant logs \textbf{are in the specific log file of the service}.
+\end{blocktemplate}
 
 \subsection{Moving between directories}
 \subsubsection{Introduction}
@@ -1098,54 +1220,142 @@ Be carefull using Ctrl+R, because for example if you click on tab, you will cras
     \item \verb+rm *.txt+: remove all the files which contains the string "txt" on the current directory
 \end{itemize}
 
-\subsection{Mv / Cp}
-\textbf{To move / copy all the content from one folder to another:}
+\subsection{Mv}
+Rename SOURCE to DEST, or move SOURCE(s) to DIRECTORY.
 \begin{codetemplate}{}
 \begin{verbatim}
-$ cp -R path/to/source/* /path/dest/folder/
-\end{verbatim}
-\end{codetemplate}
-\begin{codetemplate}{}
-\begin{verbatim}
-$ mv -R path/to/source/* /path/dest/folder/
+$ mv path/to/source path/to/dest
 \end{verbatim}
 \end{codetemplate}
 
-\textbf{To move / copy one folder to another:}
+\begin{itemize}
+    \item \textbf{-t:} Moving different files to DEST
 \begin{codetemplate}{}
 \begin{verbatim}
-$ cp -R path/to/source/ /path/dest/folder/
-\end{verbatim}
-\end{codetemplate}
-\begin{codetemplate}{}
-\begin{verbatim}
-$ mv -R path/to/source/ /path/dest/folder/
+$ mv -t path/to/dest path/to/source_1 path/to/source_2 ... path/to/source_n
 \end{verbatim}
 \end{codetemplate}
 
-\textbf{To copy / move multiple directories on Linux}
+    \item \verb|-i:| prompts the user before overwriting an existing file.
+    \item \verb|-f:| forces the move operation without prompting for confirmation, even if it means overwriting files.
+    \item \verb|-n:| prevents overwritting existing files.
+    \item \verb|-v:| verbose.
+    \item \textbf{Move content from one folder to another}
 \begin{codetemplate}{}
 \begin{verbatim}
-$ cp -R path/to/source/ /path/dest/folder/
+$ mv path/to/source/* /path/dest/folder/
 \end{verbatim}
 \end{codetemplate}
+\end{itemize}
+
+\subsection{Cp}
+Copy SOURCE to DEST, or multiple SOURCE(s) to DIRECTORY.
+
 \begin{codetemplate}{}
 \begin{verbatim}
-$ mv -R path/to/source1/ /path/dest/folder2/ ... path/to/sourcen/ /path/dest/foldern/
+$ cp path/to/source path/to/dest
 \end{verbatim}
 \end{codetemplate}
 
-\begin{blocktemplate}{NOTE}
-Both directories should exist
-\end{blocktemplate}
+\begin{itemize}
+    \item \verb|-r / -R / --recursively:| Recursively.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ cp -r path/to/source path/to/dest
+\end{verbatim}
+\end{codetemplate}
+
+    \item \verb|-t:| Copying different files to DEST.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ cp -t path/to/dest path/to/source_1 path/to/source_2 ... path/to/source_n
+\end{verbatim}
+\end{codetemplate}
+
+    \item \verb|-p:| preserves the original file's attributes, such as the timestamp, ownership, and permissions.
+    \item \verb|-f:| forces the copy operation without prompting for confirmation, even if it means overwriting files.
+    \item \verb|-n:| prevents overwritting existing files.
+    \item \verb|-v:| verbose.
+    \item \textbf{Copy all the content from one folder to another:}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ cp -r path/to/source/* /path/dest/folder/
+\end{verbatim}
+\end{codetemplate}
+\end{itemize}
+
+\subsection{Rsync}
+Rsync is a fast and extraordinarily versatile file copying tool.  It can copy locally,  to/from  another  host over any remote shell, or to/from a remote rsync daemon.  
+It offers a large number of options that control every aspect of its behavior and permit very flexible specification of the set of files to be copied.  
+It is famous  for its delta-transfer algorithm, which reduces the amount of data sent over the network by sending only the differences between the source files and the existing files in the destination.  
+Rsync is widely used  for backups and mirroring and as an improved copy command for everyday use.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ rsync -av /path/to/source/ /path/to/destination/
+\end{verbatim}
+\end{codetemplate}
+
+\begin{itemize}
+    \item \verb|-a:| enables archive mode, which preserves symbolic links, file permissions, user and group ownerships, and timestamps.
+    \item \verb|-v:| verbose.
+    \item \verb|-P:| displays the progress of the transfer, including the percentage of the transfer completed, transfer speed, and estimated time remaining. Also keep partially transferred files if the transfer is interrupted.
+    \item \verb|--partial:| keep partially transferred files if the transfer is interrupted.
+    \item \verb|--progress:| displays the progress of the transfer, including the percentage of the transfer completed, transfer speed, and estimated time remaining.
+    \item \verb|--delete:| deletes files in the destination directory that are not present in the source directory. This keeps the destination directory in exact sync with the source.
+    \item \textbf{From localhost to remote host:} 
+\begin{codetemplate}{}
+\begin{verbatim}
+$ rsync -avzP /path/to/local/source \
+    remote_user@remote_ip:/path/to/remote/destination
+\end{verbatim}
+\end{codetemplate}
+
+    \item \textbf{From remote host to localhost:} 
+\begin{codetemplate}{}
+\begin{verbatim}
+$ rsync -avzP remote_user@remote_ip:/path/to/remote/source \
+    /path/to/local/destination 
+\end{verbatim}
+\end{codetemplate}
+\end{itemize}
+
+\begin{blocktemplateII}{Note}
+You can specify the key to use: \verb|-e "ssh -i /path/to/private_key"|
+\end{blocktemplateII}
+    
 
 \subsection{Simbolik Links}
-To create it we should be on the folder where we want to create it and make reference to the folder where we want to point, the reference can start from this folder (\verb|../| ) or from \verb|/|.
+\subsubsection{What is a Symbolic Link?}
+A symbolic link (also known as a symlink or soft link) is a type of file that points to another file or directory in the Linux filesystem. Unlike hard links, which reference the data on the disk directly, a symbolic link contains a path that points to the target file or directory.
+
+\subsubsection{Why Use Symbolic Links?}
+Convenience: They allow you to create shortcuts to files and directories.
+Flexibility: If the target file is moved, you can update the symlink without modifying the files that use it.
+Resource Efficiency: They can link to directories and files across different filesystems.
+
+\subsubsection{Symbolic Links Management}
+The \verb|ln| command is used to create links between files. The \verb|-s| option creates a symbolic link. The basic syntax is:
 \begin{codetemplate}{}
 \begin{verbatim}
-$ ln -s /Users/titocampis/Desktop/TFG/Proyecto TFG
+$ ln -s [target] [link_name]
 \end{verbatim}
 \end{codetemplate}
+
+The unlink command is used to remove symbolic links. It only works with single files, not directories.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ unlink [link_name]
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplateI}{Note}
+Alternatively, you can use the \verb|rm| command to remove symbolic links. This can be used for both files and directories.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ rm -rf [link_name]
+\end{verbatim}
+\end{codetemplate}
+\end{blocktemplateI}
 
 \subsection{Aliases}
 To know all the aliases we have in our system
@@ -1255,6 +1465,323 @@ $ echo "Hello" | tee output.txt
 
 \newpage
 %-------------------------------------------------------------------------------------------------
+\section{Package Management Systems}
+
+Package management systems in Linux handles the installation, updating, configuration, and removal of software packages. Each distribution has its own package management system, but they generally follow similar principles.
+
+Key components of all package management systems:
+
+\begin{itemize}
+    \item \textbf{Repositories:} Central locations where software packages are stored and maintained
+    \item \textbf{Packages:} Precompiled binaries or source code bundled with metadata, dependencies, and scripts necessary for installation.
+    \item \textbf{Package Managers:} Tools that automate the process of handling packages.
+\end{itemize}
+
+\subsection{Apt - Debian}
+
+Apt (Advanced Package Tool) package management system is built on top of the dpkg system, which is the underlying package management system for Debian-based distributions. It uses \textbf{APT Repositories}, servers that store software packages and provide metadata about those packages. Ubuntu repositories are organized into different sections like main, universe, restricted, and multiverse.
+
+\subsubsection{Basic apt commands}
+
+Update the local package index with the latest changes in the repositories:
+\begin{codetemplate}
+\begin{verbatim}
+$ apt update
+\end{verbatim}
+\end{codetemplate}
+
+Upgrades all installed packages to the latest versions available in the repositories:
+\begin{codetemplate}
+\begin{verbatim}
+$ apt upgrade
+\end{verbatim}
+\end{codetemplate}
+
+Simulates the upgrade:
+\begin{codetemplate}
+\begin{verbatim}
+$ apt upgrade --dry-run
+\end{verbatim}
+\end{codetemplate}
+
+Upgrade just a specific package:
+\begin{codetemplate}
+\begin{verbatim}
+$ apt install --only-upgrade <package-name>
+\end{verbatim}
+\end{codetemplate}
+
+Install the latest available version of a package:
+\begin{codetemplate}
+\begin{verbatim}
+$ apt install <package_name>
+\end{verbatim}
+\end{codetemplate}
+
+Install a specific version of a package:
+\begin{codetemplate}
+\begin{verbatim}
+$ apt install <package_name>=<version>
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}
+\begin{verbatim}
+$ apt install vim=2:8.1.2269-1ubuntu5
+\end{verbatim}
+\end{codetemplate}
+
+List all installed packages and their versions on the system:
+\begin{codetemplate}
+\begin{verbatim}
+$ apt list --installed
+\end{verbatim}
+\end{codetemplate}
+
+Look for specific package installed and its version:
+\begin{codetemplate}
+\begin{verbatim}
+$ apt list --installed | grep <package_name>
+\end{verbatim}
+\end{codetemplate}
+
+Remove and purge package:
+\begin{codetemplate}
+\begin{verbatim}
+$ apt remove <package_name>
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}
+\begin{verbatim}
+$ apt purge <package_name>
+\end{verbatim}
+\end{codetemplate}
+
+Remove unnecessary packages:
+\begin{codetemplate}
+\begin{verbatim}
+$ apt clean
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}
+\begin{verbatim}
+$ apt autoremove
+\end{verbatim}
+\end{codetemplate}
+
+Look for the available versions of a package:
+\begin{codetemplate}
+\begin{verbatim}
+$ apt update
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}
+\begin{verbatim}
+$ apt-cache madison <package_name>
+\end{verbatim}
+\end{codetemplate}
+
+Search for packages that match the provided keyword:
+\begin{codetemplate}
+\begin{verbatim}
+$ apt-cache search <package_name>
+\end{verbatim}
+\end{codetemplate}
+
+Show package details:
+\begin{codetemplate}
+\begin{verbatim}
+$ apt-cache show <package_name>
+\end{verbatim}
+\end{codetemplate}
+
+Check for broken dependencies:
+\begin{codetemplate}
+\begin{verbatim}
+$ apt check
+\end{verbatim}
+\end{codetemplate}
+
+\subsubsection{Managing Repositories}
+
+The operating system creates two files to manage repositories:
+
+\begin{itemize}
+    \item \verb|/etc/apt/sources.list|: main configuration file for APT repositories. It contains a list of repository URLs where APT can find packages and updates. Mainly it includes official Ubuntu repositories that match your Ubuntu version and security repositories.
+    \item \verb|/etc/apt/sources.list.d/:| repository updated by some packages when installed or updated to ensure their software is updated from their repositories. 
+\end{itemize}
+
+\begin{figure}[H]
+    \includegraphics[width=\textwidth]{pictures/apt.png}
+    \centering
+\end{figure}
+
+\begin{figure}[H]
+    \includegraphics[width=\textwidth]{pictures/apt2.png}
+    \centering
+\end{figure}
+
+When new repositories are added,  their GPG keys are fetched and added to the keyring \verb|/etc/apt/trusted.gpg.d/|. This ensures that APT can verify the integrity and authenticity of the packages from these repositories. 
+
+By using /etc/apt/sources.list and /etc/apt/sources.list.d/, you can efficiently manage where your Ubuntu system looks for software packages and updates, ensuring that you have access to the latest and most secure versions of the software you need.
+
+\begin{blocktemplateIII}{Warning}
+However they can fuck up your \verb|apt update| because some of the repositories have been changed or the GPG key is not compatible. So you need to:
+\begin{itemize}
+    \item If the package is smart enough, just:
+    \begin{itemize}
+        \item \verb|sudo rm /etc/apt/sources.list.d/<package_name>.list|
+        \item \verb|sudo apt update|
+    \end{itemize}
+
+    \item If not:
+    \begin{itemize}
+        \item \verb|sudo rm /etc/apt/sources.list.d/<package_name>.list|
+        \item Add the new GPG key and install again the repository.
+        \item \verb|sudo apt update|
+    \end{itemize}
+\end{itemize} 
+\end{blocktemplateIII}
+
+Repositories are added automagically, but to remove them:
+\begin{codetemplate}
+\begin{verbatim}
+$ sudo rm /etc/apt/sources.list.d/<package_name>.list
+\end{verbatim}
+\end{codetemplate}
+
+\subsection{Dnf - RedHat}
+
+\subsubsection{Yum or Dnf?}
+\textbf{Yum} (Yellowdog Updater, Modified) is an older package manager used for RPM-based distributions. It is known for its less efficient dependency resolution algorithm compared to \textbf{dnf}, which can result in slower performance, particularly with large repositories and metadata. While yum provides essential package management functions, it lacks some of the advanced features and flexibility found in dnf. However, it does offer backwards compatibility with older plugins and configurations, making it suitable for legacy systems.
+
+On the other hand, \textbf{dnf} (Dandified Yum) is the modern successor to yum, introduced in Fedora 18 and later adopted by RHEL 8. It uses the libsolv library for faster and more efficient dependency resolution, significantly improving performance, especially with large repositories. dnf boasts advanced features, including better transaction handling, enhanced debugging capabilities, and improved support for extensions. It also supports modularity, allowing users to install different versions of software alongside each other. Despite its advancements, dnf maintains a high level of compatibility with yum commands, easing the transition for users.
+
+\subsubsection{Basic dnf commands}
+Update the local package index with the latest changes in the repositories:
+\begin{codetemplate}
+\begin{verbatim}
+$ dnf check-update
+\end{verbatim}
+\end{codetemplate}
+
+Upgrades all installed packages to the latest versions available in the repositories:
+\begin{codetemplate}
+\begin{verbatim}
+$ dnf update
+\end{verbatim}
+\end{codetemplate}
+
+Or which is the same:
+\begin{codetemplate}
+\begin{verbatim}
+$ dnf upgrade
+\end{verbatim}
+\end{codetemplate}
+
+Install the latest available version of a package:
+\begin{codetemplate}
+\begin{verbatim}
+$ dnf install <package_name>
+\end{verbatim}
+\end{codetemplate}
+    
+Install a specific version of a package:
+\begin{codetemplate}
+\begin{verbatim}
+$ dnf install <package_name>-<version>
+\end{verbatim}
+\end{codetemplate}
+
+List all installed packages and their versions on the system:
+\begin{codetemplate}
+\begin{verbatim}
+$ dnf list installed
+\end{verbatim}
+\end{codetemplate}
+
+Look for specific package installed and its version:
+\begin{codetemplate}
+\begin{verbatim}
+$ dnf list installed | grep <package_name>
+\end{verbatim}
+\end{codetemplate}
+
+Look for the available versions of a package:
+\begin{codetemplate}
+\begin{verbatim}
+$ dnf list --available <package-name>
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}
+\begin{verbatim}
+$ dnf info <package-name>
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}
+\begin{verbatim}
+$ dnf --showduplicates list <package-name>
+\end{verbatim}
+\end{codetemplate}
+
+Update a specific package:
+\begin{codetemplate}
+\begin{verbatim}
+$ dnf update <package_name>
+\end{verbatim}
+\end{codetemplate}
+
+Remove a specific package and clean up depencencies:
+\begin{codetemplate}
+\begin{verbatim}
+$ dnf remove package_name
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}
+\begin{verbatim}
+$ dnf autoremove
+\end{verbatim}
+\end{codetemplate}
+
+Remove unnecessary packages and dependencies:
+\begin{codetemplate}
+\begin{verbatim}
+$ dnf autoremove
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}
+\begin{verbatim}
+$ dnf clean all
+\end{verbatim}
+\end{codetemplate}
+
+Check for broken dependencies:
+\begin{codetemplate}
+\begin{verbatim}
+$ dnf check
+\end{verbatim}
+\end{codetemplate}
+
+List enabled repositories:
+\begin{codetemplate}
+\begin{verbatim}
+$ dnf repolist
+\end{verbatim}
+\end{codetemplate}
+
+Enable/Disable Repositories:
+\begin{codetemplate}
+\begin{verbatim}
+$ dnf config-manager --set-enabled <repository_id>
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}
+\begin{verbatim}
+$ dnf config-manager --set-disabled <repository_id>
+\end{verbatim}
+\end{codetemplate}
+
+\newpage
+%-------------------------------------------------------------------------------------------------
 \section{.bashrc, .bash\_profile, /etc/bashrc \& path}
 
 \subsection{.bashrc vs .bash\_profile}
@@ -1361,6 +1888,72 @@ $ cat > filename
     \caption{amazing cat}
 \end{figure}
 
+\subsubsection{EOF}
+
+The best way to add multi-line content with cat is using \textbf{EOF}:
+
+Directly from the terminal and replace old content:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ cat > filename << EOF
+$ heredoc > insert here
+$ heredoc > any line of content
+$ heredoc > you want
+$ heredoc > EOF
+\end{verbatim}
+\end{codetemplate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.8]{pictures/eof.png}
+\end{figure}
+
+Directly from the terminal and append content:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ cat >> filename << EOF
+$ heredoc > insert here
+$ heredoc > any line of content
+$ heredoc > you want
+$ heredoc > EOF
+\end{verbatim}
+\end{codetemplate}
+
+From copy paste:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ cat > filename << EOF
+insert here
+any line of content
+you want and copy this
+into your terminal
+EOF
+\end{verbatim}
+\end{codetemplate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.8]{pictures/eof2.png}
+\end{figure}
+
+One good example of usage:
+\begin{codetemplate}{}
+\begin{verbatim}
+export LINK_INTERFACE="enp1s0f1"
+export VLAN_ID="2002"
+sed -i '$d' /etc/netplan/00-installer-config.yaml # To remove the last line of the file
+cat >> /etc/netplan/00-installer-config.yaml << EOF
+    ${LINK_INTERFACE}: {}
+    vlans:
+    vlan${VLAN_ID}:
+        dhcp4: yes
+        id: ${VLAN_ID}
+        link: ${LINK_INTERFACE}
+    version: 2
+EOF
+\end{verbatim}
+\end{codetemplate}
+
 \subsection{Head \& Tail}
 
 \textbf{Head:} print the first 10 lines of each FILE to standard output
@@ -1398,63 +1991,70 @@ Command to compare FILES line by line.
 \textbf{Basic usage}
 \begin{codetemplate}{}
 \begin{verbatim}
-$ diff main.py main_old.py
-\end{verbatim}
-\end{codetemplate}
-
-\textbf{Report only when files differ}
-\begin{codetemplate}{}
-\begin{verbatim}
-$ diff -q ...
-\end{verbatim}
-\end{codetemplate}
-
-\textbf{Report when two files are the same}
-\begin{codetemplate}{}
-\begin{verbatim}
-$ diff -s ...
-\end{verbatim}
-\end{codetemplate}
-
-\textbf{Ignore case}
-\begin{codetemplate}{}
-\begin{verbatim}
-$ diff -i ...
-\end{verbatim}
-\end{codetemplate}
-
-\textbf{Ignore changes in the amount of white space}
-\begin{codetemplate}{}
-\begin{verbatim}
-$ diff -b ...
-\end{verbatim}
-\end{codetemplate}
-
-\textbf{Ignore all white space}
-\begin{codetemplate}{}
-\begin{verbatim}
-$ diff -w ...
-\end{verbatim}
-\end{codetemplate}
-
-\textbf{Ignore changes where lines are all blank}
-\begin{codetemplate}{}
-\begin{verbatim}
-$ diff -B ...
-\end{verbatim}
-\end{codetemplate}
-
-\textbf{Output NUM (default 3) lines of copied contex}
-\begin{codetemplate}{}
-\begin{verbatim}
-$ diff -c ...
+$ diff /path/to/file1 /path/to/file2
 \end{verbatim}
 \end{codetemplate}
 
 \textbf{Output side by side (2 columns)}
 \begin{codetemplate}{}
 \begin{verbatim}
-$ diff -y ...
+$ diff -y /path/to/file1 /path/to/file2
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Recursively}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ diff -r /path/to/directory1 /path/to/directory2
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Report only when files differ}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ diff -q /path/to/directory1 /path/to/directory2
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Report when two files are the same}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ diff -s /path/to/directory1 /path/to/directory2
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Ignore case}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ diff -i /path/to/directory1 /path/to/directory2
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Ignore changes in the amount of white space}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ diff -b /path/to/directory1 /path/to/directory2
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Ignore all white space}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ diff -w /path/to/directory1 /path/to/directory2
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Ignore changes where lines are all blank}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ diff -B /path/to/directory1 /path/to/directory2
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Output NUM (default 3) lines of copied contex}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ diff -c /path/to/directory1 /path/to/directory2
 \end{verbatim}
 \end{codetemplate}
 
@@ -1974,7 +2574,8 @@ Find occurrences
 \end{codetemplate}
 \begin{itemize}
     \item To start finding the occurrences: Intro
-    \item To go to the next occurrence: n
+    \item To go to the next occurrence: \verb|n|
+    \item To go to the previous occurrence: \verb|N|
     \item \textbf{By dafault it is case sensitive, to make it insensitive:} before search, execute.
 \begin{codetemplate}
 \begin{verbatim}
@@ -3448,7 +4049,7 @@ $ -0,       --http1.0            Use HTTP 1.0
 \textbf{Download a file via https}
 \begin{codetemplate}{}
 \begin{verbatim}
-$ curl -0 https://url/paht/to/file
+$ curl -O https://url/paht/to/file
 \end{verbatim}
 \end{codetemplate}
 
@@ -3615,7 +4216,7 @@ $ nmap -O <hostname_or_ip>
 It is really useful when the host blocking our pings
 \begin{codetemplate}{}
 \begin{verbatim}
-$ nmap -O <hostname_or_ip>
+$ nmap -Pn <hostname_or_ip>
 \end{verbatim}
 \end{codetemplate}
 
@@ -3777,71 +4378,307 @@ Ctrl+g
 \end{verbatim}
 \end{codetemplate}
 
-\subsection{Tmux}
+\subsection{Bash}
 
-Tmux, short for "Terminal Multiplexer," is a powerful command-line tool that enhances the capabilities of your terminal sessions. It allows you to organize multiple terminal windows or sessions within a single terminal window, effectively turning your terminal into a multi-pane workspace.
+\subsubsection{Introduction}
+When a computer boots up, the kernel recognizes all the physical hardware and enables each component to talk with one another and be orchestrated by some basic software. A computer's most basic set of instructions simply keeps it powered on and in a safe state.
+
+Computer scientists developed a shell for Unix computers that operates outside of the kernel (or around the kernel, like a shell in nature) and allows humans to interact with the computer whenever they want to. It was an exciting development at a time when people were feeding punchcards into computers to tell them what to do. Of all the shells available, Bash is one of the most popular, the most powerful, and the most friendly.
+
+When you start a terminal unning the shell, you're greeted with a prompt. A prompt is a symbol, usually a dollar sign (\verb|$|), indicating that the shell is waiting for your input. 
+Bash (Bourne Again SHell) is the default shell on many Linux distributions, it s a powerful and flexible shell that provides users and administrators with the tools to interact with the operating system, automate tasks, and customize their working environment.
+
+Bash is also a command, and it's usually the default command executed when you open a terminal window or log into a text console.
+
+\subsubsection{Configuration .bashrc}
+The \verb|.bashrc| file is a script that Bash runs whenever a new terminal session is started in interactive mode (non-login shells). It is typically located in a user's home directory (e.g., \verb|/home/username/.bashrc|).
+The file itself contains a series of configurations for the terminal session. This includes setting up or enabling: coloring, completion, shell history, command aliases, and more.
+
+\subsubsection{Path}
+On Linux and Unix, most commands are stored by default in system directories like \verb|/usr/bin| and \verb|/bin|. By nature, Bash doesn't know these commands any more than you naturally know Klingonese, but just as you can look up Klingon words, Bash can look up commands. When you issue a command to Bash, it searches specific directories on your system to see whether such a command exists. If the command does exist, then Bash executes it.
+
+\verb|PATH| is an environment variable that specifies a list of directories where the shell looks for executable files when you type a command. This allows users to run programs and scripts without needing to provide the full path to their location.
+
+The PATH variable can be defined and modified in several places, depending on the scope and persistence you desire:
+
+\begin{itemize}
+    \item \textbf{System-wide:} \verb|/etc/profile|, \verb|/etc/environment|, \verb|/etc/bash.bashrc|.
+    \item \textbf{User-specific:} \verb|~/.profile|, \verb|~/.bash_profile|, \verb|~/.bashrc|, \verb|~/.zshrc| (if using Zsh shell).
+\end{itemize}
+
+\begin{blocktemplateIII}{Warning}
+\verb|PATH| environment variable can potentially be modified by some other configuration files, in order to ensure for some binaries that the necessary executables are available for the services or jobs they manage. Any changes made will be scoped to the environment of the scripts or services they are associated with. Here are a list of just some of files where \verb|PATH| can be modified. 
+\begin{itemize}
+    \item \verb|/etc/cron.d/certbot|
+    \item \verb|/etc/cron.weekly/man-db|
+    \item \verb|/etc/init.d/plymouth|
+    \item \verb|/etc/init.d/docker|
+    \item \verb|/etc/init.d/kmod|
+    \item \verb|/etc/init.d/rsync|
+    \item \verb|/etc/init.d/uuidd|
+\end{itemize}
+Just to clarify, it is always extended, they do not remove the previous content.
+\end{blocktemplateIII}
+
+Check the current value of \verb|PATH|:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ echo $PATH
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Temporary} extend \verb|PATH| variable for the \textbf{current session}:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ export PATH=$PATH:/new/directory/path
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Permanently} extend \verb|PATH| variable for the \textbf{current user}, add the following lines to \verb|~/.bashrc| or \verb|~/.zshrc| (if using Zsh shell):
+\begin{codetemplate}{~/.bashrc}
+\begin{verbatim}
+$ export PATH=$PATH:/new/directory/path
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Permanently} extend \verb|PATH| variable for \textbf{all users}, add the following lines to \verb|/etc/profile| or \verb|/etc/zsh/*| (if using Zsh shell):
+\begin{codetemplate}{/etc/profile}
+\begin{verbatim}
+$ export PATH=$PATH:/new/directory/path
+\end{verbatim}
+\end{codetemplate}
+
+\subsection{ZSH, why should it be used instead of bash?}
+
+\subsubsection{What is ZSH?}
+\textbf{ZSH} (Z SHell), is an extended version of the Bourne Shell (sh), with new features and support for plugins and themes. Since it's based on the same shell as Bash, ZSH has many of the same features, and switching over is a breeze.
+It is known for its powerful scripting capabilities, interactive features, and customization options, making it a popular choice for both scripting and daily use.
+
+\textbf{Bash} (Bourne Again SHell) is the default shell for many Linux distributions and macOS but has fewer interactive features compared to Zsh.
+
+\subsubsection{ZSH vs Bash}
+\begin{itemize}
+    \item Zsh has more advanced scripting capabilities, including better handling of arrays and associative arrays.
+    \item Zsh offers features like spell correction, approximate command correction, and shared command history.
+    \item Advanced array handling, extended globbing, and improved scripting syntax make Zsh more powerful for writing scripts.
+    \item Zsh offers an advanced and programmable completion system that is highly customizable.
+    \item Zsh supports themes and plugins via frameworks like Oh My Zsh, making it easy to extend and customize.
+\end{itemize}
+
+\subsubsection{How to install and enable zsh?}
+
+\begin{enumerate}
+    \item Install zsh:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo apt install zsh
+\end{verbatim}
+\end{codetemplate}
+
+    \item Make zsh the Default Shell:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ chsh -s $(which zsh)
+\end{verbatim}
+\end{codetemplate}
+
+    \item Verify the change:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ echo $SHELL
+\end{verbatim}
+\end{codetemplate}
+\end{enumerate}
+
+\subsubsection{Configure ZSH}
+The recomendation is to use an already builtin zsh full configuration, as \textbf{ohmyszh}. Youc can follow the the \href{https://github.com/titocampis/ansible-playbooks-linux-workstation/blob/main/README_ohmyzsh.md}{documentation}.
+
+However, if you want to configure yourself zsh, you need to know that there are different shell configurations, which explains why Zsh supports four different configuration files. Here's how the configuration files are used:
+
+\begin{itemize}
+    \item \verb|~/.zshrc|: Loaded only for interactive shell sessions. It is loaded whenever you open a new terminal window or launch a subshell from a terminal window. This is the configuration file that most developers use.
+    \item \verb|~/.zshenv|: This is loaded universally for all types of shell sessions (interactive or non-interactive, login or non-login). It is the only configuration file that gets loaded for non-interactive and non-login scripts like cron jobs. However, macOS overrides this for PATH settings for interactive shells. universally loaded, so you could use it to configure the shell for automated processes like cron jobs. However, it is best to explicitly set up environmental variables for automated processes in scripts and leave nothing to chance.
+    \item \verb|~/.zprofile|: Loaded for login shells (both interactive and the rare non-interactive sessions). MacOS uses this to set up the shell for any new terminal window. Subshells that start within the terminal window inherit settings but don't load ~/.zprofile again.
+    \item \verb|~/.zlogin|: Only used for login shell configurations, loaded after .zprofile. This is loaded whenever you open a new terminal window.
+\end{itemize}
+\begin{codetemplate}{~/.zshrc}
+\begin{verbatim}
+# Set the prompt
+PROMPT='%n@%m:%~%# '
+
+# Enable command auto-correction
+setopt correct
+
+# Enable extended globbing
+setopt extended_glob
+
+# Set up aliases
+alias ll='ls -l'
+alias la='ls -A'
+alias l='ls -CF'
+
+# Enable syntax highlighting (requires installation of zsh-syntax-highlighting)
+# source /path/to/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# Enable autosuggestions (requires installation of zsh-autosuggestions)
+# source /path/to/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# Load custom scripts or functions (if any)
+# source ~/.zsh_custom
+
+# Add your custom configurations below
+export PATH=$HOME/bin:/usr/local/bin:$PATH    
+\begin{verbatim}
+
+\end{verbatim}
+\end{codetemplate}
+
+
+\subsection{Tmux}
+Tmux, short for "Terminal Multiplexer", is a powerful command-line tool that enhances the capabilities of your terminal sessions. It allows you to organize multiple terminal windows or sessions within a single terminal window, effectively turning your terminal into a multi-pane workspace.
 
 With Tmux, you can create multiple independent terminal sessions within a single window. This means you can work on different tasks or projects simultaneously without cluttering your desktop with multiple terminal windows.
 
 As well tmux enable separate the execution from terminal, so if you lose the connection, what you launched continues executing.
 
+\subsubsection{Tmux Socket}
+A socket in tmux is essentially a file that facilitates communication between the tmux server (the backend process) and tmux clients (the user interfaces that you interact with).
+
+By default, tmux uses a socket named default located in a directory like \verb|/tmp/tmux-1000/default| where 1000 is your user ID. When you start tmux without specifying a socket, it uses this default socket.
+
+Start tmux with a specific socket:
+\begin{codetemplate}
+\begin{verbatim}
+$ tmux -L <session_name>
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplateII}{Note}
+By default, tmux uses a socket named default located in a directory like \verb|/tmp/tmux-1000/default|.
+When you run \verb|tmux -L session_name| tmux will create a new socked named \verb|<session_name>| located in a directory like \verb|/tmp/tmux-0/<session_name>|.
+\\\\
+Without creating a session in a different socket from default, configuring the tmux session it is not possible. 
+\end{blocktemplateII}
+
+
 \subsubsection{Arguments}
 
-\textbf{Configuration File}
-
-The configuration file is passed through arguments:
+\textbf{List the current running sessions}
 \begin{codetemplate}
 \begin{verbatim}
-$ tmux -f /path/to/file
-\end{verbatim}
-\end{codetemplate}
-
-What we can do is generate a file in \verb|/tmp/custom-tmux.conf| as follows:
-The configuration file is passed through arguments:
-
-\begin{codetemplate}{/tmp/custom-tmux.conf}
-\begin{verbatim}
-set -g history-limit 10000
-setw -g mode-keys vi
-
-# MAJOR ops
-set-option -g prefix C-a
-unbind C-b
-bind-key C-a last-window
-
-
-# Set status bar
-set -g status-left-length 30
-set -g status-bg black
-set -g status-fg white
-set -g status-left "#[fg=green]#H"
-set -g status-right "#[fg=yellow]#(uptime | awk -F\: '{print $5}')"
-setw -g monitor-activity on
-set -g visual-activity on
-\end{verbatim}
-\end{codetemplate}
-
-In tmux, when we want to go to \textbf{command mode}, by default we need to use \textbf{Ctrl+b}. But we are going to configurate it as \verb|screen|, with \textbf{Ctrl+a}, it is configured in the config file.
-
-\textbf{-2}
-
-tells Tmux to start in 256-color mode. Tmux supports both 256-color and 16-color modes for terminal color support. The -2 option enables the 256-color mode.
-
-\begin{codetemplate}
-\begin{verbatim}
-$ tmux -f /path/to/file -2
+$ tmux ls
 \end{verbatim}
 \end{codetemplate}
 
 \textbf{-L [socket\_name]}
 
-Sets the name of the socket used by the tmux server. The socket is a communication endpoint that allows different processes to communicate with each other, in this case, allowing the tmux client (the terminal you're using) to communicate with the tmux server (the process managing your terminal sessions).
+\begin{codetemplate}
+\begin{verbatim}
+$ tmux -L <session_name>
+\end{verbatim}
+\end{codetemplate}
 
+List all tmux sessions on a specific socket:
+\begin{codetemplate}
+\begin{verbatim}
+$ tmux -L <session_name> ls
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{-2}
+
+Tells Tmux to start in 256-color mode. Tmux supports both 256-color and 16-color modes for terminal color support. The -2 option enables the 256-color mode.
+
+\begin{codetemplate}
+\begin{verbatim}
+$ tmux -2
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Configuration:}
+
+Tmux by default uses two configuration files, and it's able to merge the content of them. By default, user configuration overrides conflicting configurations:
+\begin{itemize}
+    \item \verb|/etc/tmux.conf:| system-wide configuration file.
+    \item \verb|~/.tmux.conf:| user-specific configuration file.
+\end{itemize}
+
+So if we want to use a different file:
 \begin{codetemplate}
 \begin{verbatim}
 $ tmux -f /path/to/file -2 -L <session_name>
 \end{verbatim}
 \end{codetemplate}
+
+\begin{blocktemplateIII}{Warning}
+When you start tmux without \verb|-L|, if there is already a tmux server running, new sessions will join the existing server and will not create a new one unless you specify a different server socket using the \verb|-L| option.
+\end{blocktemplateIII}
+
+My custom config for tmux is:
+\begin{codetemplate}{~/.tmux.conf}
+\begin{verbatim}
+###########################################
+# MAIN OPS
+###########################################
+
+setw -g mode-keys vi
+
+# bind to ctrl-a instead o ctrl-b
+set-option -g prefix C-a
+unbind C-b
+bind-key C-a last-window
+
+setw -g monitor-activity on
+set -g visual-activity on
+
+
+###########################################
+# STATUS BAR
+###########################################
+# general
+set -g status-interval 10
+#set -g display-time 3000
+set -g status-bg black
+set -g status-fg yellow
+# left
+set -g status-left-length 30
+set -g status-left " #[fg=green]#H "
+# right
+#set -g status-right-bg green
+set -g status-right-length 120
+#set -g status-right "#[bg=colour99, fg=colour230]#(free -m|egrep -i "^mem")#(uptime)"
+set -g status-right "#[bg=colour99, fg=colour230]#(uptime)"
+#set -g status-right "#(uptime | awk -F\: '{print $5}') ; #(date)"
+
+# Statusbar properties.
+#set -g status-right-fg red
+#set -g status-right "#(uptime | awk -F\: '{print $5}') ; #(date)"
+
+
+###########################################
+# PANES
+###########################################
+set-option -g display-panes-active-colour red
+set-option -g display-panes-colour colour246
+set-option -g display-panes-time 1000
+
+#set-option -g pane-active-border-style "fg=green bold"
+#set-option -g pane-border-status top
+#set-option -g pane-border-format "Pane #D Index #P"
+set -g display-panes-time 800 # slightly longer pane indicators display time
+set -g display-time 1000      # slightly longer status messages display time
+
+
+###########################################
+# MOUSE
+###########################################
+#set -g mode-mouse on
+#set -g mode-mouse off
+\end{verbatim}
+\end{codetemplate}
+
+In tmux, when we want to go to \textbf{command mode}, by default we need to use \textbf{Ctrl+b}. But we are going to configurate it as \verb|screen|, with \textbf{Ctrl+a}, it is configured in the config file.
+
 
 \textbf{attach}
 
@@ -3853,13 +4690,39 @@ $ tmux -f /path/to/file -2 -L attach <session_name>
 \end{verbatim}
 \end{codetemplate}
 
-If you want to deattach the other sessions:
+Deattach other sessions
+\begin{codetemplate}
+\begin{verbatim}
+$ tmux -L <session_name> -d
+\end{verbatim}
+\end{codetemplate}
 
+If you want to deattach the other sessions and attach yourself:
 \begin{codetemplate}
 \begin{verbatim}
 $ tmux -f /path/to/file -2 -L attach <session_name> -d
 \end{verbatim}
 \end{codetemplate}
+
+\textbf{kill}
+
+Kill all tmux sessions:
+\begin{codetemplate}
+\begin{verbatim}
+$ tmux kill-server
+\end{verbatim}
+\end{codetemplate}
+
+Kill just a custom session:
+\begin{codetemplate}
+\begin{verbatim}
+$ tmux -L mycustomsocket kill-session
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplateIII}{Warning}
+Tmux does not syncronize the history with the main process in \verb|bash|, so if the socket is ended you will lose all your history. History is syncronized if you use \verb|zsh|.
+\end{blocktemplateIII}
 
 \subsubsection{Commands Inside tmux}
 \textbf{General}
@@ -3867,16 +4730,17 @@ $ tmux -f /path/to/file -2 -L attach <session_name> -d
 \begin{tabular}{| c  |c  |}
 \hline
 \textbf{Command} & \textbf{What it does?} \\ \hline
-CTRL-a c & New tmux "tab"/session \\
-CTRL-a n & Next "tab" \\
-CTRL-a p & Prev "tab" \\
-CTRL-a \verb|#N| & Next "tab" \\
+CTRL-a c & New tmux tab \\
+CTRL-a n & Next tab \\
+CTRL-a p & Prev tab \\
+CTRL-a n & Next tab \\
 CTRL-a repag & Go up into the logs \\
-exit & exit current tab \\
-CTRL-d & exit current tab \\
+CTRL-d (or exit) & exit current tab \\
+CTRL-a \verb|&| & Destroy current tab \\
+CTRL-a x & Destroy current tab \\
+ctrl-a : & Access tmux config mode (with auto-complete) \\
 CTRL-a , & change current tab name \\
 CRTL-a d & de-attach tmux \\
-CTRL-a \verb|&| & Destroy current tab \\
 \hline
 \end{tabular}
 \end{table}
@@ -3886,19 +4750,34 @@ CTRL-a \verb|&| & Destroy current tab \\
 \begin{tabular}{| c  |c  |}
 \hline
 \textbf{Command} & \textbf{What it does?} \\ \hline
-CTRL-a “ & New tmux "tab"/session \\
-CTRL-a \% & Next "tab" \\
-CTRL-a \verb|<arrow-keys>| & Prev "tab" \\
-CTRL-a CTRL-\verb|<arrow-keys>| & Next "tab" \\
-exit & exit current tab \\
-CTRL-a x & exit current tab \\
-CTRL-a CTRL-o & change current tab name \\
-CTRL-a q & de-attach tmux \\
-CTRL-a META-o & de-attach tmux \\
-CTRL-a space \verb|&| & Destroy current tab \\
+CTRL-a “ & Split horizontal \\
+CTRL-a \% & Split vertical \\
+CTRL-a \verb|<arrow-keys>| & Move between tabs \\
+CTRL-a CTRL-\verb|<arrow-keys>| & Resize tabs \\
 \hline
 \end{tabular}
 \end{table}
+
+\textbf{In Repag Mode:}
+\begin{itemize}
+    \item \verb|space:| start selecting.
+    \item \verb|arrows:| to move on the selection.
+    \item \verb|mouse wheel:| to move on the selection.
+    \item \verb|Esc:| stop selection.
+    \item \verb|Enter:| copy the selection.
+\end{itemize}
+
+\textbf{Config Mode (Ctrl-a :)}
+
+Basically you can configure the same as in the config file
+
+Syncronize stdin on all tmux tabs:
+\begin{codetemplate}
+\begin{verbatim}
+setw synchronize-panes on / off
+\end{verbatim}
+\end{codetemplate}
+
 
 \subsection{Ohmyzsh}
 
@@ -3992,6 +4871,453 @@ plugins=(
 )
 \end{verbatim}
 \end{codetemplate}
+
+
+\newpage
+%-------------------------------------------------------------------------------------------------
+\section{Linux Secondary Storage}
+
+\subsection{Introduction}
+
+In the realm of computer storage, there are \textbf{two primary types:} the primary storage and the secondary storage.
+
+\textbf{Primary storage} usually refers to the volatile memory that temporarily stores data while the system operates, such as random access memory (RAM).
+
+On the other hand, \textbf{secondary storage} refers to the non-volatile type that provides long-term storage for digital data.
+
+\subsection{Drives}
+A drive, in the context of Linux, refers to a \textbf{physical storage device} that can store data. Specifically, it refers to a \textbf{single physical unit of digital storage media}, such as a hard disk drive or a solid-state drive (SSD). Unlike partitions and volumes, the word itself doesn't imply any form of logical division or grouping of storage.
+
+\begin{blocktemplateI}{Note}
+Etymologically, the word comes from the physical driver that rotates the disks of the storage for seeking purposes. In early days, non-volatile computer storage consisted of spools of magnetic strips mounted onto a tap driver. As the storage technology advanced, the drive mechanism seems to have stuck around as we can see in the floppy disk and hard disk drive.
+\\\\
+Although newer storage device such as SSD no longer has a moving driver, the word “drive” is still used. Specifically, people continue to use the word “drive” to refer to the actual physical storage device, be it a spinning hard disk drive or an SSD.
+\end{blocktemplateI}
+
+
+Linux represents the drives as pseudo files with the \textbf{prefix sdx under /dev directory}. For example:
+
+\begin{itemize}
+    \item First physical drive we attach to the system: \verb|/dev/sda|
+    \item Second physical drive we attach to the system: \verb|/dev/sdb|
+    \item Third physical drive we attach to the system: \verb|/dev/sdc|
+    \item ...
+\end{itemize}
+
+\subsection{Partitions}
+Partition is a \textbf{logical division or subdivision} of a physical storage drive. Specifically, given a single physical storage drive, we can \textbf{divide it into several smaller independent and isolated units of storage}, known as partitions.
+
+The key distinction between a partition and a drive lies in their relationship and functionality. While a drive represents the physical storage device itself, a partition is an abstraction layer on top of that drive, serving as a logical division within it.
+
+For example, we can divide a single 1TB physical SSD we have in the system into two different partitions. Then, the system can treat the two partitions as separate storage mediums, each with 500GB of storage space, if we partition the drive equally.
+
+One benefit of partitioning a physical storage drive is that the \textbf{partitions are independent and isolated}. The isolation of different partitions means that we can install different operating systems onto the same drive under different partitions.
+
+Besides that, with the partitions being separate storage entities, we can also format the partitions with a different file system from one another. This means we can afford to install multiple operating systems onto the same physical storage drive by partitioning.
+
+Linux represents the drives as pseudo files with the prefix sdxi under /dev directory. For example:
+\begin{itemize}
+    \item First partition of physical drive a: \verb|/dev/sda1|
+    \item Second partition of physical drive a: \verb|/dev/sda2|
+    \item First partition of physical drive c: \verb|/dev/sdc1|
+    \item ...
+\end{itemize}
+
+\subsection{Filesystems}
+A filesystem is a method and data structure that an operating system uses to manage files on a disk or partition. It defines how data is stored, organized, and retrieved. Without a filesystem, an operating system cannot keep track of the files and data stored on a disk, making it impossible to read or write data efficiently.
+
+Why do we need filesystems? When you create a new partition, it's essentially a blank space on the disk with no structure or organization. Formatting the partition with a filesystem prepares it to store data in a structured way that the operating system can understand. Here are the reasons why formatting is necessary:
+
+\begin{itemize}
+    \item \textbf{Preparation of Storage Space:} formatting sets up the initial structure on the partition, creating a table of contents for files and directories. This allows the operating system to keep track of where files are located on the disk.
+    \item \textbf{Organization of Data:} a filesystem provides a structured way to store and organize data in files and directories. This structure allows easy navigation and management of files.
+    \item \textbf{Data Management:} filesystems manage how data is stored and retrieved. They ensure that files do not overlap and that free space on the disk is utilized efficiently.
+    \item \textbf{Access Control:} filesystems often include permissions and access control mechanisms to ensure that only authorized users can access or modify specific files.
+    \item \textbf{Data Integrity:} filesystems provide mechanisms to detect and correct errors. Some advanced filesystems also offer features like journaling, which helps in recovering from crashes or power failures.
+    \item \textbf{Metadata Management:} filesystems store metadata, which includes information about files such as their names, sizes, creation dates, and permissions. This metadata is crucial for the operating system to manage files properly.
+\end{itemize}
+
+\subsection{LVM}
+
+\subsubsection{Introduction}
+Logical Volume Management (LVM) is a system for managing disk storage space in a more flexible manner than traditional partitioning methods. It allows system administrators to create, resize, and move storage volumes dynamically without the need for downtime. LVM is particularly useful in environments where storage requirements are constantly changing and flexibility is paramount.
+
+\subsubsection{LVM Structure}
+The structure of a Logical Volume Manager disk environment is illustrated below. \textbf{Logical Volume Management enables the combining of multiple individual hard drives and/or disk partitions into a single volume group (VG)}. That volume group can then be \textbf{subdivided into logical volumes (LV)} or used as a single large volume. Regular \textbf{file systems}, such as EXT3 or EXT4, can then be created on a logical volume.
+
+In Figure below, two complete physical hard drives and one partition from a third hard drive have been combined into a single volume group. Two logical volumes have been created from the space in the volume group, and a filesystem, such as an EXT3 or EXT4 filesystem has been created on each of the two logical volumes.
+
+\begin{figure}[H]
+    \includegraphics[width=\textwidth]{pictures/pvs.png}
+    \centering
+\end{figure}
+
+\begin{itemize}
+    \item \textbf{Physical Volumes (PV's):} basic storage devices that LVM manages. They can be an entire hard drive, a partition on a hard drive, or a RAID array. PVs are initialized for use by LVM using the \verb|pvcreate| command, which writes metadata to the physical volume so that it can be used by LVM.
+    \item \textbf{Volume Groups (VG's):} pool of storage that consists of one or more physical volumes. When you create a VG, you aggregate the storage capacity of all included PVs, making it available for creating logical volumes. The VG acts as a container for logical volumes.
+    \item \textbf{Logical Volumes (LV's):} virtual block device that can be used like a regular partition. LVs are created from the storage pool provided by a volume group. You can create, resize, and manage logical volumes without worrying about the underlying physical storage details.
+    \item \textbf{Filesystems:} Once a logical volume is created, it must be formatted with a filesystem before it can be used to store files. After formatting, the filesystem can be mounted to a directory in the operating system, making it accessible for reading and writing data.
+\end{itemize}
+
+\subsection{Tools to Manage Secondary Storage}
+
+\subsubsection{Lsblk - List block devices}
+\textbf{lsblk} is a command-line utility in Linux used to list information about all available or the specified block devices. It shows details about block devices (like hard drives), their partitions, and other types of storage volumes.
+
+\verb|lsblk:| will list all block devices in a tree format showing the hierarchy of devices and their partitions.
+
+\begin{itemize}
+    \item \verb|-a| (\verb|--all|): Show all devices, including empty ones.
+    \item \verb|-d| (\verb|--nodeps|): Don't print device holders or slaves.
+    \item \verb|-f| (\verb|--fs|): Output information about filesystems.
+    \item \verb|-o| (\verb|--output|): Define which columns to output.
+    \item \verb|-l| (\verb|--list|): Use list format instead of tree format.
+    \item \verb|-p| (\verb|--paths|): Print full device paths.
+    \item \verb|-r| (\verb|--raw|): Use the raw output format.
+    \item \verb|-t| (\verb|--topology|): Show topology information.
+    \item \verb|-J| (\verb|--json|): Use JSON output format.
+\end{itemize}
+
+\begin{figure}[H]
+    \includegraphics[width=\textwidth]{pictures/lsblk.png}
+    \centering
+\end{figure}
+
+\begin{figure}[H]
+    \includegraphics[scale=0.7]{pictures/lsblkm.png}
+    \centering
+\end{figure}
+
+\subsubsection{Fdisk - Managing Partitions}
+\textbf{fdisk} is a command-line utility in Linux used for disk partitioning. It's a powerful tool that allows users to create, delete, resize, and manage disk partitions on hard drives.
+
+\textbf{fdisk} stands for "Fixed Disk" and is primarily used to manipulate partition tables on hard drives. It supports various partition table formats, with the most common being the Master Boot Record (MBR) and GUID Partition Table (GPT).
+
+\verb|fdisk -l:| lists the partition tables of all disk drives, showing the details of each disk and its partitions and volumes:
+\begin{itemize}
+    \item Disk size
+    \item Sector size
+    \item Partition type
+    \item Partition size
+\end{itemize}
+
+\verb|fdisk -l /dev/sdx:| Show the partition table with details of a specific disk.
+
+\textbf{Interactive mode:} \verb|fdisk /dev/sda|
+\begin{itemize}
+    \item \verb|m|: display the help menu.
+    \item \verb|p|: print the partition table.
+    \item \verb|n|: add a new partition.
+    \item \verb|d|: delete an existing partition.
+    \item \verb|t|: change a partition type.
+    \item \verb|w|: write the changes into the disk and exit.
+    \item \verb|q|: quit without saving changes.
+\end{itemize}
+
+\begin{blocktemplateIII}{Warning}
+\verb|g| inside \textbf{fdisk} will erase any existing partition table and data on the disk. So it prepares the disk to be partitiones by creating a new a new empty GPT (GUID Partition Table) partition table. 
+\end{blocktemplateIII}
+
+\underline{Usage Example:} Iinstall a new partition on drive \verb|/dev/sda| of 5.47TiB:
+
+\begin{enumerate}
+    \item Become sudo: \verb|sudo su|
+    \item List system disks information: \verb|lsblk|
+    \item Start interactive disk \verb|/dev/sda| modification: \verb|fdisk /dev/sda|
+\begin{figure}[H]
+    \includegraphics[width=\textwidth]{pictures/fdiskk.png}
+    \centering
+\end{figure}
+
+    \item Write the changes: \verb|w|
+    \item Check the partition has been created: \verb|lsblk| or \verb|fdisk -l /dev/sda|
+    \item Format the partition with a filesystem: \verb|mkfs.ext4 /dev/sda1|
+    \item Mount the filesystem to a directory in order can be used: \verb|mount /dev/sda1 /mnt/mydata|
+    \item Check the filesystems: \verb|df -h|
+\end{enumerate}
+
+\subsubsection{LVM - Managing Volumes on Linux}
+
+\paragraph{For PVs}
+
+Displays information about all physical volumes (PVs):
+\begin{codetemplate}
+\begin{verbatim}
+pvdisplay
+\end{verbatim}
+\end{codetemplate}
+
+Show detailed information about a physical volume:
+\begin{codetemplate}
+\begin{verbatim}
+pvdisplay [options] [PhysicalVolumePath]
+\end{verbatim}
+\end{codetemplate}
+
+Initialize a partition or drive as a physical volume, making it ready to be used in a volume group:
+\begin{codetemplate}
+\begin{verbatim}
+pvcreate /dev/sda
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}
+\begin{verbatim}
+pvcreate /dev/sda
+\end{verbatim}
+\end{codetemplate}
+
+\paragraph{For VGs}
+
+Displays information about volume groups. It shows detailed information such as:
+\begin{itemize}
+    \item Volume group name
+    \item Volume group Size
+    \item Free space in the volume group
+    \item Number of physical volumes (PVs) in the volume group
+    \item Number of logical volumes (LVs) in the volume group
+\end{itemize}
+\begin{codetemplate}
+\begin{verbatim}
+vgdisplay
+\end{verbatim}
+\end{codetemplate}
+
+Displays information about volume groups in a brief format:
+\begin{codetemplate}
+\begin{verbatim}
+vgs
+\end{verbatim}
+\end{codetemplate}
+
+Displays information about a volume groups:
+\begin{codetemplate}
+\begin{verbatim}
+vgdisplay <vg_name>
+\end{verbatim}
+\end{codetemplate}
+
+Create a new volume group by combining one or more physical volumes:
+\begin{codetemplate}
+\begin{verbatim}
+vgcreate <vg_name> <pv_name1> <pv_name2> ... <pv_namen>
+\end{verbatim}
+\end{codetemplate}
+
+Adds one or more physical volumes to an existing volume group:
+\begin{codetemplate}
+\begin{verbatim}
+vgextend <vg_name> <pv_name>
+\end{verbatim}
+\end{codetemplate}
+
+Removes one or more physical volumes from a volume group:
+\begin{codetemplate}
+\begin{verbatim}
+vgreduce <vg_name> <pv_name>
+\end{verbatim}
+\end{codetemplate}
+    
+Removes a volume group from the system: 
+\begin{codetemplate}
+\begin{verbatim}
+vgremove <vg_name>
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplateIII}{Warning}
+The volume group must be empty (all logical volumes must be removed first).
+\end{blocktemplateIII}
+
+Renames an existing volume group:
+\begin{codetemplate}
+\begin{verbatim}
+vgrename old_volume_group new_volume_group
+\end{verbatim}
+\end{codetemplate}
+
+Scans all disks for volume groups and rebuilds the LVM cache:
+\begin{codetemplate}
+\begin{verbatim}
+vgscan
+\end{verbatim}
+\end{codetemplate}
+
+Checks the consistency of volume group metadata:
+\begin{codetemplate}
+\begin{verbatim}
+vgck <vg_name>
+\end{verbatim}
+\end{codetemplate}
+
+\paragraph{For LVs}
+
+Display information about logical volumes. It shows details such as:
+\begin{itemize}
+    \item Logical volume name
+    \item Volume group name
+    \item Size of the logical volume
+    \item Attributes and status of the logical volume
+\end{itemize}
+\begin{codetemplate}
+\begin{verbatim}
+lvdisplay
+\end{verbatim}
+\end{codetemplate}
+
+Display information about a LV:
+\begin{codetemplate}
+\begin{verbatim}
+lvdisplay /dev/my_volume_group/my_logical_volume
+\end{verbatim}
+\end{codetemplate}
+
+Display information about logical volumes in a brief format:
+\begin{codetemplate}
+\begin{verbatim}
+lvs
+\end{verbatim}
+\end{codetemplate}
+
+Create a new logical volume within a specified volume group:
+\begin{codetemplate}
+\begin{verbatim}
+lvcreate -L 10G -n my_logical_volume my_volume_group
+\end{verbatim}
+\end{codetemplate}
+
+To extend the size of a lv:
+\begin{codetemplate}
+\begin{verbatim}
+lvextend -L +5G /dev/my_volume_group/my_logical_volume
+\end{verbatim}
+\end{codetemplate}
+
+To reduce the size of a lv:
+\begin{codetemplate}
+\begin{verbatim}
+lvreduce -L -5G /dev/my_volume_group/my_logical_volume
+\end{verbatim}
+\end{codetemplate}
+
+Resizes a logical volume, either increasing or decreasing its size. This combines lvextend and lvreduce:
+\begin{codetemplate}
+\begin{verbatim}
+lvresize -L +15G /dev/my_volume_group/my_logical_volume
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}
+\begin{verbatim}
+lvresize -L -15G /dev/my_volume_group/my_logical_volume
+\end{verbatim}
+\end{codetemplate}
+
+To remove a logical volume:
+\begin{codetemplate}
+\begin{verbatim}
+lvremove /dev/my_volume_group/my_logical_volume
+\end{verbatim}
+\end{codetemplate}
+
+To rename a logical volume:
+\begin{codetemplate}
+\begin{verbatim}
+lvrename /dev/my_volume_group/my_logical_volume
+\end{verbatim}
+\end{codetemplate}
+
+Scan all logical volumes in the system and rebuilds the LVM cache:
+\begin{codetemplate}
+\begin{verbatim}
+lvscan
+\end{verbatim}
+\end{codetemplate}
+
+Change the attributes of a logical volume, such as making it active or inactive.:
+\begin{codetemplate}
+\begin{verbatim}
+lvchange -a y /dev/my_volume_group/my_logical_volume
+\end{verbatim}
+\end{codetemplate}
+
+\subsubsection{Filesystem}
+Report the amount of disk space used and available on filesystems:
+\begin{codetemplate}
+\begin{verbatim}
+df -h
+\end{verbatim}
+\end{codetemplate}
+
+\begin{itemize}
+    \item \verb|-h|: output human-readable by showing sizes in KB, MB, GB, etc.
+\end{itemize}
+
+Estimates file space usage:
+\begin{codetemplate}
+\begin{verbatim}
+du -h
+\end{verbatim}
+\end{codetemplate}
+
+Create a filesystem on a storage device (e.g., a partition or a logical volume) specifying the type of filesystem:
+\begin{codetemplate}
+\begin{verbatim}
+mkfs -t ext4 /dev/sdX1
+\end{verbatim}
+\end{codetemplate}
+
+Attach a filesystem to the filesystem hierarchy at a specified mount point:
+\begin{codetemplate}
+\begin{verbatim}
+mount /dev/sdxi /path/to/my_mount_point
+\end{verbatim}
+\end{codetemplate}
+
+\begin{codetemplate}
+\begin{verbatim}
+mount /dev/vgName/lvName /path/to/my_mount_point
+\end{verbatim}
+\end{codetemplate}
+
+Detach a filesystem from the filesystem hierarchy.
+
+\begin{codetemplate}
+\begin{verbatim}
+umount /path/to/my_mount_point
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{/etc/fstab} file contains a list of entries that define how disk partitions, filesystems, and other block devices should be automatically mounted at boot time.
+
+Example entry in \verb|/etc/fstab| file:
+\begin{codetemplate}{/etc/fstab}
+\begin{verbatim}
+# <file system> <mount point> <type> <options> <dump> <pass>
+/dev/vgName/lvName /path/to/my_mount_point ext4 defaults 0 2
+\end{verbatim}
+\end{codetemplate}
+
+\begin{itemize}
+    \item \textbf{Dump}
+    \begin{itemize}
+        \item 0: The filesystem will not be backed up by the dump command.
+        \item 1: The filesystem will be backed up by the dump command.
+    \end{itemize}
+    \item \textbf{Pass:} which filesystems should be checked at boot time.
+    \begin{itemize}
+        \item 0: The filesystem will not be checked.
+        \item 1: The filesystem will be checked first. This should be used for the root filesystem (/).
+        \item 2: The filesystem will be checked after the filesystems with a pass value of 1. This is typically used for all other filesystems.
+    \end{itemize}
+\end{itemize}
+
+To mount all filesystems specified in verb|/etc/fstab| without rebooting:
+\begin{codetemplate}
+\begin{verbatim}
+mount -a
+\end{verbatim}
+\end{codetemplate}
+
+
 
 \newpage
 %-------------------------------------------------------------------------------------------------
@@ -4510,7 +5836,7 @@ $  kc get RESOURCE_NAME -o jsonpath=\
 \end{figure}
 
 \subsection{Ubuntu vs RH7}
-Ubuntu es una distribución de Linux que se basa en un kernel Debian, lo que significa que no funciona exactamente igual que otras distribuciones con otros kernel. RH7 al igual que Centos (Open Source) trabajan con un kernel diferente y por tanto los comandos son diferentes. Por ejemplo el gestor de paquetes de Debian es apt-get y el de RH7 es yum.
+Ubuntu es una distribución de Linux que se basa en un kernel Debian, lo que significa que no funciona exactamente igual que otras distribuciones con otros kernel. RH7 al igual que Centos (Open Source) trabajan con un kernel diferente y por tanto los comandos son diferentes. Por ejemplo el gestor de paquetes de Debian es apt y el de RH7 es yum.
 
 \subsection{Vagrant}
 Vagrant is a tool for building and managing virtual machine environments in a single workflow.
