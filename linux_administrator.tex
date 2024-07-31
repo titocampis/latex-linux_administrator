@@ -4595,7 +4595,15 @@ $ tmux -2
 \end{verbatim}
 \end{codetemplate}
 
-\textbf{Configure}
+\textbf{Configuration:}
+
+Tmux by default uses two configuration files, and it's able to merge the content of them. By default, user configuration overrides conflicting configurations:
+\begin{itemize}
+    \item \verb|/etc/tmux.conf:| system-wide configuration file.
+    \item \verb|~/.tmux.conf:| user-specific configuration file.
+\end{itemize}
+
+So if we want to use a different file:
 \begin{codetemplate}
 \begin{verbatim}
 $ tmux -f /path/to/file -2 -L <session_name>
@@ -4606,22 +4614,8 @@ $ tmux -f /path/to/file -2 -L <session_name>
 When you start tmux without \verb|-L|, if there is already a tmux server running, new sessions will join the existing server and will not create a new one unless you specify a different server socket using the \verb|-L| option.
 \end{blocktemplateIII}
 
-\textbf{Configuration File}
-
-Tmux by default uses two configuration files, and it's able to merge the content of them. By default, user configuration overrides conflicting configurations:
-\begin{itemize}
-    \item \verb|/etc/tmux.conf:| system-wide configuration file.
-    \item \verb|~/.tmux.conf:| user-specific configuration file.
-\end{itemize}
-
-What we can do for custom configurations, is:
-\begin{itemize}
-    \item Configure your user-specific file.
-    \item Generate a file in \verb|/tmp/custom-tmux.conf|
-\end{itemize}
-
 My custom config for tmux is:
-\begin{codetemplate}{/tmp/custom-tmux.conf}
+\begin{codetemplate}{~/.tmux.conf}
 \begin{verbatim}
 ###########################################
 # MAIN OPS
