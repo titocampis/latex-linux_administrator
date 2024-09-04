@@ -793,6 +793,305 @@ $ sudo passwd -dl root
     \centering
 \end{figure}
 
+\subsection{PAM}
+PAM (Pluggable Authentication Modules) is a flexible mechanism for authenticating users in a Linux system. It allows system administrators to configure authentication policies without modifying the underlying services (such as login, ssh, etc.) that rely on authentication. PAM is used by a variety of applications to perform authentication tasks.
+
+\subsubsection{How PAM works?}
+PAM consists of a set of dynamically loadable modules that are called by PAM-aware applications. When an application requires authentication, it communicates with the PAM library, which loads the appropriate modules based on configuration files. The PAM framework consists of four management groups or "stacks," each handling a different aspect of authentication:
+\begin{itemize}
+    \item \verb|auth|: verifies the user's identity, typically by checking passwords or other credentials.
+    \item \verb|account|: checks account policies such as account expiration, access restrictions, etc.
+    \item \verb|password|: handles password changes.
+    \item \verb|session|: manages tasks to be performed before and after a user session is established.
+\end{itemize}
+
+\subsubsection{PAM Configuration}
+PAM configuration files are typically located in \verb|/etc/pam.d/| or \verb|/etc/security/|. Each application that uses PAM will have a corresponding configuration file in \verb|/etc/pam.d/|. 
+
+Each PAM configuration file consists of a list of rules. Each rule is typically structured as follows:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ <module_type> <control_flag> <module_path> <module_arguments>
+\end{verbatim}
+\end{codetemplate}
+
+\subsubsection{Module Type}
+This field specifies the type of management group to which the rule belongs. The possible values are:
+\begin{itemize}
+    \item \verb|auth|: verifies the user's identity, typically by checking passwords or other credentials.
+    \item \verb|account|: checks account policies such as account expiration, access restrictions, etc.
+    \item \verb|password|: handles password changes.
+    \item \verb|session|: manages tasks to be performed before and after a user session is established.
+\end{itemize}
+
+\subsubsection{Control Flag}
+This field determines how the result of a PAM module affects the overall result of the stack. The control flag can be one of the following types:
+\begin{itemize}
+    \item \verb|required|: The module must succeed for the overall result to be considered successful. If it fails, PAM will still process the remaining modules in the stack but will ultimately return failure.
+    \item \verb|requisite|: Similar to required, but if the module fails, PAM will immediately return failure and not process any further modules in the stack.
+    \item \verb|sufficient|: If this module succeeds, PAM will immediately return success and ignore the rest of the stack, provided no prior required module has failed.
+    \item \verb|optional|: The success or failure of this module is not critical to the overall result. It is mainly informational.
+    \item \verb|include|: Includes the configuration from another PAM configuration file.
+    \item \verb|substack|: Includes another PAM configuration file but returns to the calling stack after processing it.
+    \item \verb|[default=action]|: Allows specifying custom actions for different return values. For example, \verb|[success=ok new_authtok_reqd=done default=bad]| specifies that on success, the action is ok, if a new authentication token is required, the action is done, and for any other result, the action is bad.    
+\end{itemize}
+
+\subsubsection{Module Path}
+Specifies the path of the PAM module to be used. It should be located in \verb|/lib/security/| or \verb|/lib64/security/| (depending on the system architecture). Common modules include:
+\begin{itemize}
+    \item \verb|pam_unix.so|: Traditional Unix authentication, such as password verification.
+    \item \verb|pam_env.so|: Sets environment variables.
+    \item \verb|pam_deny.so|: Unconditionally deny access.
+    \item \verb|pam_permit.so|: Unconditionally allow access.
+    \item \verb|pam_tally2.so|: Account lockout based on failed login attempts.
+    \item \verb|pam_succeed_if.so|: Conditional control based on attributes such as group membership.
+\end{itemize}
+
+\subsubsection{Module Arguments}
+are optional parameters that control the behavior of the module. The arguments are module-specific. Some common arguments include:
+\begin{itemize}
+    \item For \verb|pam_unix.so|:
+    \begin{itemize}
+        \item \verb|nullok|: Allow null passwords.
+        \item \verb|try_first_pass|: Try to use the password from a previous module first.
+        \item \verb|use_first_pass|: Use the password from a previous module and do not prompt the user.
+    \end{itemize}
+    \item For \verb|pam_tally2.so|:
+    \begin{itemize}
+        \item \verb|deny=n|: Deny access after n failed login attempts.
+        \item \verb|unlock_time=n|: Unlock the account after n seconds.
+    \end{itemize}
+    \item For \verb|pam_succeed_if.so|:
+    \begin{itemize}
+        \item \verb|user ingroup <group>|: Succeed if the user is in the specified group.
+        \item \verb|user notingroup <group>|: Succeed if the user is not in the specified group.
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Configuration Example}
+\begin{codetemplate}{/ect/pam.d/xxx}
+\begin{verbatim}
+# Requires pam_sepermit module for authentication.
+auth       required   pam_sepermit.so
+# Includes configuration from password-auth for authentication.
+auth       include    password-auth
+# Denies access if /etc/nologin exists.
+account    required   pam_nologin.so
+#  Includes configuration from password-auth for account management.
+account    include    password-auth
+# Includes configuration from password-auth for password management.
+password   include    password-auth
+# Performs SELinux tasks before closing a session.
+session    required   pam_selinux.so close
+# Sets the login UID.
+session    required   pam_loginuid.so
+# Initializes kernel keyring.
+session    optional   pam_keyinit.so force revoke
+# Applies resource limits.
+session    required   pam_limits.so
+# Performs SELinux tasks after opening a session.
+session    required   pam_selinux.so open
+# Records the last login and shows failed login attempts.
+session    optional   pam_lastlog.so showfailed
+# ncludes configuration from password-auth for session management.
+session    include    password-auth    
+\end{verbatim}
+\end{codetemplate}
+
+\subsubsection{/etc/pam.d/}
+The \verb|/etc/pam.d/| directory contains PAM (Pluggable Authentication Modules) configuration files for various services and applications on your system. Each file in this directory corresponds to a specific service or function, defining how PAM modules should be used for authentication, account management, password management, and session management for that service.
+
+\paragraph{cockpit}
+
+\begin{itemize}
+    \item \textbf{Purpose}: Configures PAM for Cockpit, a web-based server management interface.
+    \item \textbf{Details}: Contains rules for authentication methods and access controls specific to the Cockpit web interface.
+\end{itemize}
+
+\paragraph{config-util}
+
+\begin{itemize}
+    \item \textbf{Purpose}: Likely used for utility functions or shared configurations.
+    \item \textbf{Details}: The exact purpose can vary, but it often contains common configuration snippets or utility rules used across other PAM configuration files.
+\end{itemize}
+
+\paragraph{crond}
+
+\begin{itemize}
+    \item \textbf{Purpose}: Configures PAM for the crond daemon, which manages cron jobs.
+    \item \textbf{Details}: This file specifies how to handle authentication for users running scheduled cron jobs.
+\end{itemize}
+
+\paragraph{fingerprint-auth}
+
+\begin{itemize}
+    \item \textbf{Purpose}: Manages authentication using fingerprint recognition.
+    \item \textbf{Details}: Contains configurations for PAM modules that handle fingerprint-based authentication, if your system supports it.
+\end{itemize}
+
+\paragraph{login}
+
+\begin{itemize}
+    \item \textbf{Purpose}: Configures PAM for the login process on the console or terminal.
+    \item \textbf{Details}: This file includes rules for handling user authentication during console logins.
+\end{itemize}
+
+\paragraph{other}
+
+\begin{itemize}
+    \item \textbf{Purpose}: Provides default PAM rules for services not explicitly listed in /etc/pam.d/.
+    \item \textbf{Details}: Often includes general settings or fallback rules.
+\end{itemize}
+
+\paragraph{passwd}
+
+\begin{itemize}
+    \item \textbf{Purpose}: Configures PAM for password management and changes.
+    \item \textbf{Details}: Used for password-related tasks, including updating and verifying passwords.
+\end{itemize}
+
+\paragraph{password-auth}
+
+\begin{itemize}
+    \item \textbf{Purpose}: Provides common authentication settings for various services that need to authenticate users.
+    \item \textbf{Details}: Often includes configurations for authentication methods that are shared across multiple services.
+\end{itemize}
+
+\paragraph{polkit-1}
+
+\begin{itemize}
+    \item \textbf{Purpose}: Configures PAM for PolicyKit (polkit), which is used for authorization in various system services.
+    \item \textbf{Details}: Manages authentication rules related to the PolicyKit framework, which handles permissions and policies.
+\end{itemize}
+
+\paragraph{postlogin}
+
+\begin{itemize}
+    \item \textbf{Purpose}: Manages PAM rules that apply after a user logs in.
+    \item \textbf{Details}: This file usually contains session-related settings or actions that need to be performed after a user has logged in.
+\end{itemize}
+
+\paragraph{remote}
+
+\begin{itemize}
+    \item \textbf{Purpose}: Configures PAM for remote access services (e.g., SSH).
+    \item \textbf{Details}: Contains rules for handling authentication for users connecting remotely.
+\end{itemize}
+
+\paragraph{runuser}
+
+\begin{itemize}
+    \item \textbf{Purpose}: Configures PAM for the runuser command, which allows running commands as another user.
+    \item \textbf{Details}: Defines authentication rules for running commands as different users.
+\end{itemize}
+
+\paragraph{runuser-l}
+
+\begin{itemize}
+    \item \textbf{Purpose}: Configures PAM for runuser with additional or different settings.
+    \item \textbf{Details}: May include variations or specific configurations for certain scenarios.
+\end{itemize}
+
+\paragraph{smartcard-auth}
+
+\begin{itemize}
+    \item \textbf{Purpose}: Configures PAM for authentication using smart cards.
+    \item \textbf{Details}: Contains rules for handling authentication using smart card credentials.
+\end{itemize}
+
+\paragraph{sshd}
+
+\begin{itemize}
+    \item \textbf{Purpose}: Configures PAM for the SSH daemon (sshd).
+    \item \textbf{Details}: Manages authentication and session rules specifically for SSH connections.
+\end{itemize}
+
+\paragraph{sssd-shadowutils}
+
+\begin{itemize}
+    \item \textbf{Purpose}: Configures PAM for integration with sssd (System Security Services Daemon) related to shadow utilities.
+    \item \textbf{Details}: Includes rules for handling user authentication and access via sssd.
+\end{itemize}
+
+\paragraph{su}
+
+\begin{itemize}
+    \item \textbf{Purpose}: Configures PAM for the su (substitute user) command.
+    \item \textbf{Details}: Manages authentication and authorization for users switching to other user accounts with su.
+\end{itemize}
+
+\paragraph{su-backup}
+
+\begin{itemize}
+    \item \textbf{Purpose}: Backup configuration for su, likely used for recovery or comparison purposes.
+    \item \textbf{Details}: Contains backup PAM rules for the su command.
+\end{itemize}
+
+\paragraph{su-l}
+
+\begin{itemize}
+    \item \textbf{Purpose}: Configures PAM for su - (substitute user with a login shell).
+    \item \textbf{Details}: Specifies authentication rules when using su with a login shell, which may involve additional settings compared to the standard su command.
+\end{itemize}
+
+\paragraph{sudo}
+
+\begin{itemize}
+    \item \textbf{Purpose}: Configures PAM for the sudo command, which allows users to run commands with superuser privileges.
+    \item \textbf{Details}: Manages authentication and authorization rules for users using sudo.
+\end{itemize}
+
+\paragraph{sudo-backup}
+
+\begin{itemize}
+    \item \textbf{Purpose}: Backup configuration for sudo, similar to su-backup.
+    \item \textbf{Details}: Contains backup PAM rules for sudo.
+\end{itemize}
+
+\paragraph{sudo-i}
+
+\begin{itemize}
+    \item \textbf{Purpose}: Configures PAM for sudo with additional or specific settings.
+    \item \textbf{Details}: May include variations or additional rules for certain sudo use cases.
+\end{itemize}
+
+\paragraph{system-auth}
+
+\begin{itemize}
+    \item \textbf{Purpose}: Provides common authentication settings for various system services.
+    \item \textbf{Details}: A centralized configuration file that includes rules applicable to multiple services requiring authentication.
+\end{itemize}
+
+\paragraph{system-auth-backup}
+
+\begin{itemize}
+    \item \textbf{Purpose}: Backup configuration for system-auth.
+    \item \textbf{Details}: Contains backup PAM rules for system-auth.
+\end{itemize}
+
+\paragraph{systemd-user}
+
+\begin{itemize}
+    \item \textbf{Purpose}: Configures PAM for user services managed by systemd.
+    \item \textbf{Details}: Manages authentication and session rules for user services started by systemd.
+\end{itemize}
+
+\paragraph{vlock}
+
+\begin{itemize}
+    \item \textbf{Purpose}: Configures PAM for vlock, a program for locking virtual consoles.
+    \item \textbf{Details}: Includes rules for handling authentication when using vlock.
+\end{itemize}
+
+
+\subsubsection{Understanding and Editing PAM Configurations}
+\begin{itemize}
+    \item \textbf{Editing:} Always be cautious when editing PAM configuration files, as incorrect settings can lock users out or compromise system security.
+    \item \textbf{Testing:} Test changes in a safe environment before applying them to production systems.
+    \item \textbf{Backup:} Always back up configuration files before making changes.
+\end{itemize}
+Each file in \verb|/etc/pam.d/| is tailored for specific applications or system components, and the configurations defined in these files control how authentication and authorization are handled for different services on your Linux system.
+
 \newpage
 %-------------------------------------------------------------------------------------------------
 \section{Basic Linux Commands}
@@ -1748,6 +2047,13 @@ Remove unnecessary packages and dependencies:
 $ dnf autoremove
 \end{verbatim}
 \end{codetemplate}
+\begin{codetemplate}
+\begin{verbatim}
+$ dnf clean all
+\end{verbatim}
+\end{codetemplate}
+
+Clean dnf cache:
 \begin{codetemplate}
 \begin{verbatim}
 $ dnf clean all
@@ -4204,6 +4510,13 @@ $ nmap -F <hostname_or_ip>
 \end{verbatim}
 \end{codetemplate}
 
+\textbf{Scan UDP}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ nmap -sU ... <hostname_or_ip>
+\end{verbatim}
+\end{codetemplate}
+
 \textbf{Detect the operating system of the target host}
 \begin{codetemplate}{}
 \begin{verbatim}
@@ -4325,6 +4638,144 @@ After sending the request, the server should respond with the appropriate HTTP r
 Remember that Telnet transmits data in plain text, so it's not secure for transmitting sensitive information like passwords. For secure remote access, it's recommended to use protocols like SSH instead.
 \end{blocktemplateIII}
 
+\subsection{MTR (My Traceroute)}
+
+\subsubsection{Introduction}
+MTR (My Traceroute) is a network diagnostic tool available on Linux systems, combining the functionality of the \verb|ping| and \verb|traceroute| commands into a single, powerful utility. It is used primarily for network troubleshooting and performance analysis by providing real-time data on the route packets take to reach a destination and the latency at each hop along the way.
+
+It gives a dynamic overview of the network path between a source (your computer) and a destination (such as a remote server). By doing so, it helps identify potential issues like:
+
+\begin{itemize}
+    \item \textbf{High Latency:} Delay in packet transmission at specific points in the network.
+    \item \textbf{Packet Loss:} Loss of data packets at certain network hops.
+    \item \textbf{Routing Problems:} Misconfigurations or inefficiencies in the network path.
+\end{itemize}  
+ 
+\subsubsection{Usability}
+
+\begin{itemize}
+    \item \textbf{Network Troubleshooting:} Quickly diagnose issues with slow connections, frequent disconnects, or unreachable servers by visualizing where problems occur along the route.
+    
+    \item \textbf{Performance Monitoring:} Continuously monitor network paths to ensure consistent performance, helping to identify intermittent issues that might not be apparent with a one-time check.
+    
+    \item \textbf{ISP Analysis:} Evaluate the performance of your Internet Service Provider (ISP) by examining how traffic is routed and identifying if there are any bottlenecks or slowdowns.
+    
+    \item \textbf{Server Health Checks:} Assess the health of a server's connection by observing its response time and packet loss from different geographical locations or under different network conditions.
+    
+    \item \textbf{Security Audits:} Investigate potential security issues by tracing unexpected network paths, which might indicate routing anomalies or malicious rerouting.
+\end{itemize}
+
+\subsubsection{Installation}
+
+\begin{codetemplate}
+\begin{verbatim}
+$ sudo dnf/apt install mtr
+\end{verbatim}
+\end{codetemplate}
+
+\subsubsection{Commands}
+
+Basic usage:
+\begin{codetemplate}
+\begin{verbatim}
+$ mtr example.com
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}
+\begin{verbatim}
+$ mtr x.x.x.x
+\end{verbatim}
+\end{codetemplate}
+
+Verbose mode:
+\begin{codetemplate}
+\begin{verbatim}
+$ mtr -v example.com
+\end{verbatim}
+\end{codetemplate}
+
+Limit number of packets send:
+\begin{codetemplate}
+\begin{verbatim}
+$ mtr -c 10 example.com
+\end{verbatim}
+\end{codetemplate}
+
+Use TCP instead of ICMP:
+\begin{codetemplate}
+\begin{verbatim}
+$ mtr -T example.com
+\end{verbatim}
+\end{codetemplate}
+
+Use UDP instead of ICMP:
+\begin{codetemplate}
+\begin{verbatim}
+$ mtr -U example.com
+\end{verbatim}
+\end{codetemplate}
+
+Generate a report:
+\begin{codetemplate}
+\begin{verbatim}
+$ mtr -r example.com > report.txt
+\end{verbatim}
+\end{codetemplate}
+
+Force specific dns server:
+\begin{codetemplate}
+\begin{verbatim}
+$ mtr --dns-server 8.8.8.8 example.com
+\end{verbatim}
+\end{codetemplate}
+
+Force not use dns:
+\begin{codetemplate}
+\begin{verbatim}
+$ mtr --no-dns example.com
+\end{verbatim}
+\end{codetemplate}
+
+Specify the interval (in seconds) between probes:
+\begin{codetemplate}
+\begin{verbatim}
+$ mtr -i 1 example.com
+\end{verbatim}
+\end{codetemplate}
+
+Display ip adresses only:
+\begin{codetemplate}
+\begin{verbatim}
+$ mtr -n example.com
+\end{verbatim}
+\end{codetemplate}
+
+Display both (ip's and hostnames):
+\begin{codetemplate}
+\begin{verbatim}
+$ mtr -b example.com
+\end{verbatim}
+\end{codetemplate}
+
+Setp Specific port for TCP/UDP probes:
+\begin{codetemplate}
+\begin{verbatim}
+$ mtr -T -P 80 example.com
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}
+\begin{verbatim}
+$ mtr -U -P 80 example.com
+\end{verbatim}
+\end{codetemplate}
+
+Force MTR to use the specified network interface:
+\begin{codetemplate}
+\begin{verbatim}
+$ mtr -I eth0 example.com
+\end{verbatim}
+\end{codetemplate}
+
 \subsection{Proxy variables definition for binaries}
 Configuring the proxy in the system environment variables with a specific naming convention will cause many system binaries to use them to establish their connections. For example: docker, curl, nslookup...
 
@@ -4337,6 +4788,221 @@ export HTTP_PROXY=http://yourproxyserver.com
 export HTTPS_PROXY=http://yourproxyserver.com
 export NO_PROXY=localhost
 export no_proxy=localhost
+\end{verbatim}
+\end{codetemplate}
+
+\subsection{Firewalld}
+
+\subsubsection{Introduction}
+Firewalld is a dynamic firewall management tool used in Linux-based systems to provide a flexible and efficient way to manage network traffic and security rules. It is designed to replace the traditional iptables tool, offering a more user-friendly and intuitive approach to configuring firewall rules.
+
+The primary purpose of firewalld is to control the traffic that flows into and out of a computer or network by defining and enforcing security policies. It helps protect systems from unauthorized access and potential attacks by allowing administrators to specify which network traffic should be allowed or blocked based on various criteria such as IP addresses, ports, and protocols.
+
+Capabilities:
+\begin{itemize}
+    \item \textbf{Dynamic Configuration:} Unlike iptables, which requires a complete reload to apply changes, firewalld allows you to make real-time adjustments to your firewall rules without interrupting network connections. This means you can update your security settings on the fly.
+    
+    \item \textbf{Zone-Based Management:} Firewalld uses a zone-based model where different zones can be configured with specific rules and assigned to network interfaces. This allows for easy management of different network environments (e.g., home, work, public).
+    
+    \item \textbf{Rich Language for Rules:} It supports a comprehensive set of options for defining rules, including services (e.g., HTTP, SSH), ports, and rich language rules that allow for more granular control over network traffic.
+    
+    \item \textbf{Integration with Services:} Firewalld can integrate with system services to automatically apply appropriate rules. For instance, when you enable a service like HTTP, firewalld can automatically configure the necessary rules to allow web traffic.
+    
+    \item \textbf{IPv4 and IPv6 Support:} It supports both IPv4 and IPv6, ensuring that firewall policies can be applied to both types of IP addresses.
+    
+    \item \textbf{Interface and Command Line Tools:} Firewalld provides a command-line interface (firewall-cmd) as well as a graphical interface (firewalld-config), making it accessible for both advanced users and those who prefer a visual approach.
+\end{itemize}
+
+\subsubsection{Installation}
+
+\begin{codetemplate}
+\begin{verbatim}
+$ sudo dnf/apt install firewalld
+\end{verbatim}
+\end{codetemplate}
+
+\begin{codetemplate}
+\begin{verbatim}
+$ sudo systemctl start firewalld
+\end{verbatim}
+\end{codetemplate}
+
+\begin{codetemplate}
+\begin{verbatim}
+$ sudo systemctl enable firewalld
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplateIII}{Warning}
+I've encountered issues with AlmaLinux-9.4 and \textbf{iptables-legacy}, I couldnt \verb|dnf update|. So, you can do the following to solve the issue:
+\begin{codetemplate}
+\begin{verbatim}
+$ sudo dnf remove iptables-legacy
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}
+\begin{verbatim}
+$ sudo dnf update
+\end{verbatim}
+\end{codetemplate}
+\end{blocktemplateIII}
+
+To check everything is working properly
+\begin{codetemplate}
+\begin{verbatim}
+$ sudo systemctl status firewalld
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}
+\begin{verbatim}
+$ sudo firewall-cmd --state
+\end{verbatim}
+\end{codetemplate}
+
+\subsubsection{Check configuration}
+
+The first thing we need to know is the \verb|--permanent| and \verb|sudo firewall-cmd --reload|. 
+
+By default, the changes you make in \verb|firewalld|, are only applied to the current runtime configuration. This means that if you restart the \verb|firewalld| service or your system, these changes will be lost. This option is useful for temporary adjustments or testing.
+
+But, you can run your commands with \verb|--permanent|, and then changes will be aved to the permanent configuration and will persist across service restarts and reboots. However, they are not automatically applied to the active, runtime configuration, which is what the firewall is currently using. So if you are sure about them you need to:
+\begin{codetemplate}
+\begin{verbatim}
+$ sudo firewall-cmd --reload
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplateI}{Why Not Apply Automatically?}
+This separation allows you to make and review changes without immediately impacting the current firewall behavior. You can ensure that your rules are correct and complete before they affect the active firewall.
+\end{blocktemplateI}
+
+Check the status of firewalld:
+\begin{codetemplate}
+\begin{verbatim}
+$ sudo firewall-cmd --state
+\end{verbatim}
+\end{codetemplate}
+
+Check the default zone:
+\begin{codetemplate}
+\begin{verbatim}
+$ sudo firewall-cmd --get-default-zone
+\end{verbatim}
+\end{codetemplate}
+
+List all available zones:
+\begin{codetemplate}
+\begin{verbatim}
+$ sudo firewall-cmd --get-zones
+\end{verbatim}
+\end{codetemplate}
+
+List all services and ports allowed in a zone (if you dont specify the zone will take the default one):
+\begin{codetemplate}
+\begin{verbatim}
+$ sudo firewall-cmd [--zone=internal] --list-all
+\end{verbatim}
+\end{codetemplate}
+
+Get more info of an specific service (if you dont specify the zone will take the default one):
+\begin{codetemplate}
+\begin{verbatim}
+$ sudo firewall-cmd [--zone=internal] --info-service=<service_name>
+\end{verbatim}
+\end{codetemplate}
+
+\subsubsection{Basic Rules}
+Add a permanent specific service to the firewalld (if you dont specify the zone will take the default one):
+\begin{codetemplate}
+\begin{verbatim}
+$ sudo firewall-cmd [--zone=public] --add-service=service_name --permanent
+$ sudo firewall-cmd --reload  
+\end{verbatim}
+\end{codetemplate}
+
+Remove a permanent specific service to the firewalld (if you dont specify the zone will take the default one):
+\begin{codetemplate}
+\begin{verbatim}
+$ sudo firewall-cmd [--zone=public] --remove-service=service_name --permanent
+$ sudo firewall-cmd --reload  
+\end{verbatim}
+\end{codetemplate}
+
+Open permanently specific port into the firewalld (if you dont specify the zone will take the default one):
+\begin{codetemplate}
+\begin{verbatim}
+$ sudo firewall-cmd [--zone=public] --add-port=service_number/protocol --permanent
+$ sudo firewall-cmd --reload  
+\end{verbatim}
+\end{codetemplate}
+
+Close permanently specific port into the firewalld (if you dont specify the zone will take the default one):
+\begin{codetemplate}
+\begin{verbatim}
+$ sudo firewall-cmd [--zone=public] --remove-port=service_number/protocol --permanent
+$ sudo firewall-cmd --reload  
+\end{verbatim}
+\end{codetemplate}
+
+Change the default zone:
+\begin{codetemplate}
+\begin{verbatim}
+$ sudo firewall-cmd --set-default-zone=zone_name  
+\end{verbatim}
+\end{codetemplate}
+
+Assign a network interface to a zone:
+\begin{codetemplate}
+\begin{verbatim}
+$ sudo firewall-cmd --zone=zone_name --change-interface=interface_name --permanent
+$ sudo firewall-cmd --reload
+\end{verbatim}
+\end{codetemplate}
+
+\subsubsection{Rich Rules}
+Allow TCP traffic on port 9090 from a specific IP range (any source port). For UDP just replace the protocol:
+\begin{codetemplate}
+\begin{verbatim}
+$ sudo firewall-cmd [--zone=public] --add-rich-rule='rule family="ipv4" \
+    source address="x.x.x.x/xx" port port="9090" \
+    protocol="tcp" accept' --permanent
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}
+\begin{verbatim}
+$ sudo firewall-cmd --reload
+\end{verbatim}
+\end{codetemplate}
+
+Allow TCP traffic on port 9090 from a specific IP range (8080 source port only). For UDP just replace the protocol:
+\begin{codetemplate}
+\begin{verbatim}
+$ sudo firewall-cmd [--zone=public] --add-rich-rule='rule family="ipv4" \
+    source address="192.168.1.0/24" source-port="8080" port port="9090" \
+    protocol="tcp" accept' --permanent
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}
+\begin{verbatim}
+$ sudo firewall-cmd --reload
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplateII}{Outgoing Traffic}
+If your server initiates a connection to an external device or needs to respond to an incoming connection, this rule does not explicitly manage or restrict those outgoing connections. However, firewalld has a default policy to allow established connections to continue, so if the incoming traffic has established a connection, the responses are typically allowed automatically.
+\end{blocktemplateII}
+
+If you specifically need to manage both incoming and outgoing traffic in a controlled manner, you would generally need to \textbf{Add Separate Rules for Outgoing Traffic}:
+\begin{codetemplate}
+\begin{verbatim}
+$ sudo firewall-cmd --zone=public --add-rich-rule='rule family="ipv4" \
+    destination address="192.168.1.0/24" port port="9090" \
+    protocol="tcp" accept' --permanent
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}
+\begin{verbatim}
+$ sudo firewall-cmd --reload
 \end{verbatim}
 \end{codetemplate}
 
