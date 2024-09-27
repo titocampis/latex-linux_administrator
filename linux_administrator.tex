@@ -835,6 +835,40 @@ $ hostnamectl
 \end{verbatim}
 \end{codetemplate}
 
+\subsection{Change Linux hostname}
+Check the current hostname:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ hostname
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ hostnamectl
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ less /etc/hostname
+\end{verbatim}
+\end{codetemplate}
+
+Change it:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ hostnamectl set-hostname <new_hostname>
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplate}{NOTE}
+You can do it manually:
+\begin{itemize}
+    \item \verb|hostname <new_hostname>|
+    \item Replace all old ocurrences by new hostname: \verb|vim /etc/hostname|
+    \item Replace all old ocurrences by new hostname: \verb|vim /etc/hosts|
+\end{itemize}
+\end{blocktemplate}
+
 \subsection{Linux System Consumption}
 \textbf{Displays running processes and the system’s resource usage}
 \begin{codetemplate}{}
@@ -5316,6 +5350,123 @@ To mount all filesystems specified in verb|/etc/fstab| without rebooting:
 mount -a
 \end{verbatim}
 \end{codetemplate}
+
+\newpage
+%-------------------------------------------------------------------------------------------------
+\section{Storage Area Network (SAN)}
+
+\subsection{Introduction}
+\subsection{What is a SAN?}
+A \textbf{Storage Area Network (SAN)} is a high-speed, specialized network that provides block-level storage access to servers. It enables multiple servers to access storage devices (such as disk arrays, tape libraries, etc.) as if they were directly attached to the server. This architecture is primarily used in large-scale data centers where high availability, performance, and scalability of storage are critical.
+
+A SAN is a robust, scalable, and high-performance solution for large enterprises needing centralized, reliable storage. By offering block-level access and integrating advanced features like redundancy, multipathing, zoning, and storage virtualization, SANs provide a solution capable of meeting the demands of modern data centers for mission-critical applications.
+
+\subsection{Key Components of SAN Architecture}
+SAN architecture comprises several critical components:
+
+\subsubsection{Host Layer (Servers)}
+Servers, or hosts, that require access to storage. Each server has a Host Bus Adapter (HBA), which is a dedicated interface for SAN communication.
+
+\subsubsection{Fabric Layer (Network)}
+The fabric is the communication pathway between servers and storage devices. It consists of SAN switches and cabling (fiber optics or Ethernet, in the case of iSCSI SANs). The SAN fabric includes:
+\begin{itemize}
+    \item \textbf{SAN Switches}: Direct traffic between storage and servers.
+    \item \textbf{Protocols}: Fibre Channel (FC) or iSCSI (Internet Small Computer Systems Interface).
+\end{itemize}
+
+\subsubsection{Storage Layer}
+This layer includes various storage devices, such as RAID arrays, tape libraries, and other block-level storage devices. Storage Controllers manage data between physical storage devices and the network.
+
+\subsection{Interconnect Layer}
+SANs are typically connected via \textbf{Fibre Channel} or \textbf{Ethernet} in the case of iSCSI. Fibre Channel SANs are faster and more reliable but expensive, while iSCSI is more cost-effective, utilizing existing IP networks.
+
+\subsection{SAN Protocols}
+
+\begin{itemize}
+    \item \textbf{Fibre Channel (FC)}: The most common protocol for SANs, known for low latency, high performance, and long-distance communication capabilities, with speeds up to 128 Gbps.
+    \item \textbf{iSCSI}: Uses the existing IP network for data transfer, making it more affordable but slower than Fibre Channel.
+    \item \textbf{Fibre Channel over Ethernet (FCoE)}: Combines the benefits of FC and Ethernet by encapsulating Fibre Channel commands within Ethernet frames.
+    \item \textbf{NVMe over Fabrics (NVMe-oF)}: A newer protocol designed for faster, lower-latency access to SSD-based storage over networks.
+\end{itemize}
+
+\subsection{SAN Architecture Topologies}
+Several SAN topologies are used depending on performance, availability, and cost requirements:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{pictures/SAN.png}
+\end{figure}
+
+\subsubsection{Point-to-Point}
+A direct connection between a server and a storage device. This topology is not scalable and is rarely used in modern implementations.
+
+\subsubsection{Fibre Channel Arbitrated Loop (FC-AL)}
+Devices are connected in a loop, with one device communicating at a time. While simpler, it is less scalable and has been largely phased out.
+
+\subsubsection{Switched Fabric}
+The most scalable and robust topology, where devices connect to switches in a fabric. This allows each device to communicate with others without collisions, ensuring high availability and performance. It is the most commonly used architecture in modern SANs.
+
+\subsection{How SAN Works}
+SANs provide \textbf{block-level access}, which differs from file-level access in that storage appears to the server as if it's a local disk. The key features include:
+
+\subsubsection{Block-Level Access}
+SANs offer block-level access, making storage appear as if it's directly attached to servers, ideal for performance-critical applications such as databases.
+
+\subsubsection{Logical Unit Number (LUN)}
+Storage devices are divided into smaller units called LUNs (Logical Unit Numbers), and each LUN is assigned to a server. Multiple LUNs can be pooled together for larger storage needs.
+
+\subsubsection{Data Paths}
+SANs use multiple paths for redundancy and load balancing, ensuring high availability. Multipathing allows continued access to storage even if one path fails.
+
+\subsection{Proper Use of SAN}
+To fully leverage a SAN's capabilities, certain best practices should be followed:
+
+\subsubsection{Storage Virtualization}
+Storage virtualization abstracts physical storage resources into pools that can be allocated to servers and applications, improving flexibility and utilization.
+
+\subsubsection{Multipathing for High Availability}
+SANs typically implement \textbf{Multipath I/O (MPIO)} to provide multiple redundant paths between servers and storage arrays, ensuring continuous access even in case of failures.
+
+\subsubsection{Zoning and LUN Masking}
+\begin{itemize}
+    \item \textbf{Zoning}: A security mechanism that ensures only certain servers have access to specific storage devices, improving security and traffic efficiency.
+    \item \textbf{LUN Masking}: Restricts which servers can see which LUNs, preventing unauthorized access.
+\end{itemize}
+
+\subsubsection{Data Replication and Backup}
+SANs should support data replication, both locally and remotely, to ensure backups and disaster recovery.
+
+\subsubsection{Snapshot and Cloning}
+Snapshots allow point-in-time copies of data for backup purposes, while cloning creates full copies of data for testing or development.
+
+\subsubsection{Storage Tiering}
+Storage tiering automatically moves data between high-performance and low-performance storage tiers based on access patterns, improving cost efficiency.
+
+\subsubsection{Quality of Service (QoS)}
+SANs allow setting QoS rules to ensure that high-priority applications always receive the necessary performance levels.
+
+\subsection{Benefits of SAN}
+\begin{itemize}
+    \item \textbf{High Availability and Redundancy}: SANs ensure no single points of failure, offering high uptime.
+    \item \textbf{Scalability}: SANs can grow with your storage needs, providing virtually unlimited scalability.
+    \item \textbf{Centralized Storage Management}: SANs allow centralized management of all storage resources, simplifying the allocation, monitoring, and optimization of storage.
+    \item \textbf{Improved Performance}: Block-level access provides faster data access compared to traditional file-level systems like NAS.
+\end{itemize}
+
+\subsection{Common SAN Use Cases}
+\begin{itemize}
+    \item \textbf{Enterprise Databases}: SANs are used to host databases due to their need for high performance and low latency.
+    \item \textbf{Virtualization}: Hypervisors such as VMware or Hyper-V often use SANs to store virtual machines (VMs).
+    \item \textbf{Backup and Disaster Recovery}: SANs are often used as targets for backups, snapshots, and replication for disaster recovery.
+    \item \textbf{Big Data Applications}: SANs are ideal for large-scale data analytics due to their high performance.
+\end{itemize}
+
+\newpage
+%-------------------------------------------------------------------------------------------------
+\section{Logs}
+\subsection{Rsyslog}
+
+
 
 
 
