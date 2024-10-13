@@ -870,38 +870,45 @@ You can do it manually:
 \end{blocktemplate}
 
 \subsection{Linux System Consumption}
-\textbf{Displays running processes and the system’s resource usage}
+Displays running processes and the system's resource usage:
 \begin{codetemplate}{}
 \begin{verbatim}
 $ top
 \end{verbatim}
 \end{codetemplate}
 
-Do the same but with some colorfull graphics
+Do the same but with some colorfull graphics:
 \begin{codetemplate}{}
 \begin{verbatim}
 $ htop
 \end{verbatim}
 \end{codetemplate}
 
-\textbf{Displays the system’s overall disk space usage}
+Displays the system's overall disk space usage:
 \begin{codetemplate}{}
 \begin{verbatim}
 $ df -h
 \end{verbatim}
 \end{codetemplate}
 
-\textbf{Displays a folder/file disk space usage}
+Displays a folder/file disk space usage:
 \begin{codetemplate}{}
 \begin{verbatim}
 $ df -h folder_name
 \end{verbatim}
 \end{codetemplate}
 
-\textbf{Checks a file or directory’s storage consumption}
-\begin{codetemplate}{}
+Summarize disk usage of the set of FILEs, recursively for directories:
+\begin{codetemplate}
 \begin{verbatim}
-$ du -h directory_name
+$ du -h
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Display only a total for each argument (not recursively):}
+\begin{codetemplate}
+\begin{verbatim}
+$ du -sh
 \end{verbatim}
 \end{codetemplate}
 
@@ -1356,7 +1363,6 @@ $ rsync -avzP remote_user@remote_ip:/path/to/remote/source \
 \begin{blocktemplateII}{Note}
 You can specify the key to use: \verb|-e "ssh -i /path/to/private_key"|
 \end{blocktemplateII}
-    
 
 \subsection{Simbolik Links}
 \subsubsection{What is a Symbolic Link?}
@@ -2369,6 +2375,65 @@ $ awk -F ":" '{ print $2, $3 }' <filename>
 \end{verbatim}
 \end{codetemplate}
 
+\subsection{wc}
+\verb|wc| (short for \textbf{word count}) is a command-line utility in Unix/Linux systems used to count lines, words, and characters (or bytes) in files or input streams. It's often used for quick text statistics and file size information.
+
+Basic usage:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ wc [options] [file]
+\end{verbatim}
+\end{codetemplate}
+
+To see \verb|<lines> <words> <characters>| of file.txt:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ wc file.txt
+\end{verbatim}
+\end{codetemplate}
+
+Count lines on a file:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ wc -l file.txt
+\end{verbatim}
+\end{codetemplate}
+
+Count words on a file:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ wc -w file.txt
+\end{verbatim}
+\end{codetemplate}
+
+Count characters on a file:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ wc -m file.txt
+\end{verbatim}
+\end{codetemplate}
+
+Find the length of the longest line:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ wc -L file.txt
+\end{verbatim}
+\end{codetemplate}
+
+Count bytes on a file:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ wc -c file.txt
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Using wc with Pipelines:} You can pipe the output of other commands into wc. For example, to count the number of lines in a command's output:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ls -l | wc -l
+\end{verbatim}
+\end{codetemplate}
+
 \subsection{Tar Command}
 The tar command on Linux is often used to create .tar.gz or .tgz archive files, or extract them into local directories.
 \subsubsection{Compress}
@@ -2441,8 +2506,70 @@ Here’s what those switches actually mean:
     \item \textbf{-r:} update or add file or directory in already existed .tar file
 \end{itemize}
 
-\subsection{Base64 Encoding}
+\subsection{Wget}
+\verb|wget| is a command-line utility used to download files from the web. It stands for "World Wide Web" and "get," indicating its core functionality: retrieving content from the internet. It is highly popular due to its simplicity, robustness, and versatility. One of the main advantages of wget is its ability to handle unstable or interrupted network connections by automatically retrying and resuming downloads. It's available on Unix-based systems (like Linux and macOS), as well as Windows.
 
+The simplest usage of wget is downloading a single file from a URL:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ wget https://example.com/file.zip
+\end{verbatim}
+\end{codetemplate}
+
+For downloading a .tar.gz file and extracting it in one step:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ wget -qO- https://example.com/file.tar.gz | tar -xz
+\end{verbatim}
+\end{codetemplate}
+\begin{itemize}
+    \item \verb|-q|: Quiet mode (optional, suppresses wget output).
+    \item \verb|-O-| (not zero): Outputs the downloaded content directly to stdout (the hyphen - represents stdout)
+\end{itemize}
+
+Resuming an Interrupted Download If a download is interrupted, you can resume it using the -c flag:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ wget -c https://example.com/file.iso
+\end{verbatim}
+\end{codetemplate}
+
+Download Files in the Background To let the download happen in the background, freeing up the terminal for other commands:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ wget -b https://ftp.postgresql.org/pub/source/v9.6.6/postgresql-9.6.6.tar.gz
+\end{verbatim}
+\end{codetemplate}
+
+Download Multiple Files You can download multiple files at once by specifying URLs in a text file and using the -i flag:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ wget -i file_with_urls.txt
+\end{verbatim}
+\end{codetemplate}
+
+Verbose:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ wget --debug https://example.com/file.zip
+\end{verbatim}
+\end{codetemplate}
+
+Log Output to a File: You can log the output to a file for later inspection using the -o option:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ wget -o log.txt https://example.com/file.zip
+\end{verbatim}
+\end{codetemplate}
+
+To suppress all output except for errors, use the --no-verbose option:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ wget -q --no-verbose https://example.com/file.zip
+\end{verbatim}
+\end{codetemplate}
+
+\subsection{Base64 Encoding}
 Base64 encode or decode FILE, or standard input, to standard output.
 
 \textbf{Code}
@@ -2610,31 +2737,50 @@ Find occurrences
     \item To start finding the occurrences: Intro
     \item To go to the next occurrence: \verb|n|
     \item To go to the previous occurrence: \verb|N|
-    \item \textbf{By dafault it is case sensitive, to make it insensitive:} before search, execute.
+\end{itemize}
+
+\textbf{By dafault it is case sensitive, to make it insensitive:} before search, execute.
 \begin{codetemplate}
 \begin{verbatim}
 :set ignorecase
 \end{verbatim}
 \end{codetemplate}
-    \item To replace the first occurrence of a word
+
+To unset something:
+\begin{codetemplate}
+\begin{verbatim}
+:set noignorecase
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplateII}{NOTE}
+All modifications you do with \verb|set| will only apply to the current vim opened file, if you repen again vim, it won't keep it. In order to keep configurations
+modify:
+\begin{codetemplate}
+\begin{verbatim}
+~/.vimrc
+\end{verbatim}
+\end{codetemplate}
+\end{blocktemplateII}
+
+To replace the first occurrence of a word
 \begin{codetemplate}
 \begin{verbatim}
 :s/search/replace/
 \end{verbatim}
 \end{codetemplate}
-    \item To replace all the occurrences of a word in the full file
+To replace all the occurrences of a word in the full file
 \begin{codetemplate}
 \begin{verbatim}
 :%s/search/replace/g
 \end{verbatim}
 \end{codetemplate}
-    item To replace all the occurrences of a word in the full file (with confirmation before each replacement)
+To replace all the occurrences of a word in the full file (with confirmation before each replacement)
 \begin{codetemplate}
 \begin{verbatim}
 :%s/search/replace/gc
 \end{verbatim}
 \end{codetemplate}
-\end{itemize}
 
 Go to the start of the current line
 \begin{codetemplate}
@@ -3952,8 +4098,108 @@ $ ifconfig
 \end{codetemplate}
 \end{blocktemplateIII}
 
-\subsection{Certificates}
+\subsection{TLS Communication (Certificates)}
 
+\subsubsection{Why do we need certificates?}
+Certificates are used to guarantee trust between 2 parties during a transaction. For example: when a user is trying to access a web server, TLS certificates ensure that the communication between the user and the server it is encrypted and they are both who they sey they are (there is no man in the middle).
+
+The data between communications are encrypted using asymetric keys, so only the receiver of the data can decrypt the data, even the sender cannot decrypt the message once it has been sent. A good example to understan asymetric encryption is to think like:
+\begin{itemize}
+    \item \textbf{Public Key:} Lock that anyone can try to open.
+    \item \textbf{Private Key:} The only key which can open the lock, never should be shared.
+\end{itemize}
+
+All the times you're requested for connection you are sharing your public key, 
+so it is really public XD. Here is the "key" XD: public and private key are related each other,
+the sender encrypts the message using his own private key and the public key of the server. And then the server is able to
+decrypt it using his private key, all thanks to the relation between pubkey and privkey. 
+
+So the man in the middle is dead, because he does not have any of the private keys and he does not know the relation between public keys and private keys. In summary, he cannot decrypt the message.
+
+So the only chance the man in the middle has, is to recreate the exact website and tell you: hey, I'm your bank, send me your credentials! So the website has its own public and private keys and it starts the negotiation with you. So if you answer, you are dead.
+
+But what if you could know in advance if the pubkey of the server is a legitimate key from your real bank server?
+So that's what certificates exactly do! When you are connecting through \textbf{https}, your bank account is sending you a \textbf{Certificate} instead of the pubkey.
+This certificate (among other things) has the pubkey inside. Inside the certificate there is information as:
+\begin{itemize}
+    \item CN (Common Name): domain it is certifying.
+    \item Identity: individual, organization, or device
+    \item Location: country, state, localty.
+    \item PubKey.
+    \item Signature.
+    \item Signature Algorithm.
+    \item Validity Period.
+\end{itemize}
+
+But, anyone can create its own certificate, so for that, the browsers check the certificates are signed by a \textbf{(CA) Certificate Authority} which recognizes that 
+the certificate is legitime and it is used to certify the domain it is saying. CA's can sign and validate the certificates, the most popular are: DigiCert, Symantec, Comodo, GlobalSign.
+
+How all of them works?
+
+\begin{enumerate}
+    \item You generate a \textbf{CSR:} Certificate Signing Request with your domain.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ openssl req -new -key my-bank.key -out my-bank.csr \
+    -subj "C=US/ST=CA/O=MyOrg, Inc./CN=mydomain.com"
+\end{verbatim}
+\end{codetemplate}
+    \item The CSR should be sent to the \textbf{CA} for signing.
+    \item The CA verify your details and once it checks out, they sign the certificate and send it back to you.
+    \item You now have a certificate signed by a CA which the Browsers trust.
+\end{enumerate}
+
+\begin{blocktemplateI}{Note}
+How Browsers know that the CA which signed the certificate is trustable? Because CA's generate the certificate using it's own pair keys, so the public keys of all the legitimate CAs are built
+into all the browsers. Then the browsers use the public key of the CA to validate that the certificate
+is actually signed by a legitimate CA.
+\end{blocktemplateI}
+
+As well, you can use \textbf{certbot (let's encrypt)} (like a CA), but more quicklier and easier to do, take a look on \href{https://certbot.eff.org/}{CetBot Official Documentation}.
+
+Once your browser and you trust in the server, you can send your sensitive data which will be encrypted using the asymetric key encryption method, and only and actually just only the receiver can decrypt.
+
+\begin{blocktemplateI}{Note}
+In some cases, servers can also request a client certificate to authenticate the user or device connecting to them, verifying they are who they say they are. You can not send them, then the server will decide what to share or not share with you.
+\\\\
+However, your operating system or device (Windows, macOS, Linux, or even a smartphone) manages the whole process for you behind the scenes; your operating system comes with a built-in set of trusted root certificates from trusted certificate authorities (CAs) like DigiCert, Let's Encrypt, etc. These CAs issue certificates to servers (like the one hosting ChatGPT).
+\end{blocktemplateI}
+
+Certificates including public keys are stored always with this two extensions: 
+\begin{itemize}
+    \item \textbf{.pem}: server.pem
+    \item \textbf{.crt}: server.crt
+\end{itemize}
+
+The private key needed to decrypt messages are stored always with this extension \textbf{.key}: server.key
+
+\begin{blocktemplateI}{Note}
+As the key pairs are related, you can encrypt using both of them. So if you encrypt with one of them, you only can decrypt with the other.
+\\\\
+But take care, the common use is to encrypt with your public key and the public key of the receiver to just the receiver can decrypt using its private key. But if you encrypt using your privatekey, you message will be opened to the world because it can be decrypted with your pubkey.
+\end{blocktemplateI}
+
+All the infraestructure regarding this is called \textbf{PKI (Public Key Infraestructure)}, which contains:
+\begin{itemize}
+    \item Certificates
+    \item Certificate Signing Request
+    \item CA'S
+    \item PubKey and PrivKey
+    \item ...
+\end{itemize}
+
+So with all of this we have 3 types of certificates based on where they are:
+\begin{itemize}
+    \item \textbf{Server Certificates:} the ones configured on the servers side.
+    \item \textbf{Root Certificate:} configured on the CA servers.
+    \item \textbf{Client Certificates:} the ones configured on the clients side. 
+\end{itemize}
+
+So in order to know properly which one is server, client... I recommend to name them properly:
+\begin{itemize}
+    \item server.pem / server.crt / server.key 
+    \item client.pem / client.crt / client.key
+\end{itemize}
 
 \newpage
 %-------------------------------------------------------------------------------------------------
@@ -4241,7 +4487,7 @@ $ nmap -F <hostname_or_ip>
 \textbf{Detect the operating system of the target host}
 \begin{codetemplate}{}
 \begin{verbatim}
-$ nmap -O <hostname_or_ip>
+$ nmap -O <hostname_or_ip> # it is uppercase "o" not zero
 \end{verbatim}
 \end{codetemplate}
 
@@ -4358,6 +4604,133 @@ After sending the request, the server should respond with the appropriate HTTP r
 \begin{blocktemplateIII}{WARNING}
 Remember that Telnet transmits data in plain text, so it's not secure for transmitting sensitive information like passwords. For secure remote access, it's recommended to use protocols like SSH instead.
 \end{blocktemplateIII}
+
+\subsection{Traceroute}
+\verb|traceroute| is a network diagnostic tool used to trace the path that packets take from your local machine to a specified destination, showing all intermediate routers (hops) between the source and destination. By revealing the path, traceroute helps you understand where potential bottlenecks, delays, or network issues might be occurring.
+
+Each router (or hop) along the way is queried, and traceroute reports the time it takes for a packet to travel from your machine to that router. It is an essential tool for troubleshooting routing issues or slow network connections.
+
+\verb|traceroute| sends a series of ICMP (Internet Control Message Protocol) or UDP (User Datagram Protocol) packets to the target with varying TTL (Time-to-Live) values. The TTL field limits the number of hops a packet can pass through before it gets discarded. Each time a router decreases the TTL by one and sends back a message, traceroute records the delay and the router's address.
+
+Basic usage:
+\begin{codetemplate}
+\begin{verbatim}
+$ traceroute <hostname_or_ip>
+\end{verbatim}
+\end{codetemplate}
+
+Specify the Maximum Number of Hops (routers), by default set to 30:
+\begin{codetemplate}
+\begin{verbatim}
+$ traceroute -m <max_hops> <hostname_or_ip>
+\end{verbatim}
+\end{codetemplate}
+
+
+\subsection{My Traceroute (MTR)}
+\verb|mtr| (My Traceroute) is a powerful network diagnostic tool that combines the functionality of two essential network utilities: \verb|ping| and \verb|traceroute|. It provides real-time network performance statistics, helping users identify potential network issues like packet loss, latency, and routing problems between the local machine and a remote host.
+
+Unlike traditional \verb|ping| or \verb|traceroute| which give static outputs, mtr runs continuously, providing updated information and live network analysis. It is especially useful for troubleshooting network connectivity issues or analyzing the performance of network routes over time.
+
+When you run mtr, it sends ICMP (Internet Control Message Protocol) echo requests to the target host (like ping) and tracks the path that packets take to reach the destination (like traceroute). It collects and displays real-time statistics on packet loss, response times, and the number of hops (routers) the packets pass through.
+
+Basic usage:
+\begin{codetemplate}
+\begin{verbatim}
+$ mtr <hostname_or_ip>
+\end{verbatim}
+\end{codetemplate}
+
+Limit the Number of Pings:
+\begin{codetemplate}
+\begin{verbatim}
+$ mtr <hostname_or_ip> -c <number_of_pings>
+\end{verbatim}
+\end{codetemplate}
+
+Specify the Maximum Number of Hops (routers):
+\begin{codetemplate}
+\begin{verbatim}
+$ mtr -m <max_hops> <hostname_or_ip>
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplateII}{NOTE}
+Running mtr as \textbf{root} enables the program to \textbf{send ICMP packets} for more accurate results. Without root privileges, mtr sends UDP packets, which may behave differently.
+\begin{codetemplate}
+\begin{verbatim}
+$ sudo mtr <hostname_or_ip>
+\end{verbatim}
+\end{codetemplate}
+\end{blocktemplateII}
+
+Report mode:
+\begin{codetemplate}
+\begin{verbatim}
+$ mtr -r <hostname_or_ip>
+\end{verbatim}
+\end{codetemplate}
+
+Detailed report:
+\begin{codetemplate}
+\begin{verbatim}
+$ mtr -rw <hostname_or_ip>
+\end{verbatim}
+\end{codetemplate}
+
+Show IP address only:
+\begin{codetemplate}
+\begin{verbatim}
+$ mtr -n <hostname_or_ip>
+\end{verbatim}
+\end{codetemplate}
+
+Specify intervals (in seconds) between packets:
+\begin{codetemplate}
+\begin{verbatim}
+$ mtr -i <seconds> <hostname_or_ip>
+\end{verbatim}
+\end{codetemplate}
+
+Generate CSV output:
+\begin{codetemplate}
+\begin{verbatim}
+$ mtr -rwz <hostname_or_ip>
+\end{verbatim}
+\end{codetemplate}
+
+\subsection{Whois}
+WHOIS is a protocol used to query databases that store information about \textbf{domain names}, \textbf{IP addresses}, and \textbf{autonomous system numbers}. It helps to retrieve \textbf{registration details} of a domain name or IP address, such as the \textbf{owner}, \textbf{registrar}, \textbf{creation/expiration dates}, and more. WHOIS is widely used by \textbf{network administrators}, \textbf{security professionals}, and even \textbf{regular users} to check the \textbf{legitimacy} of websites, or to identify who owns a particular domain name.
+
+WHOIS queries are made over a \textbf{network} to a WHOIS server, which returns the requested data. Many \textbf{domain name registrars} maintain WHOIS servers to provide this information to the public.
+
+Basic usage:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ whois <hostname_or_ip>
+\end{verbatim}
+\end{codetemplate}
+
+Verbose:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ whois --verbose <hostname_or_ip>
+\end{verbatim}
+\end{codetemplate}
+
+Specify a particular WHOIS server to query, which can be useful if the default server doesn’t provide the desired information:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ whois -h whois.verisign-grs.com <hostname_or_ip>
+\end{verbatim}
+\end{codetemplate}
+
+If you only want a short summary of the information:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ whois -s <hostname_or_ip>
+\end{verbatim}
+\end{codetemplate}
 
 \subsection{Proxy variables definition for binaries}
 Configuring the proxy in the system environment variables with a specific naming convention will cause many system binaries to use them to establish their connections. For example: docker, curl, nslookup...
@@ -5285,10 +5658,17 @@ df -h
     \item \verb|-h|: output human-readable by showing sizes in KB, MB, GB, etc.
 \end{itemize}
 
-Estimates file space usage:
+Summarize disk usage of the set of FILEs, recursively for directories.
 \begin{codetemplate}
 \begin{verbatim}
 du -h
+\end{verbatim}
+\end{codetemplate}
+
+Display only a total for each argument
+\begin{codetemplate}
+\begin{verbatim}
+du -sh
 \end{verbatim}
 \end{codetemplate}
 
