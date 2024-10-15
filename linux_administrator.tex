@@ -884,33 +884,79 @@ $ htop
 \end{verbatim}
 \end{codetemplate}
 
-\textbf{Displays the system’s overall disk space usage}
+\subsection{Linux Storage Check}
+\subsubsection{df}
+\verb|df| stands for Disk Filesystem. It is a command used to display information about disk space usage on your file systems. It shows the total size, used space, available space, and percentage of space used for each mounted filesystem. The command is useful for checking how much free space is left on different partitions or storage devices.
+Provides an overview of disk space usage for \textbf{entire filesystems or partitions}.
+
+Basic usage, show all disk filesystems space in human-readable format:
 \begin{codetemplate}{}
 \begin{verbatim}
-$ df -h
+$ df-h
 \end{verbatim}
 \end{codetemplate}
 
-\textbf{Displays a folder/file disk space usage}
+Display output for a specific filesystem:
 \begin{codetemplate}{}
 \begin{verbatim}
-$ df -h folder_name
+$ df -h /dev/sda1
 \end{verbatim}
 \end{codetemplate}
 
-\textbf{Checks a file or directory’s storage consumption}
+Show only local filesystems:
 \begin{codetemplate}{}
 \begin{verbatim}
-$ du -h directory_name
+$ df -l
 \end{verbatim}
 \end{codetemplate}
 
-\begin{blocktemplate}{NOTE}
-\verb|-h| flag shows an humanize output, it specifies K, M, G, etc. If you want to have the output in Kibibyte do not use the flag.
-\end{blocktemplate}
+\subsection{du}
+\verb|du| stands for Disk Usage. It is a command that estimates the disk space used by files and directories. Unlike df, which operates at the filesystem level, du drills down into specific directories to show you how much space each file or subdirectory is consuming. This is useful for identifying space-hogging files and directories.
+Reports on \textbf{disk space} used by specific \textbf{files or directories} within the filesystem.
+
+Basic usage, show disk usage of the specified folder in human-readable format (if nothing specified will take the current folder)
+\begin{codetemplate}{}
+\begin{verbatim}
+$ du -h <path/to/folder/or/file>
+\end{verbatim}
+\end{codetemplate}
+
+Summarize the total disk usage of a directory:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ du -sh <path/to/folder/or/file>
+\end{verbatim}
+\end{codetemplate}
+
+Display disk usage of all files and directories in a folder:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ du -a <path/to/folder/or/file>
+\end{verbatim}
+\end{codetemplate}
+
+Show only the total size of the directory:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ du -ch <path/to/folder/or/file> | grep total
+\end{verbatim}
+\end{codetemplate}
+
+Limit the depth of directory traversal:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ du -h --max-depth=2 <path/to/folder/or/file>
+\end{verbatim}
+\end{codetemplate}
+
+Exclude specific file types from the output:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ du --exclude='*.log' <path/to/folder/or/file>
+\end{verbatim}
+\end{codetemplate}
 
 \subsection{Linux Services}
-
 \subsubsection{ps}
 ps displays information about a selection of the active processes.  If you want a repetitive update of the selection and the displayed information, use top instead.
 \textbf{Display a snapshot of the currently running processes}
@@ -1004,6 +1050,81 @@ $ service <service_name> start
 \begin{codetemplate}{}
 \begin{verbatim}
 $ service <service_name> status
+\end{verbatim}
+\end{codetemplate}
+
+\subsection{lsof}
+\verb|lsof| command (short for List Open Files) is a powerful utility in Unix-like operating systems that is used to list information about files that are currently opened by active processes. This includes regular files, directories, network sockets, pipes, devices, and more. Since in Unix-like systems, everything is treated as a file, lsof can show you details about active processes, network connections, open ports, and more.
+
+Basic usage, display all open files system-wide, showing fields like the command name, process ID (PID), user, file descriptor, and the file path:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ lsof 
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplateIII}{WARNING}
+\textbf{sudo:} Running the command as superuser (root) allows access to information about processes that might otherwise be restricted (such as those owned by other users). Without sudo, you might not be able to see details about some processes.
+\end{blocktemplateIII}
+
+List files opened by a specific user:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ lsof -u titocampis
+\end{verbatim}
+\end{codetemplate}
+
+List files opened by a specific process:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ lsof -p 123
+\end{verbatim}
+\end{codetemplate}
+
+List files opened by a specific command or process name:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ lsof -c containerd
+\end{verbatim}
+\end{codetemplate}
+
+Prevent DNS lookup for network files, Without this flag, lsof would attempt to resolve IP addresses to hostnames, which can slow down the command:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ lsof -n containerd
+\end{verbatim}
+\end{codetemplate}
+
+Check what processes are listening on or using specific ports and IP addresses:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo lsof -i -P -n | grep -i listen
+\end{verbatim}
+\end{codetemplate}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo lsof -i -P -n | grep -i port
+\end{verbatim}
+\end{codetemplate}
+
+\begin{itemize}
+    \item \verb|-i:| ist open files related to internet connections (both network sockets and listening ports). This includes both TCP and UDP connections.
+    \item \verb|-P:| Prevents lsof from converting port numbers into their associated service names. For example, without this flag, port 22 would be displayed as ssh, and port 80 would be displayed as http
+    \item \verb|-n:| This flag prevents lsof from performing DNS lookups on IP addresses. Without this flag, lsof would attempt to resolve IP addresses to hostnames, which can slow down the command.
+\end{itemize}
+
+Find which process is using a specific network port:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ lsof -i :8080
+\end{verbatim}
+\end{codetemplate}
+
+Kill all processes using a specific TCP port:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ kill -9 $(lsof -t -i TCP:8080)
 \end{verbatim}
 \end{codetemplate}
 
