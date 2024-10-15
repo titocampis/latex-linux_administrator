@@ -1465,6 +1465,12 @@ $ sudo shutdown -r now
 \end{verbatim}
 \end{codetemplate}
 
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo reboot
+\end{verbatim}
+\end{codetemplate}
+
     \item Just shutdown the terminal
 \begin{codetemplate}{}
 \begin{verbatim}
@@ -2441,6 +2447,125 @@ Here’s what those switches actually mean:
     \item \textbf{-r:} update or add file or directory in already existed .tar file
 \end{itemize}
 
+\subsection{WGET}
+\verb|wget| is a command-line utility used to download files from the web. It stands for "World Wide Web" and "get," indicating its core functionality: retrieving content from the internet. It is highly popular due to its simplicity, robustness, and versatility. One of the main advantages of wget is its ability to handle unstable or interrupted network connections by automatically retrying and resuming downloads. It's available on Unix-based systems (like Linux and macOS), as well as Windows.
+
+Basic Usage:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ wget https://example.com/file.zip
+\end{verbatim}
+\end{codetemplate}
+
+Resuming an Interrupted Download If a download is interrupted:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ wget -c https://example.com/file.zip
+\end{verbatim}
+\end{codetemplate}
+
+Download Files in the Background:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ wget -b https://example.com/file.zip
+\end{verbatim}
+\end{codetemplate}
+
+Download multiple files at once by specifying URLs in a text file :
+\begin{codetemplate}{}
+\begin{verbatim}
+$ wget -i file_with_urls.txt
+\end{verbatim}
+\end{codetemplate}
+
+Download Entire Website:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ wget -r https://example.com
+\end{verbatim}
+\end{codetemplate}
+
+Disable Verbose Mode:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ wget -q --no-verbose https://example.com
+\end{verbatim}
+\end{codetemplate}
+
+Verbose Mode:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ wget --debug https://example.com
+\end{verbatim}
+\end{codetemplate}
+
+Print the output into a file:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ wget -o file_name.txt https://example.com
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Download and untar a file in the same command}. \verb|-O-|: Outputs the downloaded content directly to stdout (the hyphen - represents stdout).:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ wget -qO- https://example.com/file.tar.gz | tar -xz
+\end{verbatim}
+\end{codetemplate}
+
+\subsection{wc}
+wc (short for "word count") is a command-line utility in Unix/Linux systems used to count lines, words, and characters (or bytes) in files or input streams. It's often used for quick text statistics and file size information.
+
+Basic usage, will count: Lines, Words, and Characters:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ wc <filename>
+\end{verbatim}
+\end{codetemplate}
+
+Count lines:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ wc -l <filename>
+\end{verbatim}
+\end{codetemplate}
+
+Count words:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ wc -w <filename>
+\end{verbatim}
+\end{codetemplate}
+
+Count characters:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ wc -m <filename>
+\end{verbatim}
+\end{codetemplate}
+
+Count bytes:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ wc -c <filename>
+\end{verbatim}
+\end{codetemplate}
+
+
+Find the length of the longest line:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ wc -L <filename>
+\end{verbatim}
+\end{codetemplate}
+
+You can pipe the output of other commands into wc. For example, to count the number of lines in a command's output:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ls -la | wc -l
+\end{verbatim}
+\end{codetemplate}
+
 \subsection{Base64 Encoding}
 
 Base64 encode or decode FILE, or standard input, to standard output.
@@ -2616,6 +2741,14 @@ Find occurrences
 :set ignorecase
 \end{verbatim}
 \end{codetemplate}
+\begin{blocktemplateII}{NOTE}
+If you want to make it again case sensitive:
+\begin{codetemplate}
+\begin{verbatim}
+:set noignorecase
+\end{verbatim}
+\end{codetemplate}
+\end{blocktemplateII}
     \item To replace the first occurrence of a word
 \begin{codetemplate}
 \begin{verbatim}
@@ -2723,8 +2856,9 @@ set showmatch
 " While searching though a file incrementally highlight matching characters as you type.
 set incsearch
 
-" Ignore capital letters during search.
+" Ignore capital letters during search unless you use it to search.
 set ignorecase
+set smartcase
 
 " Use highlighting when doing a search.
 set hlsearch
@@ -2860,6 +2994,405 @@ Alt + D
 %-------------------------------------------------------------------------------------------------
 \section{Network}
 
+\subsection{Introduction, Switches and Routers}
+
+\subsubsection{Switching}
+
+What is a network? We have 2 Linux Machines, A and B, it can be: laptops, desktops, VMs on the Cloud, wherever. How does system A reach system B? So we connect them to a \textbf{switch} and it creates a network containing the two systems. 
+
+\begin{figure}[H]
+    \includegraphics[width=\textwidth]{pictures/ntw.jpg}
+\end{figure}
+
+To connect the 2 Linux machines to a switch, we need an interface on each host (physical or virtual depending on the Host). And to see the interfaces from the Host, we use the following command:
+
+\begin{itemize}
+    \item View and managing link-layer (MAC-level) settings.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ip link
+\end{verbatim}
+\end{codetemplate}
+
+    \item Check network-layer (IP-level) details along with link-layer information.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ip a
+\end{verbatim}
+\end{codetemplate}
+\end{itemize}
+
+We only want the information of \textbf{eth0} interface, which it will be used to connect the machine to the switch. 
+
+Let's assume it's a Network with the adress 192.168.1.0, so we then assign the system with IP addresses on the same Network:
+
+\begin{figure}[H]
+    \includegraphics[width=\textwidth]{pictures/ntw2.png}
+\end{figure}
+
+To add an IP address (192.168.1.10/24) to the network interface eth0
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ip addr add 192.168.1.10/24 dev eth0
+\end{verbatim}
+\end{codetemplate}
+
+Once the links are up and the IP addresses are assigned, the computers can now communicate with each other through the switch. The switch can only enable communication within a Network, which means it can receive packets from a Host on the Network and deliver it to other systems within the same Network.
+
+\subsubsection{Routing}
+
+Imagine we have another 2 machines in another Network at adress 192.168.2.0 and system adress according to this adress. How does a system in one Network reach a system in another Network?
+
+Using \textbf{Routers}, a \textbf{Router} is an intelligent device which can connect two networks together. Is like another server with a lot of \textbf{Network Ports}. Since it connects to the two separate Networks it gets 2 IPs assigned, one on each Network, for example:
+
+\begin{itemize}
+    \item For the first Network, it receives the IP: 192.168.1.1
+    \item For the second Network, it receives the IP: 192.168.2.1
+\end{itemize}
+
+\begin{figure}[H]
+    \includegraphics[width=\textwidth]{pictures/ntw4.png}
+\end{figure}
+
+Imagine that system A wants to communicate with system C. How does the system 
+A know where the Router is configured on the Network to send the packages through? 
+The router is just another device set on the Network with an associated IP. This is why we configure the systems with a \textbf{gateway} (\textbf{route}). If the Network was a room, the \textbf{gateway} would be the door to the external world (other Networks). The systems need to know where that door is. 
+
+\textbf{See existing routing configuration on a system:} it displays the kenel's routing table
+\begin{codetemplate}{}
+\begin{verbatim}
+$ route
+\end{verbatim}
+\end{codetemplate}
+
+If nothing is configured, system A cannot go outside its Network, so it cannot communicate with system C or D, only with D.
+
+\textbf{To configure a gateway in system A:}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ip route add 192.168.2.0/24 via 192.168.1.1
+\end{verbatim}
+\end{codetemplate}
+
+Specifing that to reach 192.168.2.0/24 Network, it should pass through 192.168.1.1 (the router).
+
+As you can imagine, we have to do the same for system B, to reach system C and system D. And the same for systems C and D to reach systems A and B. Configuring a route on the Network and configure routes on the systems.
+
+Now supose these systems need access to the internet, for example to google at 172.217.194.0. You only need to connect the router to the internet and add a new route to the systems, to pass through router to go to Google (172.217.194.0). But there are so many different sites on different Networks on the internet, so instead of adding a routing table entry for the same router's IP adress, for each of those Networks, \textbf{we can simply say for any Network that you do not know where to route, use this router as the default gateway}. And that's the key.
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ip route add default via 192.168.2.1
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplate}{NOTE}
+Instead of the word "default" we can use 0.0.0.0, which means any IP destination.
+\end{blocktemplate}
+
+This way, any request to an IP outside of your existing Network (not defined in route table) goes to this particular router. 
+
+\subsubsection{Private and Public Networks configuration}
+
+So in a simple model like this, all you need is a single routing table entry with the default gateway set to the router's IP address. But if we want to manage connections with another private Network at the same time than Public Network (as internet), it gets complicated. We should have 2 routers with 2 route rules in the configured system tables, to use different routers to send the traffic depending on the Network systems want to reach.
+
+\begin{figure}[H]
+    \includegraphics[width=\textwidth]{pictures/ntw5.png}
+\end{figure}
+
+\begin{itemize}
+    \item One rule to connect to internal private Network on router 1
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ip route add 192.168.1.0/24 via 192.168.2.2
+\end{verbatim}
+\end{codetemplate}
+
+    \item Another rule to connect to all other Networks (including internet)
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ip route add default via 192.168.2.1
+\end{verbatim}
+\end{codetemplate}
+\end{itemize}
+
+\subsection{Network Namespaces in Linux}
+
+\subsubsection{Introduction to Namespaces in Linux}
+
+Network Namespaces in Linux are used by containers like Docker to implement Network isolation, as we know \textbf{containers are separated from their underlying host using Namespaces}, but what are Namespaces? You can imagine Host is a house, and the Namespaces are the different rooms you assing to each of your child, to have certain privacy and independence, so the kids can only see their own room, they cannot see what happens in other room or in the rest of the house (they are isolated). However, as a parent, you ahve visibility into all the rooms in the house as well as other areas of the house. if you wish, you can stablish connectivity between two rooms in the house.
+
+When you create a container you want to make sure that it is isolated, that it does not see any other processes on the host or any other containers, so we create a special room for it on our host using a Namespace, so the container only sees the processes run by it and thinks that it is on its own host XD. Nevertheless, the underlying host has visibility into all of the processes including those running inside containers. This can be seen listing system processes.
+
+\begin{itemize}
+    \item If you list the system processes on a \textbf{running container}, you will see only the processes executed by the container and the container process itself
+\begin{codetemplate}{Inside Docker Container}
+\begin{verbatim}
+$ ps waux
+\end{verbatim}
+\end{codetemplate}
+
+    \item If you list the \textbf{system processes} on the underlying host you will see all the other processes runing in the host (a lot)
+\begin{codetemplate}{On the host directly}
+\begin{verbatim}
+$ ps waux
+\end{verbatim}
+\end{codetemplate}
+\end{itemize}
+
+\subsubsection{ip addr command}
+The ip addr command is a part of the ip suite of tools used in Linux-based systems to manage and display network configurations. It is used to display and modify the IP addresses, interface information, and associated network configuration parameters of a system.
+
+ip addr (or ip address) shows information about the network interfaces and the IP addresses assigned to them. It is often used for network diagnostics and configuration purposes.
+
+Basic usage:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ip a
+\end{verbatim}
+\end{codetemplate}
+
+Show details for a specific interface:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ip a show dev <interface_name>
+\end{verbatim}
+\end{codetemplate}
+
+Show list and human-readable network information:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ip -br a list
+\end{verbatim}
+\end{codetemplate}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ip -br a list <interface_name>
+\end{verbatim}
+\end{codetemplate}
+
+Bring an interface up:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo ip link set <interface_name> up
+\end{verbatim}
+\end{codetemplate}
+
+Bring an interface down:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo ip link set <interface_name> down
+\end{verbatim}
+\end{codetemplate}
+
+Display only IPv4 information:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ip -4 addr
+\end{verbatim}
+\end{codetemplate}
+
+Display only IPv6 information:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ip -6 addr
+\end{verbatim}
+\end{codetemplate}
+
+Add an IP address to an interface:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo ip addr add <IP_address>/<subnet_mask> dev <interface_name>
+\end{verbatim}
+\end{codetemplate}
+
+Remove an IP address from an interface:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo ip addr del <IP_address>/<subnet_mask> dev <interface_name>
+\end{verbatim}
+\end{codetemplate}
+
+\subsubsection{Namespaces for Networking}
+When it comes to networking, our host has its own interfaces that connect to the LAN (Local Area Network), as well as the routing and ARP tables with information about res of the Network. We want to seal all of those deatils from the container, so when the container is created, we create a Network Namespace for it, that way it has no visibility to any network-related information on the host. Within its Namespace, the container can have its own virtual interfaces, routing and ARP tables.
+
+If you want to create a new Network Namespace on a Linux host:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ip netns add <net_namespace_name>
+\end{verbatim}
+\end{codetemplate}
+
+To list the Network Namespaces:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ip netns
+\end{verbatim}
+\end{codetemplate}
+
+If you want to execute a command inside a Network Interface:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ip netns exec <net_namespace_name> <command>
+\end{verbatim}
+\end{codetemplate}
+
+For example to check the isolation of the network namespace:
+\begin{itemize}
+    \item To see the ARP table inside the network namespace:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ip netns exec <net_namespace_name> arp
+\end{verbatim}
+\end{codetemplate}
+    \item To check the network interfaces inside the network namespace:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ip netns exec <net_namespace_name> ip link
+\end{verbatim}
+\end{codetemplate}
+    \item To check the routing network inside the network namespace:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ip netns exec <net_namespace_name> route
+\end{verbatim}
+\end{codetemplate}
+\end{itemize}
+
+To see the ARP table:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ arp
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplateII}{NOTE}
+The ARP (Address Resolution Protocol) table is a crucial component of network communication, specifically within local networks. It functions as a mapping between IP addresses (logical addresses used in Layer 3 of the OSI model) and MAC addresses (physical hardware addresses used in Layer 2).
+\\\\
+When devices on a network communicate, data is transmitted using MAC addresses at the hardware level. However, applications and services use IP addresses. The ARP table helps bridge this gap by maintaining a lookup table that translates an IP address into the corresponding MAC address of a device within the same local network.
+\end{blocktemplateII}
+
+So as they are networking isolated, they have no network connectivity, no networks on their own. The first think we should do is stablish connectivity between namespaces using a \textbf{virtual internet pair (virtual ethernet veth)}:
+So create the veth:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ip link add veth-<net_namespace_name1> type veth peer 
+    name veth-<net_namespace_name2>
+\end{verbatim}
+\end{codetemplate}
+
+Associate it to the network namespaces:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ip link set veth-<net_namespace_name1> netns <net_namespace_name1>
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ip link set veth-<net_namespace_name2> netns <net_namespace_name2>
+\end{verbatim}
+\end{codetemplate}
+
+Assign IP address to each namespace
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ip -n <net_namespace_name1> addr add <IP> dev veth-<net_namespace_name1>
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ip -n <net_namespace_name2> addr add <IP> dev veth-<net_namespace_name2>
+\end{verbatim}
+\end{codetemplate}
+
+Bring up the interfaces:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ip -n <net_namespace_name1> set veth-<net_namespace_name1> up
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ip  -n <net_namespace_name2> set veth-<net_namespace_name2> up
+\end{verbatim}
+\end{codetemplate}
+
+The namespace will be able to see each other.
+
+But what you would de when we have more than 2 namespaces and we have a lot of namespaces? We will need to create a \textbf{Virtual Network} inside the host. To create a Virtual Network:
+\begin{itemize}
+    \item At first you need to create a \textbf{Virtual Switch}, which for our host will be just another interface.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ip link add v-net-0 type bridge
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ip link set v-net-0 up
+\end{verbatim}
+\end{codetemplate}
+    \item Then connect the namespaces to thes Virtual Network Switch.
+\begin{codetemplate}{Create the veth}
+\begin{verbatim}
+$ ip link add veth-<net_namespace_name> type veth peer 
+    name veth-<net_namespace_name>-bridge
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}{Attach the veth to namespace}
+\begin{verbatim}
+$ ip link set veth-<net_namespace_name> netns veth-<net_namespace_name>
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}{Attach the veth to the bridge}
+\begin{verbatim}
+$ ip link set veth-<net_namespace_name>-bridge master v-net-0
+\end{verbatim}
+\end{codetemplate}
+    \item Assign IP addresses and turn them up:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ip -n <net_namespace_name> add 192.168.15.1 dev veth-<net_namespace_name>
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ip -n <net_namespace_name> link set veth-<net_namespace_name> up
+\end{verbatim}
+\end{codetemplate}
+\end{itemize}
+
+If I want to stablish connectivity between my host and this network interfaces:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ip addr add 192.168.15.5/24 dev v-net-0
+\end{verbatim}
+\end{codetemplate}
+
+Anyway from within the namespaces you cannot reach the outside world, nor can anyone from the outside world reach the services. If we want to access the internet we will need to oper the door, so we need to add a gateway.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ip netns exec <net_namespace_name> ip route add 192.168.1.0/24 via 192.168.15.5
+\end{verbatim}
+\end{codetemplate}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ip netns exec <net_namespace_name> ip route add default via 192.168.15.5
+\end{verbatim}
+\end{codetemplate}
+
+As well we need to add a new rule in the NAT IP table for the outside world to reply:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ iptables -t nat -A POSTROUTING -s 192.168.15.0/24 -j MASQUERADE
+\end{verbatim}
+\end{codetemplate}
+
+But the response always will go to the localhost, because for the entire world this is the only IP reachable. So if you want that the outside worl access the aplication you will need to define Port-Forward rulesm (NAT).
+
+
 \subsection{OSI Model}
 
 The Open Systems Interconnection (OSI) model is a reference model from the International Organization for Standardization (ISO) that "provides a common basis for the coordination of standards development for the purpose of systems interconnection. In the OSI reference model, the communications between systems are split into seven different abstraction layers: Physical, Data Link, Network, Transport, Session, Presentation, and Application.
@@ -2959,6 +3492,53 @@ Devices can move between networks and retain their unique MAC address, while the
     \item \textbf{Routing:} IP addresses are used by routers to make forwarding decisions and route data across multiple networks to its final destination.
     \item \textbf{Address Resolution Protocol (ARP):} When a device wants to communicate with another device on the same local network, it uses ARP to map the destination IP address to the corresponding MAC address. This mapping is necessary because data frames on Ethernet networks require MAC addresses.
 \end{itemize}
+
+\subsubsection{ARP Table}
+
+The \textbf{ARP (Address Resolution Protocol) Table} is a data structure used by a network device to store mappings between IP addresses and MAC (Media Access Control) addresses. In local area networks, when a device wants to communicate with another device, it uses the ARP protocol to resolve the MAC address associated with the target device's IP address.
+
+The ARP table stores these IP-to-MAC mappings temporarily, allowing the device to communicate efficiently without constantly querying for the MAC address. Each entry in the table contains:
+\begin{itemize}
+    \item The IP address.
+    \item The corresponding MAC address.
+    \item A timer to track how long the mapping has been valid.
+\end{itemize}
+
+Displays the current ARP table entries. You can see a list of IP addresses and their corresponding MAC addresses:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ arp -a
+\end{verbatim}
+\end{codetemplate}
+
+A modern command to display the ARP cache on Linux systems:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ip neigh
+\end{verbatim}
+\end{codetemplate}
+
+Deletes an entry from the ARP table manually:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ arp -d <IP\_address>
+\end{verbatim}
+\end{codetemplate}
+
+Clears the entire ARP cache:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ ip neigh flush all
+\end{verbatim}
+\end{codetemplate}
+
+The output of \texttt{arp -a} typically includes the following columns:
+\begin{itemize}
+    \item \textbf{IP Address}: The IP address of the device.
+    \item \textbf{MAC Address}: The MAC address corresponding to the IP address.
+    \item \textbf{Type}: Indicates whether the ARP entry is \textit{dynamic} (learned via ARP requests) or \textit{static} (manually entered).
+\end{itemize}
+This table is essential for ensuring proper communication between devices in the same local network.
 
 \subsection{Public IP}
 
@@ -3078,45 +3658,189 @@ Private IP addresses are defined by the Internet Engineering Task Force (IETF) i
     \item Then the router's DHCP server assigns it 192.168.1.10 (for example) along with other network information.
 \end{enumerate}
 
+\subsection{DNS in Linux}
 
+\subsubsection{Introduction to DNS}
 
-\subsection{FQDN} \label{FQDN}
-El término Fully Qualified Domain Name (FQDN) se refiere a la dirección completa y única necesaria para tener presencia en Internet. Está compuesta por el nombre de host y el de dominio y se utiliza para localizar hosts específicos en Internet y acceder a ellos mediante la resolución de nombres. Este nombre de dominio único que contiene toda la información necesaria para poder acceder a una máquina a través de una red pública, como puede ser internet. A través de un FQDN un equipo es capaz de conectarse con cualquier otro.
+We have 2 Hosts in the same Network, Host A and Host B. And they have been assigned a Network with IP: 192.168.1.0. So they are 192.168.1.10 and 192.168.1.11. So as we saw in the last section \ref{swrt}. As they are in the same Network, they can reach each other using their IP's. But it can be so tediously for Hosts to know all the IP's, so instead of having to remember the IP address of system B, Host A can give it a name, for example db, that when you \verb|ping db| it works like if it was using IP.
 
-La estructura del FQDN viene determinada por el sistema de nombres de dominio (DNS) y está conformada por etiquetas. Cada etiqueta se corresponde con el nombre de un nivel en el espacio de nombres de dominio y está separada de la siguiente por un punto. Ha de constar de entre 1 y 63 caracteres, que pueden ser números, letras y guiones (aunque realmente los guiones no se pueden usar al comenzar una etiqueta) y el total de caracteres del FQDN no debe exceder los 255. 
+Basically we want to tell Host A that system B at IP address at 192.165.1.11 has a name db. So when db name is used, for Host A must be the same as 192.165.1.11. It can be done by adding an entry in the file \verb|/etc/hosts|:
 
-El Fully Qualified Domain Name consta como mínimo de tres etiquetas: el dominio de nivel superior, el nombre de dominio y el nombre de host. Se lee al revés.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ echo "192.168.1.11      db" >> /etc/hosts
+\end{verbatim}
+\end{codetemplate}
+
+Or vim and add at the end of the file the relationship.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo vim /etc/hosts
+\end{verbatim}
+\end{codetemplate}
+
+So now Host A translates db as 192.165.1.11, this is called \textbf{name resolution}, associate a hostname to an IP. Whatever we put in the \verb|/etc/hosts| is the source of true for the Host. But that my not be the truth, maybe Host B is called host-2, but Host A does not care, it will follow what is in the \verb|/etc/hosts| file. 
+
+You can make a test, associate \verb|www.google.com| hostname to IP of Host B an tst to ping, the ping will be answered by Host B. You can have any names as you want for any servers as you want in the \verb|/etc/hosts| file. Commands look into this file:
+
+\begin{itemize}
+    \item ping
+    \item ssh
+    \item curl
+    \item nc
+    \item nmap
+    \item mtr
+    \item ...
+\end{itemize}
+
+\subsubsection{DNS server}
+
+In a system with few systems, you can get away with the entries of \verb|/etc/hosts| file, and this is how it was done in the past. However, when the environment grows and these files got filled with many entries you can imagine this is unmanageable. If one of the Hosts changes its IP, you are done, gj wp. This is the reason why it was decided to \textbf{move all this configuration into a single server}, who will manage all this centrally, called the \textbf{DNS server}. And then we point all hosts to look up that server if they need to resolve a hostname to an IP address instead of its own \verb|/etc/hosts| files.
+
+How do we do that? How de we point our host to a DNS server? Imagine our DNS server has the IP 192.168.1.100, every host has a DNS resolution configuration file at \verb|/etc/resolv.conf|. So you have to add an entry into it specifying the address of the DNS server.
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$ echo "nameserver         192.168.1.100" >> /etc/resolv.conf
+\end{verbatim}
+\end{codetemplate}
+
+Or vim and add it at the end of the file.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo vim /etc/resolv.conf
+\end{verbatim}
+\end{codetemplate}
+
+Once this is configured into a Host, everytime it comes up across a hostname that it does not know about, it looks it up from the DNS server. With this configuration, if the IP of any of the host was to change, you only need to change it in one file in one Host.
+
+\begin{blocktemplateIII}{WARNING}
+You can still have entries in your \verb|/etc/hosts| file, but it is not hardly recommended because it will override the configuration in \verb|/etc/resolv.conf| nameserver. Only use it when you are sure of what you are doing.
+\\\\
+But this is default configuration, this order can be changed in the file \verb|/etc/nsswitch.conf|
+\begin{codetemplate}{}
+\begin{verbatim}
+$ cat /etc/nsswitch.conf
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{OUTPUT:} hosts:    files dns
+
+To change this, you should modify the content on the field to invert it.
+\end{blocktemplateIII}
+
+What happens if the hostname is not found in \verb|/etc/hosts| neither in \verb|/etc/resolv.conf|, so it will fail. Unless you configure in the file \verb|/etc/hosts| of the \textbf{DNS server} to forward all unknown hostnames to the public name server on the internet (ex: 8.8.8.8).
+
+\begin{codetemplate}{}
+\begin{verbatim}
+$ echo "Forward All to 8.8.8.8" >> /etc/hosts
+\end{verbatim}
+\end{codetemplate}
+
+\subsubsection{FQDN}
+
+So far, we are naming with names like db, host-1, host-2... But the real services are called: www.google.com, www.github.com, etc. They are using \textbf{FQDN's}.
+
+\textbf{FQDN} (Fully Qualified Domain Name) or \textbf{Domain Name}, which are a complete and unique direction needed to have presence on the internet. It is composed by the name of the host and the domain, and it is used to request to specific hosts on the internet using the name resolution instead of their IP.
+
+Let's see a FQDN structure in detail:
 
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.4]{pictures/image11.PNG}
-    \label{FQDN Image}
-    \caption{Representación esquemática de la estructura del Fully Qualified Domain Name}
 \end{figure}
 
-\textbf{Ejemplo de un FQDN}
-\begin{verbatim}
-[Nombre de host].[Dominio].[TLD]
-\end{verbatim}
-\begin{verbatim}
-hosting.ionos.es
-\end{verbatim}
 \begin{enumerate}
-    \item La etiqueta del dominio raíz tras el punto permanece vacía
-    \item El \textbf{dominio de primer nivel:} en nuestro ejemplo es "\textit{.es}", dominio de nivel superior geográfico, también conocido por las siglas ccTLD (country code-top level domain). Frente a ellos se encuentran losTLD genéricos como .com o .org, también designados gTLD (generic top-level domain).
-    \item El \textbf{dominio de segundo nivel}, también conocido como nombre de dominio.  En el ejemplo se corresponde con "\textit{ionos}".
-    \item El \textbf{domino de tercer nivel}, en el extremo izquierdo, tenemos el nombre del host, en nuestro ejemplo "\textit{hosting}".
+    \item \textbf{TLD (Top Level Domains):} they represent the intent or the geographical situation of the website:
+    \begin{itemize}
+        \item \textbf{.com:} for commercial or general purpose
+        \item \textbf{.net:} for network
+        \item \textbf{.edu:} for educational organizations
+        \item \textbf{.es / .cat / .fr:} for geographical situation
+        \item \textbf{.org:} for non-profit organizations
+    \end{itemize}
+
+    \item \textbf{Domain:} it is the hostname assigned to Google
+    \item \textbf{Name of the host:} is a subdomain, which helps in further grouping things together under the Domain, for example:
+    \begin{itemize}
+        \item \textbf{maps.google.com:} the maps of google
+        \item \textbf{drive.google.com:} the drive of google
+        \item \textbf{www.google.com:} google search
+        \item \textbf{mail.google.com:} google email
+    \end{itemize}
 \end{enumerate}
 
-Los FQDN se suelen utilizar en cualquier interacción en Internet, ya que son más fáciles de recordar que las direcciones IP. Otro ejemplo www.wordpress.com
+But how does this magical works in all Hosts in the world, for exampe the PC we are using. This is because when your system tries to reach any of these \textbf{FQDN's} your system first check at your \verb|/etc/hosts| or \textbf{internal DNS server}, and it normally does not know who apps or google is, so it forwards your request to
+\textbf{your internet provider DNS server (you can change this on your machine configuration)}. Then the DNS Server looks at your request and forwards it to the correct host.
+
+\textbf{Orange DNS (France)}
+\begin{itemize}
+    \item Primary DNS: \texttt{8.8.8.8}
+    \item Secondary DNS: \texttt{8.8.4.4}
+\end{itemize}
+
+\textbf{Google Public DNS}
+\begin{itemize}
+    \item Primary DNS: \texttt{8.8.8.8}
+    \item Secondary DNS: \texttt{8.8.4.4}
+\end{itemize}
+    
+\textbf{Cloudflare DNS}
+\begin{itemize}
+    \item Primary DNS: \texttt{1.1.1.1}
+    \item Secondary DNS: \texttt{1.0.0.1}
+\end{itemize}
+    
+\textbf{OpenDNS}
+\begin{itemize}
+    \item Primary DNS: \texttt{208.67.222.222}
+    \item Secondary DNS: \texttt{208.67.220.220}
+\end{itemize}
+    
+\textbf{Quad9 DNS}
+\begin{itemize}
+    \item Primary DNS: \texttt{9.9.9.9}
+    \item Secondary DNS: \texttt{149.112.112.112}
+\end{itemize}
+    
+\textbf{Comodo Secure DNS}
+\begin{itemize}
+    \item Primary DNS: \texttt{8.26.56.26}
+    \item Secondary DNS: \texttt{8.20.247.20}
+\end{itemize}
+
+But as this is so tedious, your \textbf{local DNS server (router)} may choose to cache this IP for a period of time, typically few seconds up to few minutes. That way, it does not have to go throught the whole process again each time.
 
 
-Para más información consultad: \href{https://www.ionos.es/digitalguide/dominios/gestion-de-dominios/fully-qualified-domain-name/}{FQDN}
-/ \href{https://www.hostinger.es/tutoriales/fqdn}{FQDN 2}
+\subsubsection{Creating own FQDN}
 
-\subsection{DNS Resolution Process}
+Imagine we want to expose a service to the internet with different sub-services, like a pay service, a consult service, a book service, a message service, etc. And do you want to access them on the internet by FQDN names and not IP's, so common. You must have an \textbf{internal DNS server}, and you must configure the hostname-IP relationship in its \verb|/etc/hosts| file.
 
-\subsubsection{Checking the Local Cache}
+So when you want to access your service from inside the Network from any host, the host at first will look in its local configuration file \verb|/etc/hosts|, then if nothing finds it will look in the \textbf{DNS server} configured in the \verb|/etc/resolv.conf|, whichi will tell you that pay.myapp.com is the IP 192.68....
+
+But we can one step further, inside my private network, maybe I want to use the service without the FQDN, because it is very long, maybe I want to use it by web, it is easier. Is this possible? The answer is yes, you must make an entry into your host's \verb|/etc/resolv.conf|:
+
+\begin{codetemplate}{}
+\begin{verbatim}
+search mycompany.com
+\end{verbatim}
+\end{codetemplate}
+
+Next time you try to ping web, you will see it actually tries web.mycompany.com. As if you try pay, it will try pay.company.com.
+
+\subsubsection{Record Types (Tipos de Registros)}
+
+How are the records stored in the DNS server?
+
+\begin{itemize}
+    \item \textbf{hostname to IP:} A records
+    \item \textbf{hostnames to IPv6:} AAAA records
+    \item \textbf{Mapping one name to another name:} CNAME records. For example, you may have multiple aliases for the same application (maps.google.com = car.google.com, walk.google.com, cycle.google.com, etc.) and that's why a CNAME record is used, name to name mapping.
+\end{itemize}
+
+\subsubsection{DNS Resolution Process}
+
+\paragraph{Checking the Local Cache}
 When you try to access an fqdn (like www.google.com), your machine first checks its local DNS cache to see if it already knows the IP address. This cache is typically managed by a service such as systemd-resolved, dnsmasq, or nscd.
 
 \begin{figure}[H]
@@ -3124,7 +3848,7 @@ When you try to access an fqdn (like www.google.com), your machine first checks 
     \centering
 \end{figure}
 
-\subsubsection{Hosts File}
+\paragraph{Hosts File}
 If the address is not found in the cache, it then checks the \verb|/etc/hosts| file, which can have static mappings of hostnames to IP addresses.
 
 \begin{codetemplate}{/etc/hosts}
@@ -3141,7 +3865,7 @@ If the address is not found in the cache, it then checks the \verb|/etc/hosts| f
 In windows this file is in \verb|C:\Windows\System32\drivers\etc\hosts|
 \end{blocktemplate}
 
-\subsubsection{DNS Resolver Configuration}
+\paragraph{DNS Resolver Configuration}
 If the fqdn is not found in the \verb+/etc/hosts+ file, the system uses DNS servers defined in the \verb+/etc/resolv.conf+ file. This file contains the IP addresses of the DNS servers that the system will query to resolve the domain name.
 
 A typical \verb+/etc/resolv.conf+ might look like this:
@@ -3166,7 +3890,7 @@ The IP addresses 8.8.8.8, 8.8.4.4, and 9.9.9.9 are addresses for public DNS serv
 You also have the CloudFlare one in 1.1.1.1.
 \end{blocktemplateII}
 
-\subsubsection{Recursive DNS Resolution inside the DNS Server}
+\paragraph{Recursive DNS Resolution inside the DNS Server}
 The DNS server might not know the answer immediately and may perform a recursive resolution process:
 
 \begin{itemize}
@@ -3179,9 +3903,9 @@ The DNS server might not know the answer immediately and may perform a recursive
 \subsubsection{Caching the Result}
 Once the IP address is retrieved, it is sent back to your machine, which can now connect to the fqdn. This result is also cached locally to speed up future requests.
 
-\subsection{DNS check Tools}
+\subsubsection{DNS check Tools}
 
-\subsubsection{nslookup}
+\paragraph{nslookup}
 
 nslookup (Name Server LOOKUP) is a network utility used for querying the Domain Name System (DNS) to obtain domain name or IP address mapping information. It is a command-line tool available on many operating systems, including Windows, macOS, and Linux. nslookup helps troubleshoot DNS-related issues by allowing users to query DNS servers and view the details of DNS records.
 
@@ -3206,7 +3930,7 @@ $ nslookup 8.8.4.4
 \end{verbatim}
 \end{codetemplate}
 
-\subsubsection{dig}
+\paragraph{dig}
 
 dig (Domain Information Groper) is a network administration command-line tool for querying the Domain Name System (DNS). It is commonly used to retrieve information about DNS records, troubleshoot DNS issues, and verify DNS configurations. dig is widely used on Unix-like operating systems such as Linux and macOS, and it can also be installed on Windows.
 
@@ -3253,9 +3977,9 @@ $ dig +trace example.com
 \end{verbatim}
 \end{codetemplate}
 
-\subsection{Local Cache Services}
+\subsubsection{Local Cache Services}
 
-\subsubsection{systemd-resolved}
+\paragraph{systemd-resolved}
 
 \verb+systemd-resolved+ is a system service provided by the systemd suite of system and service management tools for Linux operating systems. It is responsible for network name resolution, which means converting human-friendly domain names (like "example.com") into IP addresses that computers can use to communicate over a network. It is in charge of Caching and split DNS support for faster DNS resolution and optimized network usage.
 
@@ -3278,7 +4002,7 @@ $ sudo systemctl status systemd-resolved
 \end{verbatim}
 \end{codetemplate}
 
-\subsubsection{dnsmasq}
+\paragraph{dnsmasq}
 
 dnsmasq is a lightweight, easy-to-configure DNS forwarder and DHCP server. It is designed to provide DNS, DHCP, TFTP, and PXE services for small networks. Here's a detailed look at dnsmasq:
 
@@ -3307,6 +4031,7 @@ $ sudo systemctl status dnsmasq
 \end{verbatim}
 \end{codetemplate}
 
+\newpage
 \subsection{SSH}
 
 \subsubsection{What is SSH?}
@@ -3837,8 +4562,6 @@ sftp> !
 \end{codetemplate}
 
 \subsubsection{Being sudo with SFTP?}
-
-
 In general, the sudo command is not directly applicable to SFTP (SSH File Transfer Protocol) because SFTP is a protocol specifically designed for transferring files securely over SSH (Secure Shell). However, if you want to perform administrative tasks on a remote server using SFTP, you typically need to have the appropriate permissions granted to your SSH user account.
 
 If you need to perform administrative tasks on files through SFTP, you would typically ensure that the user account you're logging in with has the necessary permissions to read, write, and modify those files. 
@@ -3867,7 +4590,7 @@ $ sftp ... username@remote_server
 Para saber que puertos tiene escuchando nuestro localhost:
 
 \begin{enumerate}
-    \item Using \verb|lsoft|
+    \item Using \verb|lsof|
 \begin{codetemplate}{}
 \begin{verbatim}
 $ sudo lsof -i -P -n
@@ -3951,8 +4674,6 @@ $ ifconfig
 \end{verbatim}
 \end{codetemplate}
 \end{blocktemplateIII}
-
-\subsection{Certificates}
 
 
 \newpage
@@ -4358,6 +5079,130 @@ After sending the request, the server should respond with the appropriate HTTP r
 \begin{blocktemplateIII}{WARNING}
 Remember that Telnet transmits data in plain text, so it's not secure for transmitting sensitive information like passwords. For secure remote access, it's recommended to use protocols like SSH instead.
 \end{blocktemplateIII}
+
+\subsection{Traceroute}
+\verb|traceroute| is a network diagnostic tool used to trace the path that packets take from your local machine to a specified destination, showing all intermediate routers (hops) between the source and destination. By revealing the path, traceroute helps you understand where potential bottlenecks, delays, or network issues might be occurring.
+
+Each router (or hop) along the way is queried, and traceroute reports the time it takes for a packet to travel from your machine to that router. It is an essential tool for troubleshooting routing issues or slow network connections.
+
+\verb|traceroute| sends a series of ICMP (Internet Control Message Protocol) or UDP (User Datagram Protocol) packets to the target with varying TTL (Time-to-Live) values. The TTL field limits the number of hops a packet can pass through before it gets discarded. Each time a router decreases the TTL by one and sends back a message, traceroute records the delay and the router's address.
+
+Basic Usage:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ traceroute <ip_or_hostname>
+\end{verbatim}
+\end{codetemplate}
+
+Limits the maximum number of hops. By default, traceroute will trace up to 30 hops:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ traceroute -m <max_hops> <ip_or_hostname>
+\end{verbatim}
+\end{codetemplate}
+
+Use ICMP Instead of UDP:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ traceroute -I <ip_or_hostname>
+\end{verbatim}
+\end{codetemplate}
+
+Display IP Addresses Only:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ traceroute -n <hostname/IP>
+\end{verbatim}
+\end{codetemplate}
+
+Set Timeout for Each Response:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ traceroute -w <wait_time> <hostname/IP>
+\end{verbatim}
+\end{codetemplate}
+
+\subsection{MTR}
+\verb|mtr| (My Traceroute) is a powerful network diagnostic tool that combines the functionality of two essential network utilities: ping and traceroute. It provides real-time network performance statistics, helping users identify potential network issues like packet loss, latency, and routing problems between the local machine and a remote host.
+
+Unlike traditional ping or traceroute which give static outputs, mtr runs continuously, providing updated information and live network analysis. It is especially useful for troubleshooting network connectivity issues or analyzing the performance of network routes over time.
+
+When you run mtr, it sends ICMP (Internet Control Message Protocol) echo requests to the target host (like ping) and tracks the path that packets take to reach the destination (like traceroute). It collects and displays real-time statistics on packet loss, response times, and the number of hops (routers) the packets pass through.
+
+Basic usage:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ mtr <hostname_or_ip>
+\end{verbatim}
+\end{codetemplate}
+
+Limit the number of pings:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ mtr -c <number> <hostname_or_ip>
+\end{verbatim}
+\end{codetemplate}
+
+Run mtr as Root for ICMP (Privileged Mode). Running mtr as root enables the program to send ICMP packets for more accurate results. Without root privileges, mtr sends UDP packets, which may behave differently.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ sudo mtr <hostname_or_ip>
+\end{verbatim}
+\end{codetemplate}
+
+Verbose:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ mtr -rw <hostname_or_ip>
+\end{verbatim}
+\end{codetemplate}
+
+Show IP address only:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ mtr -n <hostname_or_ip>
+\end{verbatim}
+\end{codetemplate}
+
+Specify max number of hops:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ mtr -m <number_hops> <hostname_or_ip>
+\end{verbatim}
+\end{codetemplate}
+
+\subsection{Whois}
+WHOIS is a protocol used to query databases that store information about \textbf{domain names}, \textbf{IP addresses}, and \textbf{autonomous system numbers}. It helps to retrieve \textbf{registration details} of a domain name or IP address, such as the \textbf{owner}, \textbf{registrar}, \textbf{creation/expiration dates}, and more. WHOIS is widely used by \textbf{network administrators}, \textbf{security professionals}, and even \textbf{regular users} to check the \textbf{legitimacy} of websites, or to identify who owns a particular domain name.
+
+WHOIS queries are made over a \textbf{network} to a WHOIS server, which returns the requested data. Many \textbf{domain name registrars} maintain WHOIS servers to provide this information to the public.
+
+Basic usage:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ whois <hostname_or_ip>
+\end{verbatim}
+\end{codetemplate}
+
+Specify a particular WHOIS server to query:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ whois -h whois.verisign-grs.com <hostname_or_ip>
+\end{verbatim}
+\end{codetemplate}
+
+Short output:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ whois -s <hostname_or_ip>
+\end{verbatim}
+\end{codetemplate}
+
+WHOIS data without any formatting:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ whois -r <hostname_or_ip>
+\end{verbatim}
+\end{codetemplate}
 
 \subsection{Proxy variables definition for binaries}
 Configuring the proxy in the system environment variables with a specific naming convention will cause many system binaries to use them to establish their connections. For example: docker, curl, nslookup...
