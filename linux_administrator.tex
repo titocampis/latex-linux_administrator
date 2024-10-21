@@ -1453,11 +1453,12 @@ $ rsync -av /path/to/source/ /path/to/destination/
 \begin{itemize}
     \item \verb|-a:| enables archive mode, which preserves symbolic links, file permissions, user and group ownerships, and timestamps.
     \item \verb|-v:| verbose.
+    \item \verb|-z:| compress data during the transfer to make it more efficient, if there is a local rsync it won't take effect.
     \item \verb|-P:| displays the progress of the transfer, including the percentage of the transfer completed, transfer speed, and estimated time remaining. Also keep partially transferred files if the transfer is interrupted.
     \item \verb|--partial:| keep partially transferred files if the transfer is interrupted.
     \item \verb|--progress:| displays the progress of the transfer, including the percentage of the transfer completed, transfer speed, and estimated time remaining.
     \item \verb|--delete:| deletes files in the destination directory that are not present in the source directory. This keeps the destination directory in exact sync with the source.
-    \item \textbf{From localhost to remote host:} 
+    \item \textbf{From localhost to remote host:}
 \begin{codetemplate}{}
 \begin{verbatim}
 $ rsync -avzP /path/to/local/source \
@@ -1474,10 +1475,15 @@ $ rsync -avzP remote_user@remote_ip:/path/to/remote/source \
 \end{codetemplate}
 \end{itemize}
 
-\begin{blocktemplateII}{Note}
-You can specify the key to use: \verb|-e "ssh -i /path/to/private_key"|
-\end{blocktemplateII}
-    
+You can specify \textbf{ssh args} like the pubkey to use, the port to connect, the proxy, etc.:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ rsync -e 'ssh -p 722 -o ProxyCommand="ssh -p 22 -i ~/path/to/pub/key \ 
+    -o StrictHostKeyChecking=no -W %h:%p -q username@51.15.26.3 \
+    -i ~/path/to/pub/key"' \
+    -avzP acampos@10.21.4.21:/home/acampos/test.txt ~/work/mysql.tar 
+\end{verbatim}
+\end{codetemplate}
 
 \subsection{Simbolik Links}
 \subsubsection{What is a Symbolic Link?}
@@ -2147,7 +2153,7 @@ $ head -f <filename>
 \end{itemize}
 
 \subsection{Diff (File comparator)}
-Command to compare FILES line by line.
+The diff command is a powerful tool in Unix-like operating systems (like Linux and macOS) used to compare two files line by line. It helps identify differences between files or directories, showing what has changed, been added, or removed. It's widely used in programming, version control, and system administration.
 
 \textbf{Basic usage}
 \begin{codetemplate}{}
@@ -2163,14 +2169,26 @@ $ diff -y /path/to/file1 /path/to/file2
 \end{verbatim}
 \end{codetemplate}
 
-\textbf{Recursively}
+\textbf{Recursively: comparing directories}
 \begin{codetemplate}{}
 \begin{verbatim}
 $ diff -r /path/to/directory1 /path/to/directory2
 \end{verbatim}
 \end{codetemplate}
 
-\textbf{Report only when files differ}
+\textbf{Compare files remotely}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ diff /local/path/file <(ssh user@remote_host: '/remote/path/file')
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ rsync -avnc /local/path/ user@remote_host:/remote/path/
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Show Only File Differences}
 \begin{codetemplate}{}
 \begin{verbatim}
 $ diff -q /path/to/directory1 /path/to/directory2
@@ -2191,7 +2209,7 @@ $ diff -i /path/to/directory1 /path/to/directory2
 \end{verbatim}
 \end{codetemplate}
 
-\textbf{Ignore changes in the amount of white space}
+\textbf{Ignore Blank lines}
 \begin{codetemplate}{}
 \begin{verbatim}
 $ diff -b /path/to/directory1 /path/to/directory2
