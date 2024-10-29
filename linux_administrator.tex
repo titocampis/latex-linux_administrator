@@ -1033,8 +1033,7 @@ $ systemctl --type=service --state=running
 \end{verbatim}
 \end{codetemplate}
 
-\subsection{Service}
-
+\subsubsection{Service}
 The \textbf{service} command is commonly used in older versions of Linux distributions or those that haven't fully adopted systemd yet. It provides a simpler interface compared to systemctl, but it offers similar functionality for starting, stopping, restarting, and checking the status of services.
 
 It is very similar to \textbf{systemctl}, with almost same functionalities, just reversing arguments
@@ -1052,6 +1051,128 @@ $ service <service_name> start
 $ service <service_name> status
 \end{verbatim}
 \end{codetemplate}
+
+\subsection{Cron}
+In Linux, \textbf{cron jobs} are automated tasks that run on a set schedule, controlled by the cron daemon \verb|crond|. 
+They are incredibly useful for automating repetitive tasks like backups, updates, and monitoring scripts.
+
+A \textbf{cron job} is a scheduled task that runs on specific times or intervals defined by the user. It uses crontab (cron table) files, where users define jobs to be executed automatically at specified times.
+
+The \textbf{cron daemon} \verb|crond| checks these crontab files every minute to see if any jobs need to be executed.
+It interprets crontab entries, which specify the exact time and frequency for each job, and then runs the command(s) accordingly.
+
+\begin{codetemplate}{}
+\begin{verbatim}
+* * * * * command
+\end{verbatim}
+\end{codetemplate}
+
+Each \verb|*| can be replaced with numbers or symbols to set specific times and frequencies:
+\begin{enumerate}
+    \item Minute: 0-59
+    \item Hour: 0-23
+    \item Day of Month: 0-31
+    \item Day of the week: 0-7 
+\end{enumerate}
+
+For example, \verb|0 5 * * 1 /path/to/script.sh would run /path/to/script.sh| every Monday at 5 AM.
+
+\begin{blocktemplateI}{NOTE}
+You can define the cron for intervals as well. Use \verb|*/n| when you want the job to run at a specific interval throughout the range of the field, regardless of the specific values. It’s helpful when you need recurring tasks like "every 10 minutes," "every 2 hours," or "every 3 days."
+\begin{codetemplate}{}
+\begin{verbatim}
+# Run the command every 5 minutes
+*/5 * * * * command
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}{}
+\begin{verbatim}
+# Run the command at 0 and 30 minutes but just on the second hours
+*/30 */2 * * * command
+\end{verbatim}
+\end{codetemplate}
+
+You can use as well ranges and intervals within ranges: \verb|5-30/5 * * * * command|
+\begin{codetemplate}{}
+\begin{verbatim}
+# Run the command every 5 minutes from the 5th to the 30th minute of each hour
+5-30/5 * * * * command
+\end{verbatim}
+\end{codetemplate}
+
+\begin{itemize}
+    \item \verb|*/n|: Every \verb|n| units.	\verb|*/10| in minutes: Every 10 minutes|
+    \item \verb|n|:	Exactly at n units. \verb|5| in minutes: At 5 minutes past each hour|
+    \item \verb|x-y/n|:	Every n units within a range. \verb|5-30/5| in minutes: Every 5 minutes between 5 and 30 minutes past the hour
+\end{itemize}
+\end{blocktemplateI}
+
+Cron jobs are typically stored in specific files depending on whether they are user-specific or system-wide. Here’s where you can find them:
+
+\textbf{User specific crontab:} \verb|/var/spool/cron/crontabs/<username>|
+
+So depending on the user:
+\begin{itemize}
+    \item \verb|/var/spool/cron/crontabs/josemanuel|: crontabs executed by user \verb|josemanuel| 
+    \item \verb|/var/spool/cron/crontabs/titocampis|: crontabs executed by user \verb|titocampis|
+    \item \verb|/var/spool/cron/crontabs/root|: crontabs executed by user \verb|root| 
+\end{itemize}
+
+You can check a user specific crons:
+\begin{codetemplate}{}
+\begin{verbatim}
+josemanuel - $ less /var/spool/cron/crontabs/josemanuel
+\end{verbatim}
+\end{codetemplate}
+
+\begin{codetemplate}{}
+\begin{verbatim}
+josemanuel - $ crontab -l
+\end{verbatim}
+\end{codetemplate}
+
+You can edit a user specific crons:
+\begin{codetemplate}{}
+\begin{verbatim}
+josemanuel - $ crontab -e
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplateII}{NOTE}
+In user-specific cron files (e.g., \verb|crontab -e| for a specific user), there’s no user field, as the job is executed as the user who owns the crontab file.
+\end{blocktemplateII}
+
+\textbf{System wide crontab:} \verb|/etc/crontab| or \verb|/etc/cron.d/|
+
+System wide cron are by default \textbf{executed by root}. But we can change it specifing the user to execute the cron on the \verb|/etc/crontab| file:
+\begin{codetemplate}{}
+\begin{verbatim}
+# Minute Hour Day Month DayOfWeek User Command
+  *      *    *   *       *       username command
+\end{verbatim}
+\end{codetemplate}
+
+\textbf{Additional cron directories:}  Some systems have directories where you can place scripts to be run at specific intervals:
+
+\begin{itemize}
+    \item \textbf{/etc/cron.hourly}
+    \item \textbf{/etc/cron.daily}
+    \item \textbf{/etc/cron.weekly}
+    \item \textbf{/etc/cron.monthly}
+\end{itemize}
+
+\textbf{Advanced Tips}
+\begin{itemize}
+    \item \textbf{Logging:} Cron logs are typically found in \verb|/var/log/syslog| or \verb|/var/log/cron|, which can help in troubleshooting.
+    \item \textbf{Disabling Email Notifications:}  By default, cron sends an email with output. To suppress this, redirect output to \verb|/dev/null|.
+\begin{codetemplate}{}
+\begin{verbatim}
+* * * * * /path/to/script.sh > /dev/null 2>&1
+\end{verbatim}
+\end{codetemplate}
+
+    \item \textbf{Environment Variables:} You can set environment variables at the top of a crontab file, such as PATH, to ensure your scripts have the correct context.
+\end{itemize} 
 
 \subsection{lsof}
 \verb|lsof| command (short for List Open Files) is a powerful utility in Unix-like operating systems that is used to list information about files that are currently opened by active processes. This includes regular files, directories, network sockets, pipes, devices, and more. Since in Unix-like systems, everything is treated as a file, lsof can show you details about active processes, network connections, open ports, and more.
@@ -1478,9 +1599,9 @@ $ rsync -avzP remote_user@remote_ip:/path/to/remote/source \
 You can specify \textbf{ssh args} like the pubkey to use, the port to connect, the proxy, etc.:
 \begin{codetemplate}{}
 \begin{verbatim}
-$ rsync -e 'ssh -p 722 -o ProxyCommand="ssh -p 22 -i ~/path/to/pub/key \ 
+$ rsync -e "ssh -p 722 -o ProxyCommand='ssh -p 22 -i ~/path/to/pub/key \ 
     -o StrictHostKeyChecking=no -W %h:%p -q username@51.15.26.3 \
-    -i ~/path/to/pub/key"' \
+    -i ~/path/to/pub/key'" \
     -avzP acampos@10.21.4.21:/home/acampos/test.txt ~/work/mysql.tar 
 \end{verbatim}
 \end{codetemplate}
@@ -1678,7 +1799,7 @@ $ apt install --only-upgrade <package-name>
 \end{verbatim}
 \end{codetemplate}
 
-Install the latest available version of a package:
+Install the latest available version / upgrade a package:
 \begin{codetemplate}
 \begin{verbatim}
 $ apt install <package_name>
@@ -1744,6 +1865,13 @@ $ apt update
 \begin{codetemplate}
 \begin{verbatim}
 $ apt-cache madison <package_name>
+\end{verbatim}
+\end{codetemplate}
+
+Upgrade a package to specific version:
+\begin{codetemplate}
+\begin{verbatim}
+$ apt install <package_name>:<package_version>
 \end{verbatim}
 \end{codetemplate}
 
@@ -2103,26 +2231,60 @@ EOF
     \includegraphics[scale=0.8]{pictures/eof2.png}
 \end{figure}
 
-One good example of usage:
+Using tee:
 \begin{codetemplate}{}
 \begin{verbatim}
-export LINK_INTERFACE="enp1s0f1"
-export VLAN_ID="2002"
-sed -i '$d' /etc/netplan/00-installer-config.yaml # To remove the last line of the file
-cat >> /etc/netplan/00-installer-config.yaml << EOF
-    ${LINK_INTERFACE}: {}
-    vlans:
-    vlan${VLAN_ID}:
-        dhcp4: yes
-        id: ${VLAN_ID}
-        link: ${LINK_INTERFACE}
-    version: 2
+cat << EOF | sudo tee /etc/sysctl.d/k8s.conf
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+net.ipv4.ip_forward = 1
+EOF
+\end{verbatim}
+\end{codetemplate}
+
+\subsection{Tee}
+The tee command in Unix/Linux is used to read from standard input (usually the output of another command) and \textbf{write to both standard output (the terminal) and one or more files simultaneously}. It is often used when you want to save the output of a command to a file while still displaying it on the terminal for review.
+
+Basic Usage:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ command | tee [options] file(s)
+\end{verbatim}
+\end{codetemplate}
+
+Writing Output to a File:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ echo "Hello World" | tee hello.txt
+\end{verbatim}
+\end{codetemplate}
+
+Appending to a File:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ echo "Hello World" | tee -a hello.txt
+\end{verbatim}
+\end{codetemplate}
+
+Writting multiple files:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ echo "Logging output" | tee file1.txt file2.txt
+\end{verbatim}
+\end{codetemplate}
+
+Writing into files that require elevated privileges::
+\begin{codetemplate}{}
+\begin{verbatim}
+cat << EOF | sudo tee file1.txt file2.txt
+Este contenido
+Se va a copiar tal cual
+en el fichero
 EOF
 \end{verbatim}
 \end{codetemplate}
 
 \subsection{Head \& Tail}
-
 \textbf{Head:} print the first 10 lines of each FILE to standard output
 
 \begin{itemize}
@@ -2310,7 +2472,7 @@ $ grep -E ...
 \textbf{Use PATTERNS for matching, you can specify multiple patterns to search for}
 \begin{codetemplate}{}
 \begin{verbatim}
-$ grep -e 'pattern1' -e 'pattern2' file.txt
+$ grep -e "pattern1" -e "pattern2" file.txt
 \end{verbatim}
 \end{codetemplate}
 
@@ -4723,10 +4885,144 @@ $ sftp ... username@remote_server
 \end{verbatim}
 \end{codetemplate}
 
-\subsection{Localhost Networking}
-\subsubsection{Ports Exposed}
+\subsection{SCP}
+SCP (Secure Copy Protocol) is a command-line utility used to securely transfer files between a local host and a remote host, or between two remote hosts. It is based on the SSH (Secure Shell) protocol, ensuring that the data transferred is encrypted. SCP is commonly used in Unix-based systems like Linux and macOS, though it can also be used on Windows via tools like PuTTY.
 
-Para saber que puertos tiene escuchando nuestro localhost:
+Basic usage:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ scp [options] [source] [destination]
+\end{verbatim}
+\end{codetemplate}
+
+The best:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ scp -rCpv ssh_config_host:/path/to/folder/ /path/to/local/folder
+\end{verbatim}
+\end{codetemplate}
+
+Transfer a file from your local machine to a remote server:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ scp /path/to/local/file username@remote_host:/path/to/remote/directory
+\end{verbatim}
+\end{codetemplate}
+
+Transfer a file from a remote server to your local machine:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ scp username@remote_host:/path/to/remote/file /path/to/local/directory
+\end{verbatim}
+\end{codetemplate}
+
+Copy directories recursively:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ scp -r /path/to/local/directory/ username@remote_host:/path/to/remote/directory
+\end{verbatim}
+\end{codetemplate}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ scp -r username@remote_host:/path/to/remote/directory/ /path/to/local/directory
+\end{verbatim}
+\end{codetemplate}
+
+Copy Only Newer Files:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ scp -Cp ...
+\end{verbatim}
+\end{codetemplate}
+
+Specify the SSH port:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ scp -P 722 ...
+\end{verbatim}
+\end{codetemplate}
+
+Specify the private key:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ scp -i /path/to/private/key ...
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplateII}{NOTE}
+If we define the \textbf{Ports and privatekey} in the SSH configuration file (\verb|~/.ssh/config|),
+we will be able to use the scp command without specifying Ports and privatekey each time. We don't need to specify neither user,
+it will take it from the host configured on the config file.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ scp -Cpr ssh_config_host:/path/to/folder/ /path/to/local/folder
+$ scp -Cpr /path/to/local/folder/ ssh_config_host:/path/to/folder
+\end{verbatim}
+\end{codetemplate}
+\end{blocktemplateII}
+
+Transfer files between two remote hosts:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ scp username1@remote_host1:/path/to/file \ 
+      username2@remote_host2:/path/to/destination
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplateI}{NOTE}
+If they have different Ports (or privatekeys) you can specify it this way, but remember,
+specify it on \verb|~/.ssh/config| will have the same effect:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ scp -o "Port=2222" username1@remote_host1:/path/to/file \
+      -o "Port=3333" username2@remote_host2:/path/to/destination/
+\end{verbatim}
+\end{codetemplate}
+\end{blocktemplateI}
+
+Verbose:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ scp -v ...
+\end{verbatim}
+\end{codetemplate}
+
+Quiet Mode:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ scp -q ...
+\end{verbatim}
+\end{codetemplate}
+
+To preserve file modification times, access times, and modes:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ scp -p ...
+\end{verbatim}
+\end{codetemplate}
+
+To use a proxy command:
+\begin{codetemplate}{}
+\begin{verbatim}
+$ scp -o ProxyCommand="ssh -W %h:%p username@proxy_host" ...
+\end{verbatim}
+\end{codetemplate}
+
+\begin{blocktemplate}{NOTE}
+If we define the \textbf{ProxyCommand} in your SSH configuration file (\verb|~/.ssh/config|),
+we will be able to use the scp command without specifying ProxyCommand each time. We don't need to specify neither user,
+it will take it from the host configured on the config file.
+\begin{codetemplate}{}
+\begin{verbatim}
+$ scp -Cpr ssh_config_host:/path/to/folder/ /path/to/local/folder
+$ scp -Cpr /path/to/local/folder/ ssh_config_host:/path/to/folder
+\end{verbatim}
+\end{codetemplate}
+\end{blocktemplate}
+
+\subsection{Localhost Networking}
+\subsubsection{Listening Ports}
+To know listening ports on localhost:
 
 \begin{enumerate}
     \item Using \verb|lsof|
@@ -4744,7 +5040,7 @@ $ sudo lsof -i -P -n | grep -i listen
     \item Using \verb|netstat|
 \begin{codetemplate}{}
 \begin{verbatim}
-$ netstat -putona | grep numero-de-puerto
+$ netstat -putona
 \end{verbatim}
 \end{codetemplate}
 
@@ -4763,7 +5059,6 @@ $ netstat -putona | grep numero-de-puerto
 \end{blocktemplate}
 
 \subsubsection{Localhost Adresses}
-
 \textbf{De puertas para adentro}
 \begin{enumerate}
     \item \textbf{Ipv4:}
@@ -4800,7 +5095,7 @@ $ ifconfig
 \end{figure}
 \end{itemize}
 
-\begin{blocktemplateIII}{Nota}
+\begin{blocktemplateIII}{NOTE}
 \begin{codetemplate}{Netmask}
 \begin{verbatim}
 24 (number of 1's):
@@ -4813,7 +5108,6 @@ $ ifconfig
 \end{verbatim}
 \end{codetemplate}
 \end{blocktemplateIII}
-
 
 \newpage
 %-------------------------------------------------------------------------------------------------
@@ -5125,8 +5419,18 @@ $ nmap -sT -T Aggressive <hostname_or_ip>
 The services shown in the output of nmap are not exact, it is what is commonly exposed on the port, but it cannot know what is exactly exposed on the ports.
 \end{blocktemplateII}
 
-\subsection{Netcat}
+\textbf{Scan UDP Ports}
+\begin{codetemplate}{}
+\begin{verbatim}
+$ nmap -sU ...
+\end{verbatim}
+\end{codetemplate}
 
+\begin{blocktemplate}{NOTE}
+Nmap by defaul scan only \textbf{TCP ports}, but you can specify the option \verb|-sU| and use it with all the rest of flags.
+\end{blocktemplate}
+
+\subsection{Netcat}
 Netcat, often referred to as the "Swiss Army Knife" of networking tools, is a versatile utility for reading from and writing to network connections using TCP/IP protocols. It can act both as a client and a server. It can establish connections, listen for connections, and transfer data in various ways.
 
 \textbf{Check if a port is open on a remote server}
